@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13fef308ab711a6439bb086b5265f83e, type: 3}
   m_Name: MoralisServerSettings
   m_EditorClassIdentifier: 
-  DappUrl: 
-  DappId: 
-  DappName: Your dapp name
-  DappDescription: Your dapp description
+  DappUrl: https://lh4jasyaibtg.usemoralis.com:2053/server
+  DappId: 7rAEPSY6NzV0xX610enfc6VjFKKD8xxaCDtId8RJ
+  DappName: Arcadechain - Slot
+  DappDescription: Slot Machine on the block
   DappVersion: 0.0.1
   DappIconUrl: https://moralis.io/wp-content/uploads/2022/05/symbol_for_light_bckg.svg
-  DappWebsiteUrl: https://moralis.io
+  DappWebsiteUrl: https://arcadechain.io
   DisableAutoOpenWizard: 0
