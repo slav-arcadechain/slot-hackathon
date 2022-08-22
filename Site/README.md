@@ -25,6 +25,14 @@ npm install
 - Run the command `truffle migrate --network cronos_testnet` (to deploy your contract to the Cronos test network)
 - Run command `truffle migrate -f 2 --to 2 --network cronos_testnet` to deploy only migration file 5
 
+# flattening contract
+```
+npm install truffle-flattener -g
+```
+the run:
+```
+ truffle-flattener contracts/Slot.sol
+```
 # contract addresses
 - Test Admin Address - `0x588acF052631756422844856e1dc2Ef6066ce121` explorer: https://cronos.org/explorer/testnet3/address/0x588acF052631756422844856e1dc2Ef6066ce121
 - TUSD - Cronos Test - `0x912aAEA32355DA6FeB20D98E73B9C81B5afd6A2e`
