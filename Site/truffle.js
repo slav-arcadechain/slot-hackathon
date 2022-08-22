@@ -1,6 +1,6 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const fs = require('fs');
-const mnemonic = fs.readFileSync(".secret").toString().trim();
+const privateKey = fs.readFileSync(".secret").toString().trim();
 const path = require("path");
 
 module.exports = {
@@ -16,13 +16,13 @@ module.exports = {
       port: 7545,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
     }, bsc_testnet: {
-      provider: () => new HDWalletProvider(mnemonic, `https://data-seed-prebsc-1-s1.binance.org:8545`),
+      provider: () => new HDWalletProvider(privateKey, `https://data-seed-prebsc-1-s1.binance.org:8545`),
       network_id: 97,
       confirmations: 10,
       timeoutBlocks: 200,
       skipDryRun: true
     }, cronos_testnet: {
-      provider: () => new HDWalletProvider(mnemonic, `https://cronos-testnet-3.crypto.org:8545`),
+      provider: () => new HDWalletProvider(privateKey, `https://cronos-testnet-3.crypto.org:8545`),
       network_id: 338,
       confirmations: 10,
       timeoutBlocks: 200,
