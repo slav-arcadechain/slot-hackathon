@@ -1,0 +1,16 @@
+{
+  "name": "ArcadeChain-Slot",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "truffle compile .",
+    "migrate": "truffle migrate",
+    "migrate-local": "truffle migrate --reset --network local",
+    "test": "truffle test"
+  },
+  "dependencies": {
+    "openzeppelin-solidity": "^4.6.0"
+  },
+  "devDependencies": {
+    "@truffle/hdwallet-provider": "^2.0.8"
+  }
+}
