@@ -1,20 +1,28 @@
     using System.Collections;
+    using System.Linq;
+    using System.Numerics;
+    using Cysharp.Threading.Tasks;
+    using MoralisUnity;
     using MoralisUnity.Web3Api.Models;
+    using Nethereum.Util;
     using UnityEngine;
+    using UnityEngine.UI;
 
     public class BlockChain: MonoBehaviour
     {
-        public const string GameTokenContractAddress = "0xCF4Fd69742f30c65a5adBE2D3b4F606aF2C6C92f"; //cronos testnet
+        public const string GameTokenContractAddress = "0x912aAEA32355DA6FeB20D98E73B9C81B5afd6A2e"; //cronos testnet
+        public const string GameContractAddress = "0xaF131deE7926CA18d2c68c4B924DA5F3EFadaCAF"; //cronos testnet
         public const int GameTokenContractDecimals = 18;
         public const ChainList GameChain = ChainList.cronos_testnet;
         public const string ERC20Abi =
             "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]";
 
+        public const string GameAbi =
+            "[{\"type\":\"constructor\",\"stateMutability\":\"nonpayable\",\"inputs\":[{\"type\":\"address\",\"name\":\"_adminAddress\",\"internalType\":\"address\"},{\"type\":\"address\",\"name\":\"_operatorAddress\",\"internalType\":\"address\"},{\"type\":\"address\",\"name\":\"_gameTokenAddress\",\"internalType\":\"address\"},{\"type\":\"uint256\",\"name\":\"_gameFee\",\"internalType\":\"uint256\"}]},{\"type\":\"event\",\"name\":\"GameEntered\",\"inputs\":[{\"type\":\"uint256\",\"name\":\"roundId\",\"internalType\":\"uint256\",\"indexed\":false},{\"type\":\"address\",\"name\":\"user\",\"internalType\":\"address\",\"indexed\":false},{\"type\":\"uint256\",\"name\":\"gameFee\",\"internalType\":\"uint256\",\"indexed\":false}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"GameFeeSet\",\"inputs\":[{\"type\":\"uint256\",\"name\":\"gameFee\",\"internalType\":\"uint256\",\"indexed\":false}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"NewGameToken\",\"inputs\":[{\"type\":\"address\",\"name\":\"tokenAddress\",\"internalType\":\"address\",\"indexed\":false}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"NewOperatorAddress\",\"inputs\":[{\"type\":\"address\",\"name\":\"operator\",\"internalType\":\"address\",\"indexed\":false}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"OwnershipTransferred\",\"inputs\":[{\"type\":\"address\",\"name\":\"previousOwner\",\"internalType\":\"address\",\"indexed\":true},{\"type\":\"address\",\"name\":\"newOwner\",\"internalType\":\"address\",\"indexed\":true}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Paused\",\"inputs\":[{\"type\":\"address\",\"name\":\"account\",\"internalType\":\"address\",\"indexed\":false}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"PlayerClaimed\",\"inputs\":[{\"type\":\"address\",\"name\":\"player\",\"internalType\":\"address\",\"indexed\":false},{\"type\":\"uint256\",\"name\":\"amount\",\"internalType\":\"uint256\",\"indexed\":false}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"ResultUpdated\",\"inputs\":[{\"type\":\"uint256\",\"name\":\"roundId\",\"internalType\":\"uint256\",\"indexed\":false},{\"type\":\"uint256\",\"name\":\"amount\",\"internalType\":\"uint256\",\"indexed\":false}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"TreasuryClaim\",\"inputs\":[{\"type\":\"uint256\",\"name\":\"amount\",\"internalType\":\"uint256\",\"indexed\":false}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"Unpaused\",\"inputs\":[{\"type\":\"address\",\"name\":\"account\",\"internalType\":\"address\",\"indexed\":false}],\"anonymous\":false},{\"type\":\"function\",\"stateMutability\":\"view\",\"outputs\":[{\"type\":\"address\",\"name\":\"\",\"internalType\":\"address\"}],\"name\":\"adminAddress\",\"inputs\":[]},{\"type\":\"function\",\"stateMutability\":\"nonpayable\",\"outputs\":[],\"name\":\"claim\",\"inputs\":[]},{\"type\":\"function\",\"stateMutability\":\"nonpayable\",\"outputs\":[],\"name\":\"claimTreasury\",\"inputs\":[{\"type\":\"uint256\",\"name\":\"value\",\"internalType\":\"uint256\"}]},{\"type\":\"function\",\"stateMutability\":\"nonpayable\",\"outputs\":[],\"name\":\"enterGame\",\"inputs\":[{\"type\":\"uint256\",\"name\":\"_roundId\",\"internalType\":\"uint256\"}]},{\"type\":\"function\",\"stateMutability\":\"view\",\"outputs\":[{\"type\":\"uint256\",\"name\":\"\",\"internalType\":\"uint256\"}],\"name\":\"gameFee\",\"inputs\":[]},{\"type\":\"function\",\"stateMutability\":\"view\",\"outputs\":[{\"type\":\"address\",\"name\":\"\",\"internalType\":\"address\"}],\"name\":\"gameToken\",\"inputs\":[]},{\"type\":\"function\",\"stateMutability\":\"view\",\"outputs\":[{\"type\":\"tuple\",\"name\":\"\",\"internalType\":\"struct Slot.RoundInfo\",\"components\":[{\"type\":\"address\",\"name\":\"playerAddress\",\"internalType\":\"address\"},{\"type\":\"uint256\",\"name\":\"roundId\",\"internalType\":\"uint256\"},{\"type\":\"uint256\",\"name\":\"amount\",\"internalType\":\"uint256\"},{\"type\":\"bool\",\"name\":\"updated\",\"internalType\":\"bool\"},{\"type\":\"bool\",\"name\":\"claimed\",\"internalType\":\"bool\"}]}],\"name\":\"getLegerEntryForRoundId\",\"inputs\":[{\"type\":\"uint256\",\"name\":\"_roundId\",\"internalType\":\"uint256\"}]},{\"type\":\"function\",\"stateMutability\":\"view\",\"outputs\":[{\"type\":\"uint256[]\",\"name\":\"\",\"internalType\":\"uint256[]\"}],\"name\":\"getUserRounds\",\"inputs\":[{\"type\":\"address\",\"name\":\"_address\",\"internalType\":\"address\"}]},{\"type\":\"function\",\"stateMutability\":\"view\",\"outputs\":[{\"type\":\"uint256\",\"name\":\"\",\"internalType\":\"uint256\"}],\"name\":\"getUserWinnings\",\"inputs\":[{\"type\":\"address\",\"name\":\"_address\",\"internalType\":\"address\"}]},{\"type\":\"function\",\"stateMutability\":\"view\",\"outputs\":[{\"type\":\"address\",\"name\":\"playerAddress\",\"internalType\":\"address\"},{\"type\":\"uint256\",\"name\":\"roundId\",\"internalType\":\"uint256\"},{\"type\":\"uint256\",\"name\":\"amount\",\"internalType\":\"uint256\"},{\"type\":\"bool\",\"name\":\"updated\",\"internalType\":\"bool\"},{\"type\":\"bool\",\"name\":\"claimed\",\"internalType\":\"bool\"}],\"name\":\"ledger\",\"inputs\":[{\"type\":\"uint256\",\"name\":\"\",\"internalType\":\"uint256\"}]},{\"type\":\"function\",\"stateMutability\":\"view\",\"outputs\":[{\"type\":\"address\",\"name\":\"\",\"internalType\":\"address\"}],\"name\":\"operatorAddress\",\"inputs\":[]},{\"type\":\"function\",\"stateMutability\":\"view\",\"outputs\":[{\"type\":\"address\",\"name\":\"\",\"internalType\":\"address\"}],\"name\":\"owner\",\"inputs\":[]},{\"type\":\"function\",\"stateMutability\":\"view\",\"outputs\":[{\"type\":\"bool\",\"name\":\"\",\"internalType\":\"bool\"}],\"name\":\"paused\",\"inputs\":[]},{\"type\":\"function\",\"stateMutability\":\"nonpayable\",\"outputs\":[],\"name\":\"renounceOwnership\",\"inputs\":[]},{\"type\":\"function\",\"stateMutability\":\"nonpayable\",\"outputs\":[],\"name\":\"setGameFee\",\"inputs\":[{\"type\":\"uint256\",\"name\":\"_gameFee\",\"internalType\":\"uint256\"}]},{\"type\":\"function\",\"stateMutability\":\"nonpayable\",\"outputs\":[],\"name\":\"setGameToken\",\"inputs\":[{\"type\":\"address\",\"name\":\"tokenAddress\",\"internalType\":\"address\"}]},{\"type\":\"function\",\"stateMutability\":\"nonpayable\",\"outputs\":[],\"name\":\"setOperator\",\"inputs\":[{\"type\":\"address\",\"name\":\"_operatorAddress\",\"internalType\":\"address\"}]},{\"type\":\"function\",\"stateMutability\":\"nonpayable\",\"outputs\":[],\"name\":\"setRoundResult\",\"inputs\":[{\"type\":\"uint256\",\"name\":\"_roundId\",\"internalType\":\"uint256\"},{\"type\":\"uint256\",\"name\":\"_amount\",\"internalType\":\"uint256\"}]},{\"type\":\"function\",\"stateMutability\":\"nonpayable\",\"outputs\":[],\"name\":\"transferOwnership\",\"inputs\":[{\"type\":\"address\",\"name\":\"newOwner\",\"internalType\":\"address\"}]},{\"type\":\"function\",\"stateMutability\":\"view\",\"outputs\":[{\"type\":\"uint256\",\"name\":\"\",\"internalType\":\"uint256\"}],\"name\":\"userRounds\",\"inputs\":[{\"type\":\"address\",\"name\":\"\",\"internalType\":\"address\"},{\"type\":\"uint256\",\"name\":\"\",\"internalType\":\"uint256\"}]},{\"type\":\"function\",\"stateMutability\":\"view\",\"outputs\":[{\"type\":\"uint256\",\"name\":\"\",\"internalType\":\"uint256\"}],\"name\":\"userWinnings\",\"inputs\":[{\"type\":\"address\",\"name\":\"\",\"internalType\":\"address\"}]}]";
         #region Internal Methods
  
         private void Awake()
         {
-            Debug.Log("Loading planets...");
             StartCoroutine(LoadInternal());
         }
  
@@ -29,6 +37,56 @@
             //     yield return www;
             //     planets = JsonUtility.FromJson<Planets>(www.text).planets;
             // }
+        }
+        
+        public IEnumerator HandleWallet()
+        {
+            Debug.Log("in handle wallet");
+            UniTask.Create(async () =>
+            {
+                Debug.Log("in unit task");
+                var address = (await Moralis.GetUserAsync()).accounts[0];
+                Debug.Log("user address: " + address);
+                var balance =
+                    await Moralis.Web3Api.Account.GetTokenBalances(address.ToLower(), GameChain);
+                var allowance = await Moralis.Web3Api.Token.GetTokenAllowance(
+                    GameTokenContractAddress,
+                    address.ToLower(),
+                    GameContractAddress.ToLower(),
+                    GameChain);
+                var user = GameObject.FindObjectOfType<User>();
+                foreach (var token in balance)
+                {
+                    if (token.TokenAddress.ToLower().Equals(GameTokenContractAddress.ToLower()))
+                    {
+                        Debug.Log("setting tokens");
+                        user.walletTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(token.Balance));
+                        user.approvedTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(allowance.Allowance));
+                    }
+                }
+            });
+            yield return null;
+        }
+        
+        public async UniTask HandleWallet2() 
+        {
+            var address = (await Moralis.GetUserAsync()).accounts[0];
+            var balance = await Moralis.Client.Web3Api.Account.GetTokenBalances(address.ToLower(), GameChain);
+            var allowance = await Moralis.Client.Web3Api.Token.GetTokenAllowance(
+                GameTokenContractAddress,
+                address.ToLower(),
+                GameContractAddress.ToLower(),
+                GameChain);
+            var user = GameObject.FindObjectOfType<User>();
+            foreach (var token in balance.Where(token => token.TokenAddress.ToLower().Equals(GameTokenContractAddress.ToLower())))
+            {
+                Debug.Log("setting wallet");
+                user.WalletTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(token.Balance));
+                Debug.Log("wallet set");
+                Debug.Log("setting approval");
+                user.ApprovedTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(allowance.Allowance));
+                Debug.Log("approval set");
+            }
         }
  
         bool quitting = false;
@@ -67,7 +125,7 @@
             if (instance == null || instance.Equals(null))
             {
                 var gameObject = new GameObject("BlockChain");
-                gameObject.hideFlags = HideFlags.HideAndDontSave; //hides from Unity editor
+                // gameObject.hideFlags = HideFlags.HideAndDontSave; //hides from Unity editor
  
                 instance = gameObject.AddComponent<BlockChain>();
                 DontDestroyOnLoad(gameObject); //prevents destroy on changing scene 

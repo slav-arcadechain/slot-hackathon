@@ -72,3 +72,4 @@ crashlytics-build.properties
 /Unity/[Aa]ssets/[Ss]treamingAssets/aa/*
 
 */node_modules/*
+.DS_Store

@@ -1,30 +1,57 @@
 using System.Collections;
+using System.Numerics;
 using UnityEngine;
 
 
+public delegate void WalletTokenBalanceUpdatedHandler(decimal walletBalance);
+public delegate void TokenApprovalUpdatedHandler(decimal approvedAmount);
+
 public class User : MonoBehaviour
 {
+    #region Events
+
+    public event WalletTokenBalanceUpdatedHandler OnWalletTokenBalanceUpdated;
+    public event TokenApprovalUpdatedHandler OnTokenApprovalUpdated;
+    
+
+    #endregion
     #region Internal Methods
 
-    public int walletTokenBalance;
-    public int approvedTokenBalance;
+    public decimal walletTokenBalance;
+
+    public decimal WalletTokenBalance
+    {
+        get => walletTokenBalance;
+        set
+        {
+            Debug.Log("setting wallet balance");
+            walletTokenBalance = value;
+            OnWalletTokenBalanceUpdated?.Invoke(value);
+        }
+    }
+
+    public decimal approvedTokenBalance;
+
+    public decimal ApprovedTokenBalance
+    {
+        get => approvedTokenBalance;
+        set
+        {
+            Debug.Log("setting appoval");
+            approvedTokenBalance = value;
+            OnTokenApprovalUpdated?.Invoke(value);
+        }
+    }
+
     bool quitting = false;
 
     private void Awake()
     {
-        Debug.Log("Loading planets...");
         StartCoroutine(LoadInternal());
     }
  
     private IEnumerator LoadInternal()
     {
-        var path = Application.streamingAssetsPath + "/planets.json";
-        // using (var www = new WWW(path))
-        // {
-        //     yield return new WaitForSeconds(5); // Pretend the network is slow
-        //     yield return www;
-        //     planets = JsonUtility.FromJson<Planets>(www.text).planets;
-        // }
         yield break;
     }
  
