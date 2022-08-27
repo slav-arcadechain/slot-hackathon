@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using DefaultNamespace;
 using MoralisUnity;
@@ -13,6 +14,36 @@ public class GameController : MonoBehaviour
     [SerializeField] private BlockChain blockChain = null;
     [SerializeField] private User user = null;
 
+    [Serializable]
+    public class MultiDimensionalArray
+    {
+        public RewardEnum
+            rewardCategory; //You should select reward category at inspector that determines the given reward when this slot selected
+
+        public int rewardValue; //All 3 rows same reward
+        public int rewardChance; //Chance to give this slot as result reward
+        public Sprite slotIcon; //This is aoutomaticaly using as this rows icon
+    }
+
+    [Header("Rewards Custom Settings")] [Space]
+    public MultiDimensionalArray[] SlotTypes;
+
+    [Serializable]
+    public class RewardTable
+    {
+        public Image[] rewardImages;
+        public Text rewardText;
+        public Image rewardCurrencyIcon;
+    }
+
+    public enum RewardEnum
+    {
+        None,
+        Coin,
+        Diamond
+    };
+
+
     private bool shouldUpdateWallet = false;
     private bool hidePanel = true;
     private GameObject approvePanel;
@@ -20,7 +51,32 @@ public class GameController : MonoBehaviour
     private Slider slider;
     private Button approveButton;
     private Button closeApporveButton;
+    private bool nextSlotSelected;
 
+    public bool NextSlotSelected
+    {
+        get { return nextSlotSelected; }
+    }
+
+    private int nextSlotIndex;
+
+    public int NextSlotIndex
+    {
+        get { return nextSlotIndex; }
+    }
+
+    private static GameController _ins;
+
+    public static GameController ins
+    {
+        get { return _ins; }
+    }
+
+    private void Awake()
+    {
+        if (_ins == null)
+            _ins = this;
+    }
 
     void Start()
     {
