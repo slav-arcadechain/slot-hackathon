@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour
     private bool shouldUpdateWallet = false;
     private bool hidePanel = true;
     private GameObject approvePanel;
+    private GameObject slotMachine;
     private Slider slider;
     private Button approveButton;
     private Button closeApporveButton;
@@ -24,6 +25,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         approvePanel = GameObject.Find("ApprovePanel");
+        slotMachine = GameObject.Find("SlotMachine");
         slider = GameObject.Find("ApproveSlider").GetComponent<Slider>();
         slider.onValueChanged.AddListener(delegate { HandleSlider(); });
         approveButton = GameObject.Find("ApproveButton").GetComponent<Button>();
@@ -39,6 +41,13 @@ public class GameController : MonoBehaviour
     private void CloseApproveButtonHandler()
     {
         approvePanel.SetActive(false);
+        foreach (GameObject go in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
+        {
+            if (go.name == "SlotMachine")
+            {
+                go.SetActive(true);
+            }
+        }
     }
 
     private void ApproveButtonHandler()
