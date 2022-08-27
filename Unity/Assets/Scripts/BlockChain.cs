@@ -4,6 +4,7 @@
     using Cysharp.Threading.Tasks;
     using MoralisUnity;
     using MoralisUnity.Web3Api.Models;
+    using Nethereum.Hex.HexTypes;
     using Nethereum.Util;
     using UnityEngine;
     using UnityEngine.UI;
@@ -29,46 +30,9 @@
         private IEnumerator LoadInternal()
         {
             yield break;
-            
-            // var path = Application.streamingAssetsPath + "/planets.json";
-            // using (var www = new WWW(path))
-            // {
-            //     yield return new WaitForSeconds(5); // Pretend the network is slow
-            //     yield return www;
-            //     planets = JsonUtility.FromJson<Planets>(www.text).planets;
-            // }
         }
         
-        public IEnumerator HandleWallet()
-        {
-            Debug.Log("in handle wallet");
-            UniTask.Create(async () =>
-            {
-                Debug.Log("in unit task");
-                var address = (await Moralis.GetUserAsync()).accounts[0];
-                Debug.Log("user address: " + address);
-                var balance =
-                    await Moralis.Web3Api.Account.GetTokenBalances(address.ToLower(), GameChain);
-                var allowance = await Moralis.Web3Api.Token.GetTokenAllowance(
-                    GameTokenContractAddress,
-                    address.ToLower(),
-                    GameContractAddress.ToLower(),
-                    GameChain);
-                var user = GameObject.FindObjectOfType<User>();
-                foreach (var token in balance)
-                {
-                    if (token.TokenAddress.ToLower().Equals(GameTokenContractAddress.ToLower()))
-                    {
-                        Debug.Log("setting tokens");
-                        user.walletTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(token.Balance));
-                        user.approvedTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(allowance.Allowance));
-                    }
-                }
-            });
-            yield return null;
-        }
-        
-        public async UniTask HandleWallet2() 
+        public async UniTask HandleWallet() 
         {
             var address = (await Moralis.GetUserAsync()).accounts[0];
             var balance = await Moralis.Client.Web3Api.Account.GetTokenBalances(address.ToLower(), GameChain);
@@ -80,15 +44,30 @@
             var user = GameObject.FindObjectOfType<User>();
             foreach (var token in balance.Where(token => token.TokenAddress.ToLower().Equals(GameTokenContractAddress.ToLower())))
             {
-                Debug.Log("setting wallet");
                 user.WalletTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(token.Balance));
-                Debug.Log("wallet set");
-                Debug.Log("setting approval");
                 user.ApprovedTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(allowance.Allowance));
-                Debug.Log("approval set");
             }
         }
- 
+        
+        public static async UniTask ApproveGameTokenSpent(int amount)
+        {
+            BigInteger gameTokenInWei = UnitConversion.Convert.ToWei(amount, GameTokenContractDecimals);
+            object[] parameters =
+            {
+                GameContractAddress, gameTokenInWei
+            };
+
+            HexBigInteger value = new HexBigInteger("0x0");
+            HexBigInteger gas = new HexBigInteger("14500");
+            HexBigInteger gasPrice = new HexBigInteger("300000000");
+
+            // approve token spent
+            await Moralis.ExecuteContractFunction(
+                contractAddress: GameTokenContractAddress,
+                abi: ERC20Abi, functionName: "approve", args: parameters, value: value, gas: gas,
+                gasPrice: gasPrice);
+        }
+
         bool quitting = false;
  
         private void OnApplicationQuit()
@@ -133,4 +112,9 @@
         }
  
         #endregion 
+    }
+
+    public class Booom
+    {
+        
     }

@@ -1,5 +1,11 @@
+using System.Numerics;
+using Cysharp.Threading.Tasks;
+using MoralisUnity;
 using MoralisUnity.Kits.AuthenticationKit;
+using Nethereum.Hex.HexTypes;
+using Nethereum.Util;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -11,16 +17,42 @@ public class GameController : MonoBehaviour
 
     private GameObject approvePanel;
     private bool shouldUpdateWallet = false;
+    private bool hidePanel = true;
+    private Slider slider;
+    private Button approveButton;
+
 
 
     void Start()
     {
         approvePanel = GameObject.Find("ApprovePanel");
-        approvePanel.SetActive(false);
+        // walletBalance = GameObject.Find("WalletBalance").GetComponent<Text>();
+        slider = GameObject.Find("ApproveSlider").GetComponent<Slider>();
+        slider.onValueChanged.AddListener(delegate { HandleSlider(); });
+        approveButton = GameObject.Find("ApproveButton").GetComponent<Button>();
+
 
         authenticationKit.OnStateChanged.AddListener(AuthOnStateChangedListener);
+        approveButton.onClick.AddListener(ApproveButtonHandler);
         user.OnWalletTokenBalanceUpdated += UpdateWalletTokens;
         user.OnTokenApprovalUpdated += UpdateTokenApproval;
+    }
+
+    private void ApproveButtonHandler()
+    {
+        Debug.Log("apporoving");
+        UniTask.Create(async () =>
+        {
+            await BlockChain.ApproveGameTokenSpent((int)slider.value * 10);
+            // await SubscribeToDatabaseEvents();
+        });
+    }
+
+
+    private void HandleSlider()
+    {
+        var value = slider.value;
+        GameObject.Find("ApproveButtonText").GetComponent<Text>().text = $"Approve {value * 10}";
     }
 
     private void UpdateTokenApproval(decimal approvedamount)
@@ -28,17 +60,22 @@ public class GameController : MonoBehaviour
         Debug.Log("approved: " + approvedamount);
     }
 
-    private void UpdateWalletTokens(decimal walletbalance)
+    private void UpdateWalletTokens(decimal balance)
     {
-        Debug.Log("wallet balance: " + walletbalance);
+        GameObject.Find("WalletBalance").GetComponent<Text>().text = balance.ToString();
     }
 
     private async void FixedUpdate()
     {
+        if (hidePanel)
+        {
+            hidePanel = false;
+            approvePanel.SetActive(false);
+        }
         if (shouldUpdateWallet)
         {
             shouldUpdateWallet = false;
-            await blockChain.HandleWallet2();
+            await blockChain.HandleWallet();
         }
     }
 
