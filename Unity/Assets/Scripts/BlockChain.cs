@@ -7,7 +7,6 @@
     using Nethereum.Hex.HexTypes;
     using Nethereum.Util;
     using UnityEngine;
-    using UnityEngine.UI;
 
     public class BlockChain: MonoBehaviour
     {
@@ -41,7 +40,7 @@
                 address.ToLower(),
                 GameContractAddress.ToLower(),
                 GameChain);
-            var user = GameObject.FindObjectOfType<User>();
+            var user = FindObjectOfType<User>();
             foreach (var token in balance.Where(token => token.TokenAddress.ToLower().Equals(GameTokenContractAddress.ToLower())))
             {
                 user.WalletTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(token.Balance));

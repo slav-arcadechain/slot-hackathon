@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13fef308ab711a6439bb086b5265f83e, type: 3}
   m_Name: MoralisServerSettings
   m_EditorClassIdentifier: 
-  DappUrl: 
-  DappId: 
+  DappUrl: https://2br3kxfl2xoi.usemoralis.com:2053/server
+  DappId: EhcYcFlCKcvVXnAvXz5gXGZyr7HQqtp4ffGkih10
   DappName: Your dapp name
   DappDescription: Your dapp description
   DappVersion: 0.0.1
