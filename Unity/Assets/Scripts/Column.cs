@@ -23,9 +23,9 @@ namespace SlotMachine
 
         private void Start()
         {
-            for (int i = 0; i < GameController.ins.SlotTypes.Length; i++)
+            for (int i = 0; i < SlotController.ins.SlotTypes.Length; i++)
             {
-                rowImages[i].sprite = GameController.ins.SlotTypes[i].slotIcon; //They should be equal length
+                rowImages[i].sprite = SlotController.ins.SlotTypes[i].slotIcon; //They should be equal length
             }
         }
 
@@ -49,11 +49,11 @@ namespace SlotMachine
             columnStopped = false;
             timeInternal = 0.1f;
 
-            if (GameController.ins.NextSlotSelected)
+            if (SlotController.ins.NextSlotSelected)
             {
-                cellCount = (GameController.ins.SlotTypes.Length + (GameController.ins.NextSlotIndex - currentSlot));
+                cellCount = (SlotController.ins.SlotTypes.Length + (SlotController.ins.NextSlotIndex - currentSlot));
 
-                randomValue = (randomShiftCount - (randomShiftCount % GameController.ins.SlotTypes.Length)) + cellCount;
+                randomValue = (randomShiftCount - (randomShiftCount % SlotController.ins.SlotTypes.Length)) + cellCount;
             }
             else
                 randomValue = Random.Range(minShiftCount, maxShiftCount);
@@ -65,7 +65,7 @@ namespace SlotMachine
                 if (slotIndex == 6) //rowCount-1
                 {
                     float yPosition = 0 - (slotIndex * yValuePerRow); //-960 for our case
-                    transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - yPosition); //Back to starting position
+                    transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - yPosition - 150f); //Back to starting position
                 }
                 else
                 {

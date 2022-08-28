@@ -1,8 +1,8 @@
-using System;
 using Cysharp.Threading.Tasks;
 using DefaultNamespace;
 using MoralisUnity;
 using MoralisUnity.Kits.AuthenticationKit;
+using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,92 +14,42 @@ public class GameController : MonoBehaviour
     [SerializeField] private BlockChain blockChain = null;
     [SerializeField] private User user = null;
 
-    [Serializable]
-    public class MultiDimensionalArray
-    {
-        public RewardEnum
-            rewardCategory; //You should select reward category at inspector that determines the given reward when this slot selected
-
-        public int rewardValue; //All 3 rows same reward
-        public int rewardChance; //Chance to give this slot as result reward
-        public Sprite slotIcon; //This is aoutomaticaly using as this rows icon
-    }
-
-    [Header("Rewards Custom Settings")] [Space]
-    public MultiDimensionalArray[] SlotTypes;
-
-    [Serializable]
-    public class RewardTable
-    {
-        public Image[] rewardImages;
-        public Text rewardText;
-        public Image rewardCurrencyIcon;
-    }
-
-    public enum RewardEnum
-    {
-        None,
-        Coin,
-        Diamond
-    };
-
-
     private bool shouldUpdateWallet = false;
     private bool hidePanel = true;
     private GameObject approvePanel;
-    private GameObject slotMachine;
+    private GameObject mainBackground;
     private Slider slider;
     private Button approveButton;
     private Button closeApporveButton;
-    private bool nextSlotSelected;
-
-    public bool NextSlotSelected
-    {
-        get { return nextSlotSelected; }
-    }
-
-    private int nextSlotIndex;
-
-    public int NextSlotIndex
-    {
-        get { return nextSlotIndex; }
-    }
-
-    private static GameController _ins;
-
-    public static GameController ins
-    {
-        get { return _ins; }
-    }
-
-    private void Awake()
-    {
-        if (_ins == null)
-            _ins = this;
-    }
 
     void Start()
     {
         approvePanel = GameObject.Find("ApprovePanel");
-        slotMachine = GameObject.Find("SlotMachine");
         slider = GameObject.Find("ApproveSlider").GetComponent<Slider>();
+        Debug.Log("slider = " + slider);
         slider.onValueChanged.AddListener(delegate { HandleSlider(); });
         approveButton = GameObject.Find("ApproveButton").GetComponent<Button>();
         closeApporveButton = GameObject.Find("CloseApproveButton").GetComponent<Button>();
+        mainBackground = GameObject.Find("MainBackground");
 
+        authenticationKit = FindObjectOfType<AuthenticationKit>(); 
         authenticationKit.OnStateChanged.AddListener(AuthOnStateChangedListener);
+        blockChain = FindObjectOfType<BlockChain>();
         approveButton.onClick.AddListener(ApproveButtonHandler);
         closeApporveButton.onClick.AddListener(CloseApproveButtonHandler);
+        user = FindObjectOfType<User>();
         user.OnWalletTokenBalanceUpdated += UpdateWalletTokens;
         user.OnTokenApprovalUpdated += UpdateTokenApproval;
     }
 
     private void CloseApproveButtonHandler()
     {
+        Debug.Log("in close");
         approvePanel.SetActive(false);
+        mainBackground.SetActive(false);
         foreach (GameObject go in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
         {
-            if (go.name == "SlotMachine")
+            if (go.name == "SlotPanel")
             {
                 go.SetActive(true);
             }
@@ -117,6 +67,7 @@ public class GameController : MonoBehaviour
 
     private void HandleSlider()
     {
+        Debug.Log("in slider handle");
         var value = slider.value;
         GameObject.Find("ApproveButtonText").GetComponent<Text>().text = $"Approve {value * 10}";
     }
@@ -131,7 +82,7 @@ public class GameController : MonoBehaviour
         GameObject.Find("WalletBalance").GetComponent<Text>().text = balance.ToString();
     }
 
-    private async void FixedUpdate()
+    private async void Update()
     {
         if (hidePanel)
         {
@@ -159,7 +110,7 @@ public class GameController : MonoBehaviour
                 Debug.Log("connected");
                 approvePanel.SetActive(true);
                 shouldUpdateWallet = true;
-                GameObject.Find("BackgroundImage").SetActive(false);
+                GameObject.Find("BackgroundImage")?.SetActive(false);
                 break;
         }
     }
@@ -176,10 +127,5 @@ public class GameController : MonoBehaviour
         var q = await Moralis.GetClient().Query<TUSDCoinApprovalCronos>();
         q.WhereEqualTo("spender", (await Moralis.GetUserAsync()).accounts[0]);
         MoralisLiveQueryController.AddSubscription<TUSDCoinApprovalCronos>("TUSDCoinApprovalCronos", q, callbacks);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 }

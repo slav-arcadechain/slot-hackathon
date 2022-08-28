@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Numerics;
 using UnityEngine;
@@ -16,7 +17,15 @@ public class User : MonoBehaviour
 
     #endregion
     #region Internal Methods
-
+    
+    
+    [Serializable]
+    public struct UserStats
+    {
+        public decimal walletTokenBalance;
+        public decimal approvedTokenBalance;
+    }
+    
     public decimal walletTokenBalance;
 
     public decimal WalletTokenBalance
@@ -90,7 +99,7 @@ public class User : MonoBehaviour
         if (instance == null || instance.Equals(null))
         {
             var gameObject = new GameObject("User");
-            gameObject.hideFlags = HideFlags.HideAndDontSave; //hides from Unity editor
+            // gameObject.hideFlags = HideFlags.HideAndDontSave; //hides from Unity editor
  
             instance = gameObject.AddComponent<User>();
             DontDestroyOnLoad(gameObject); //prevents destroy on changing scene 
