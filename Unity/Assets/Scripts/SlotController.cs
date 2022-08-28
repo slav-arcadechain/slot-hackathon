@@ -95,18 +95,14 @@ namespace SlotMachine
         private string coinString = "totalCoin";
         private string diamondString = "totalDiamond";
 
-        private int
-            currentCoin; // Total coins amount. In your project it can be set up from PlayerProgress, DataController or from PlayerPrefs.
+        private int currentCoin; // Total coins amount. In your project it can be set up from PlayerProgress, DataController or from PlayerPrefs.
 
         private int previousCoin; // For coin animation
         private int currentDiamond; // Same as coin                
         private int previousDiamond;
         private int nextSlotIndex;
 
-        private int
-            rewardMultiplier =
-                1; //As default it setted to 1. If player selects x2 button and watches rewarded as set this property to 2 to double prize.
-
+        private int rewardMultiplier = 1; //As default it setted to 1. If player selects x2 button and watches rewarded as set this property to 2 to double prize.
         private const float seconds = 0.5f;
 
         private bool rewardSelected;
@@ -262,11 +258,11 @@ namespace SlotMachine
         public async void CheckResults() 
         {
             Debug.Log("in check resutl");
-            // await PayForGame();
-            // SubscribeToDatabaseEvents();
-            // await WaitUntil(isRoundPaidFor);
-            // pullHandle.interactable = false; //Disable pull button untill result comes.
-            // pullButton.interactable = false;
+            await PayForGame();
+            SubscribeToDatabaseEvents();
+            await WaitUntil(isRoundPaidFor);
+            pullHandle.interactable = false; //Disable pull button untill result comes.
+            pullButton.interactable = false;
             rewardSelected = false;
 
             if (CheckGivingReward())
@@ -294,33 +290,12 @@ namespace SlotMachine
             SpinSlots();
         }
 
-        private async UniTask<string> PayForGame()
+        private async UniTask PayForGame()
         {
-            var result = await EnterGameOnBlockchain();
-
-            return result;
-        }
-
-        private async Task<string> EnterGameOnBlockchain()
-        {
-            // enter game on block chain
-            Guid g = Guid.NewGuid();
-            BigInteger gameId = BigInteger.Abs(new BigInteger(g.ToByteArray()));
-            Debug.Log("+++++++++++" + gameId + "+++++++++++++");
-            object[] parameters =
-            {
-                gameId
-            };
-
-            HexBigInteger value = new HexBigInteger("0x0"); // 5000000 in hex
-            HexBigInteger gas = new HexBigInteger(500000000);
-            HexBigInteger gasPrice = new HexBigInteger(1000000000);
-            string result = await Moralis.ExecuteContractFunction(BlockChain.GameContractAddress,
-                BlockChain.GameAbi, "enterGame", parameters, value, gas, gasPrice);
-
+            var g = Guid.NewGuid();
+            var gameId = BigInteger.Abs(new BigInteger(g.ToByteArray()));
+            await BlockChain.EnterGameOnBlockchain(gameId);
             _roundId = gameId.ToString();
-            Debug.Log(result);
-            return result;
         }
 
         private async void SubscribeToDatabaseEvents()
@@ -350,8 +325,7 @@ namespace SlotMachine
 
         private bool isRoundPaidFor()
         {
-            return true;
-            // return _roundPaidFor;
+            return _roundPaidFor;
         }
 
         public async void SpinSlots()
