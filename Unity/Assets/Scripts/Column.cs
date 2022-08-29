@@ -62,7 +62,7 @@ namespace SlotMachine
             {
                 float slotIndex = Mathf.Abs(transform.localPosition.y / yValuePerRow);
 
-                if (slotIndex == 6) //rowCount-1
+                if (slotIndex == 7) //rowCount-1
                 {
                     float yPosition = 0 - (slotIndex * yValuePerRow); //-960 for our case
                     transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - yPosition - 150f); //Back to starting position

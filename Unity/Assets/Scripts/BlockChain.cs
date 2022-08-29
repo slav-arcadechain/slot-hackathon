@@ -35,6 +35,7 @@ public class BlockChain : MonoBehaviour
 
     public async UniTask HandleWallet()
     {
+        Debug.Log("in handle wallet");
         var address = (await Moralis.GetUserAsync()).accounts[0];
         var balance = await Moralis.Client.Web3Api.Account.GetTokenBalances(address.ToLower(), GameChain);
         var allowance = await Moralis.Client.Web3Api.Token.GetTokenAllowance(
@@ -60,8 +61,8 @@ public class BlockChain : MonoBehaviour
         };
 
         var value = new HexBigInteger(_zeroHex);
-        var gas = getGas();
-        var gasPrice = getGasPrice();
+        var gas = new HexBigInteger("14500");
+        var gasPrice = new HexBigInteger("300000000");
 
         // approve token spent
         await Moralis.ExecuteContractFunction(
@@ -113,12 +114,12 @@ public class BlockChain : MonoBehaviour
 
     private static HexBigInteger getGasPrice()
     {
-        return new HexBigInteger("300000000");
+        return new HexBigInteger("2000000000000");
     }
 
     private static HexBigInteger getGas()
     {
-        return new HexBigInteger("14500");
+        return new HexBigInteger("50000");
     }
 
     #endregion

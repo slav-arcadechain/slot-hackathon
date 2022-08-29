@@ -1337,7 +1337,7 @@ MonoBehaviour:
   - {fileID: 121401732}
   - {fileID: 1722274018}
   - {fileID: 78859805}
-  currentSlot: 4
+  currentSlot: 0
   minShiftCount: 40
   maxShiftCount: 60
 --- !u!114 &249115248
@@ -3666,8 +3666,6 @@ MonoBehaviour:
   rewardIconDiamond: {fileID: 0}
   rewardTextPopup: {fileID: 0}
   rewardImagePopup: {fileID: 0}
-  pullButton: {fileID: 1774421132}
-  pullHandle: {fileID: 0}
   confetiEffect: {fileID: 0}
   rewardTextureGold: {fileID: 0}
   rewardTextureDiamond: {fileID: 0}
@@ -5558,7 +5556,7 @@ MonoBehaviour:
   - {fileID: 74243445}
   - {fileID: 193768849}
   - {fileID: 1013708342}
-  currentSlot: 2
+  currentSlot: 0
   minShiftCount: 20
   maxShiftCount: 50
 --- !u!1 &1240330479
@@ -7285,7 +7283,7 @@ MonoBehaviour:
   - {fileID: 642321347}
   - {fileID: 643960791}
   - {fileID: 1804856936}
-  currentSlot: 6
+  currentSlot: 0
   minShiftCount: 50
   maxShiftCount: 70
 --- !u!114 &1633199250

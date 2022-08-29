@@ -17,8 +17,8 @@ namespace SlotMachine
     {
         private GameObject approvalPanel;
 
-        private MoralisQuery<SlotGameEnteredEvent> _getEventsQuery;
-        private MoralisLiveQueryCallbacks<SlotGameEnteredEvent> _queryCallbacks;
+        private MoralisQuery<SlotGameEntered> _getEventsQuery;
+        private MoralisLiveQueryCallbacks<SlotGameEntered> _queryCallbacks;
 
 
         private static SlotController _ins;
@@ -64,7 +64,8 @@ namespace SlotMachine
         public GameObject rewardTablePanel;
         public RewardTable[] RewardListTable;
 
-        [Header("Game Inputs")] [Space] public int pullCost; // How much coins user spend when pull the handle
+        [Header("Game Inputs")] [Space] 
+        public int pullCost; // How much coins user spend when pull the handle
         public int chanceRatio; // Giving reward chance ratio
         public Column[] rows;
         public UIController uiController;
@@ -83,8 +84,6 @@ namespace SlotMachine
         public Text rewardTextPopup;
 
         public Image rewardImagePopup;
-        public Button pullButton;
-        public Button pullHandle;
         private GameObject slotPanel;
 
         [Header("Effect Settings")] [Space] public ParticleSystem confetiEffect;
@@ -115,8 +114,6 @@ namespace SlotMachine
         private bool hidePanel = true;
 
 
-        // private int _winningChance;
-        // private int _rewardChance;
         private Button spinButton;
 
         private void Start()
@@ -257,15 +254,14 @@ namespace SlotMachine
 
         public async void CheckResults() 
         {
-            Debug.Log("in check resutl");
+            // Debug.Log("in check resutl");
+            spinButton.interactable = false;
+            rewardSelected = false;
             await PayForGame();
             SubscribeToDatabaseEvents();
             await WaitUntil(isRoundPaidFor);
-            pullHandle.interactable = false; //Disable pull button untill result comes.
-            pullButton.interactable = false;
-            rewardSelected = false;
 
-            if (CheckGivingReward())
+            if (_gameWon)
             {
                 Debug.Log("Give certanly a reward and select reward type acording to percentage from reward list.");
                 nextSlotSelected = true;
@@ -277,11 +273,6 @@ namespace SlotMachine
                 nextSlotSelected = false;
                 SpinSlots();
             }
-        }
-
-        private bool CheckGivingReward()
-        {
-            return _gameWon;
         }
 
         public void SelectReward()
@@ -300,8 +291,8 @@ namespace SlotMachine
 
         private async void SubscribeToDatabaseEvents()
         {
-            MoralisLiveQueryCallbacks<SlotGameEnteredEvent> callbacks =
-                new MoralisLiveQueryCallbacks<SlotGameEnteredEvent>();
+            MoralisLiveQueryCallbacks<SlotGameEntered> callbacks =
+                new MoralisLiveQueryCallbacks<SlotGameEntered>();
 
             callbacks.OnUpdateEvent += ((item, requestId) =>
             {
@@ -310,17 +301,15 @@ namespace SlotMachine
                 {
                     _roundPaidFor = true;
                     _gameWon = item.gameWon;
-                    _gameResult = item.gameResult;
-                    // _winningChance = item.winningChance;
-                    // _rewardChance = item.rewardChance;
+                    _gameResult = item.gameResult + 1;
                 }
 
                 Debug.Log(
                     $"Updated event: address: {item.address}, gameFee: {item.gameFee}, gameId: {item.roundId}, confirmed: {item.confirmed}, gameWon: {item.gameWon}, gameResult: {item.gameResult}");
             });
 
-            MoralisQuery<SlotGameEnteredEvent> q = await Moralis.GetClient().Query<SlotGameEnteredEvent>();
-            MoralisLiveQueryController.AddSubscription<SlotGameEnteredEvent>("SlotGameEnteredEvent", q, callbacks);
+            MoralisQuery<SlotGameEntered> q = await Moralis.GetClient().Query<SlotGameEntered>();
+            MoralisLiveQueryController.AddSubscription<SlotGameEntered>("SlotGameEnteredEvent", q, callbacks);
         }
 
         private bool isRoundPaidFor()
@@ -331,7 +320,7 @@ namespace SlotMachine
         public async void SpinSlots()
         {
             Debug.Log("spin slots");
-            if (currentCoin >= pullCost) // Player has enough money to play
+            if (_roundPaidFor) // Player has enough money to play
             {
                 if (rows[0].ColumnStopped && rows[1].ColumnStopped && rows[2].ColumnStopped)
                 {
@@ -375,19 +364,22 @@ namespace SlotMachine
                     gameStarted = false;
 
                     if (rows[0].currentSlot == rows[1].currentSlot &&
-                        rows[0].currentSlot == rows[2].currentSlot) //If there is a reward show panel
+                        rows[0].currentSlot == rows[2].currentSlot)
+                    {
                         Debug.Log("won!!");
-                        // StartCoroutine(RewardPopup(nextSlotIndex));
+                        spinButton.interactable = true;
+                    }
                     else
+                    {
                         ActivatePullButtons();
+                    }
                 }
             }
         }
 
         private void ActivatePullButtons()
         {
-            // pullButton.interactable = true;
-            // pullHandle.interactable = true;
+            spinButton.interactable = true;
         }
 
         // IEnumerator RewardPopup(int rewardIndex)

@@ -2,7 +2,7 @@ using MoralisUnity.Platform.Objects;
 
 namespace SlotMachine
 {
-    public class SlotGameEnteredEvent : MoralisObject
+    public class SlotGameEntered : MoralisObject
     {
         public string address { get; set; }
         public string gameFee { get; set; }
@@ -11,7 +11,7 @@ namespace SlotMachine
         public bool gameWon { get; set; }
         public int gameResult { get; set; }
 
-        public SlotGameEnteredEvent() : base("SlotGameEnteredEvent")
+        public SlotGameEntered() : base("SlotGameEntered")
         {
             
         } 

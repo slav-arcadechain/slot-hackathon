@@ -4,6 +4,7 @@ using MoralisUnity;
 using MoralisUnity.Kits.AuthenticationKit;
 using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
+using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -74,12 +75,20 @@ public class GameController : MonoBehaviour
 
     private void UpdateTokenApproval(decimal approvedAmount)
     {
-        GameObject.Find("ApprovedAmount").GetComponent<Text>().text = $"{approvedAmount}";
+        Debug.Log("UpdateTokenApproval: " + approvedAmount);
+        if (GameObject.Find("ApprovedAmount") != null)
+        {
+            GameObject.Find("ApprovedAmount").GetComponent<Text>().text = $"{approvedAmount}";
+        }
     }
 
     private void UpdateWalletTokens(decimal balance)
     {
-        GameObject.Find("WalletBalance").GetComponent<Text>().text = balance.ToString();
+        Debug.Log("UpdateWalletTokens: " + balance);
+        if (GameObject.Find("WalletBalance"))
+        {
+            GameObject.Find("WalletBalance").GetComponent<Text>().text = balance.ToString();
+        }
     }
 
     private async void Update()
@@ -92,6 +101,7 @@ public class GameController : MonoBehaviour
 
         if (shouldUpdateWallet)
         {
+            Debug.Log("udating wallet");
             shouldUpdateWallet = false;
             await blockChain.HandleWallet();
         }
