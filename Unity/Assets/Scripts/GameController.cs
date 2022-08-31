@@ -22,6 +22,7 @@ public class GameController : MonoBehaviour
     private Slider slider;
     private Button approveButton;
     private Button closeApporveButton;
+    private Button claimButton;
 
     void Start()
     {
@@ -31,6 +32,7 @@ public class GameController : MonoBehaviour
         slider.onValueChanged.AddListener(delegate { HandleSlider(); });
         approveButton = GameObject.Find("ApproveButton").GetComponent<Button>();
         closeApporveButton = GameObject.Find("CloseApproveButton").GetComponent<Button>();
+        claimButton = GameObject.Find("ClaimButton").GetComponent<Button>();
         mainBackground = GameObject.Find("MainBackground");
 
         authenticationKit = FindObjectOfType<AuthenticationKit>(); 
@@ -38,9 +40,29 @@ public class GameController : MonoBehaviour
         blockChain = FindObjectOfType<BlockChain>();
         approveButton.onClick.AddListener(ApproveButtonHandler);
         closeApporveButton.onClick.AddListener(CloseApproveButtonHandler);
+        claimButton.onClick.AddListener(ClaimButtonHandler);
         user = FindObjectOfType<User>();
         user.OnWalletTokenBalanceUpdated += UpdateWalletTokens;
         user.OnTokenApprovalUpdated += UpdateTokenApproval;
+        user.OnWinningsUpdated += UpdateWinnings;
+    }
+
+    private void ClaimButtonHandler()
+    {
+        UniTask.Create(async () =>
+        {
+            await BlockChain.Claim();
+            shouldUpdateWallet = true;
+        });    
+    }
+
+    private void UpdateWinnings(decimal winnings)
+    {
+        Debug.Log("Winnings: " + winnings);
+        if (GameObject.Find("WonAmount"))
+        {
+            GameObject.Find("WonAmount").GetComponent<Text>().text = winnings.ToString();
+        }    
     }
 
     private void CloseApproveButtonHandler()

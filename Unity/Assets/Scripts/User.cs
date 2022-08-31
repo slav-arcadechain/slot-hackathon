@@ -6,6 +6,7 @@ using UnityEngine;
 
 public delegate void WalletTokenBalanceUpdatedHandler(decimal walletBalance);
 public delegate void TokenApprovalUpdatedHandler(decimal approvedAmount);
+public delegate void WinningsUpdatedHandler(decimal winningsAmount);
 
 public class User : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class User : MonoBehaviour
 
     public event WalletTokenBalanceUpdatedHandler OnWalletTokenBalanceUpdated;
     public event TokenApprovalUpdatedHandler OnTokenApprovalUpdated;
-    
+    public event WinningsUpdatedHandler OnWinningsUpdated;
 
     #endregion
     #region Internal Methods
@@ -24,6 +25,7 @@ public class User : MonoBehaviour
     {
         public decimal walletTokenBalance;
         public decimal approvedTokenBalance;
+        public decimal winningsBalance;
     }
     
     public decimal walletTokenBalance;
@@ -49,6 +51,18 @@ public class User : MonoBehaviour
             Debug.Log("setting appoval");
             approvedTokenBalance = value;
             OnTokenApprovalUpdated?.Invoke(value);
+        }
+    }
+
+    public decimal winningsBalance;
+    public decimal WinningsBalance
+    {
+        get => winningsBalance;
+        set
+        {
+            Debug.Log("setting winnings");
+            winningsBalance = value;
+            OnWinningsUpdated?.Invoke(value);
         }
     }
 

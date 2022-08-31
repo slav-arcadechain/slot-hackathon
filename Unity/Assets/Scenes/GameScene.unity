@@ -3651,24 +3651,10 @@ MonoBehaviour:
     rewardValue: 2
     rewardChance: 100
     slotIcon: {fileID: 21300000, guid: f3b80d4eea48f41fbb71a2ca9e40683c, type: 3}
-  showRewardListTable: 0
-  rewardTablePanel: {fileID: 0}
-  RewardListTable: []
-  pullCost: 1
-  chanceRatio: 100
   rows:
   - {fileID: 1217072641}
   - {fileID: 249115247}
   - {fileID: 1633199249}
-  uiController: {fileID: 0}
-  popupPanel: {fileID: 0}
-  rewardIconGold: {fileID: 0}
-  rewardIconDiamond: {fileID: 0}
-  rewardTextPopup: {fileID: 0}
-  rewardImagePopup: {fileID: 0}
-  confetiEffect: {fileID: 0}
-  rewardTextureGold: {fileID: 0}
-  rewardTextureDiamond: {fileID: 0}
 --- !u!1 &787985487
 GameObject:
   m_ObjectHideFlags: 0

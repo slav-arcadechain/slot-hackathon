@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using MoralisUnity;
 using MoralisUnity.Web3Api.Models;
@@ -43,13 +44,41 @@ public class BlockChain : MonoBehaviour
             address.ToLower(),
             GameContractAddress.ToLower(),
             GameChain);
+        var winnings = await GetWinnings(address); 
         var user = FindObjectOfType<User>();
         foreach (var token in balance.Where(token =>
                      token.TokenAddress.ToLower().Equals(GameTokenContractAddress.ToLower())))
         {
             user.WalletTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(token.Balance));
             user.ApprovedTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(allowance.Allowance));
+            user.WinningsBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(winnings));
         }
+    }
+
+    private async Task<string> GetWinnings(string address)
+    {
+        // Function ABI input parameters
+        object[] inputParams = new object[1];
+        inputParams[0] = new { internalType = "address", name = "_address", type = "address" };
+        // // Function ABI Output parameters
+        object[] outputParams = new object[1];
+        outputParams[0] = new { internalType = "uint256", name = "", type = "uint256" };
+        // // Function ABI
+        object[] abi = new object[1];
+        abi[0] = new { inputs = inputParams, name = "getUserWinnings", outputs = outputParams, stateMutability = "view", type = "function" };
+        // // Define request object
+        RunContractDto rcd = new RunContractDto()
+        {
+            Abi = abi,
+            Params = new { _address = address}
+        };
+        string resp = await Moralis.Web3Api.Native.RunContractFunction<string>(
+            address: GameContractAddress, 
+            functionName: "getUserWinnings", 
+            abi: rcd, 
+            chain: GameChain);
+        Debug.Log(resp);
+        return resp;
     }
 
     public static async UniTask ApproveGameTokenSpent(int amount)
@@ -94,6 +123,22 @@ public class BlockChain : MonoBehaviour
             value: value,
             gas: gas,
             gasPrice: gasPrice);
+    }
+    
+    public static async Task Claim()
+    {
+        object[] parameters = { };
+        var value = new HexBigInteger(_zeroHex);
+        var gas = new HexBigInteger("100000");
+        var gasPrice = new HexBigInteger("400000000");
+        await Moralis.ExecuteContractFunction(
+            contractAddress: GameContractAddress,
+            abi: GameAbi,
+            functionName: "claim",
+            args: parameters,
+            value: value,
+            gas: gas,
+            gasPrice: gasPrice);   
     }
 
     bool quitting = false;
@@ -152,4 +197,6 @@ public class BlockChain : MonoBehaviour
     }
 
     #endregion
+
+
 }
