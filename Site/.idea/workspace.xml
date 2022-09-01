@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a785e8ff-e879-4a1b-bbf5-7c4e6e88d6df" name="Changes" comment="changing contract output dir">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/build-manifest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/cache/webpack/client-development/0.pack" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/cache/webpack/client-development/index.pack" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/cache/webpack/server-development/0.pack" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/cache/webpack/server-development/1.pack" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/cache/webpack/server-development/2.pack" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/cache/webpack/server-development/index.pack" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/cache/webpack/server-development/index.pack.old" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/react-loadable-manifest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/middleware-build-manifest.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/middleware-manifest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/middleware-react-loadable-manifest.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/node_modules_web3uikit_core_dist_ButtonColored_js.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/node_modules_web3uikit_core_dist_ButtonCustom_js.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/node_modules_web3uikit_core_dist_ButtonOutline_js.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/node_modules_web3uikit_core_dist_ButtonPrimary_js.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/node_modules_web3uikit_core_dist_ButtonSecondary_js.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/node_modules_web3uikit_core_dist_ButtonTranslucent_js.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/pages-manifest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/pages/_app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/pages/_document.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/pages/_error.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/pages/api/auth/[...nextauth].js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/pages/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/pages/transactions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/pages/transfers/erc20.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/webpack-api-runtime.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/server/webpack-runtime.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/amp.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/node_modules_web3uikit_core_dist_ButtonColored_js.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/node_modules_web3uikit_core_dist_ButtonCustom_js.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/node_modules_web3uikit_core_dist_ButtonOutline_js.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/node_modules_web3uikit_core_dist_ButtonPrimary_js.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/node_modules_web3uikit_core_dist_ButtonSecondary_js.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/node_modules_web3uikit_core_dist_ButtonTranslucent_js.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/pages/_app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/pages/_error.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/pages/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/pages/transactions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/pages/transfers/erc20.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/polyfills.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/react-refresh.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/chunks/webpack.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/development/_buildManifest.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/development/_ssgManifest.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/webpack/1043a07e992cff83.webpack.hot-update.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/webpack/2435fa8ce2ce96ac.webpack.hot-update.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/webpack/b526168d08037a12.webpack.hot-update.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/webpack/webpack.1043a07e992cff83.hot-update.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/webpack/webpack.2435fa8ce2ce96ac.hot-update.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/static/webpack/webpack.b526168d08037a12.hot-update.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.next/trace" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CODING_STYLE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CONTRIBUTING.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LICENSE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/next-auth.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/next-env.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/_app.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/api/auth/[...nextauth].ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/api/auth/request-message.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/balances/erc20.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/balances/nft.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/transactions.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/transfers/erc20.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/transfers/nft.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/Moralis-DarkBG.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/Moralis-LightBG.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/vercel.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/elements/ColorModeButton/ColorModeButton.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/elements/ColorModeButton/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/elements/MoralisLogo/MoralisLogo.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/elements/MoralisLogo/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/elements/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/elements/navigation/NavBar/NavBar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/elements/navigation/NavBar/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/elements/navigation/NavBar/paths.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/elements/navigation/NavItem/NavItem.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/elements/navigation/NavItem/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/elements/navigation/SubNav/SubNav.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/elements/navigation/SubNav/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/elements/navigation/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/layouts/Default/Default.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/layouts/Default/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/modules/ConnectButton/ConnectButton.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/modules/ConnectButton/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/modules/Footer/Footer.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/modules/Footer/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/modules/Header/Header.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/modules/Header/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/modules/NFTCard/NFTCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/modules/NFTCard/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/modules/NFTCard/types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/modules/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/templates/balances/ERC20/ERC20Balances.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/templates/balances/ERC20/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/templates/balances/ERC20/types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/templates/balances/NFT/NFTBalances.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/templates/balances/NFT/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/templates/balances/NFT/types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/templates/home/Home.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/templates/home/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/templates/transactions/Transactions.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/templates/transactions/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/templates/transactions/types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/templates/transfers/ERC20/ERC20Transfers.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/templates/transfers/ERC20/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/templates/transfers/ERC20/types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/templates/transfers/NFT/NFTTransfers.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/templates/transfers/NFT/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/templates/transfers/NFT/types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/apiPost.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/format.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/getErc20LogoAddress.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/resolveIPFS.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/.idea/client.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/lib/Web3Container.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/lib/contracts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/lib/getContract.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/lib/getWeb3.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/next.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/pages/accounts.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/pages/dapp.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/pages/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="package.json" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2Dhb77yOSCEjzz4f8ZXJ5G9hgNZ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/slavpilus/dev/unity/arcadechain-slot/Site",
+    "nodejs_package_manager_path": "yarn",
+    "ts.external.directory.path": "/Users/slavpilus/dev/unity/arcadechain-slot/Site/client/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/migrations" />
+      <recent name="$PROJECT_DIR$/contracts" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/migrations" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.dev" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a785e8ff-e879-4a1b-bbf5-7c4e6e88d6df" name="Changes" comment="" />
+      <created>1661154093039</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1661154093039</updated>
+      <workItem from="1661154094257" duration="693000" />
+      <workItem from="1661193830170" duration="34921000" />
+      <workItem from="1661890753231" duration="3161000" />
+      <workItem from="1662010812058" duration="2881000" />
+    </task>
+    <task id="LOCAL-00001" summary="added Test USD contract">
+      <created>1661197394882</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1661197394882</updated>
+    </task>
+    <task id="LOCAL-00002" summary="added initial Slot contract">
+      <created>1661200086870</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1661200086870</updated>
+    </task>
+    <task id="LOCAL-00003" summary="smart contract clean up and licence correction">
+      <created>1661203333364</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1661203333364</updated>
+    </task>
+    <task id="LOCAL-00004" summary="changing contract output dir">
+      <created>1662012514847</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1662012514847</updated>
+    </task>
+    <task id="LOCAL-00005" summary="changing contract output dir">
+      <created>1662012538596</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1662012538596</updated>
+    </task>
+    <task id="LOCAL-00006" summary="changing contract output dir">
+      <created>1662013890017</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1662013890017</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added Test USD contract" />
+    <MESSAGE value="added initial Slot contract" />
+    <MESSAGE value="smart contract clean up and licence correction" />
+    <MESSAGE value="changing contract output dir" />
+    <option name="LAST_COMMIT_MESSAGE" value="changing contract output dir" />
+  </component>
+</project>
