@@ -2,9 +2,7 @@ using Cysharp.Threading.Tasks;
 using DefaultNamespace;
 using MoralisUnity;
 using MoralisUnity.Kits.AuthenticationKit;
-using Nethereum.RPC.Eth.DTOs;
 using UnityEngine;
-using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
