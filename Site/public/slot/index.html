@@ -59,9 +59,9 @@
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/slot.loader.js";
       var config = {
-        dataUrl: buildUrl + "/slot.data.gz",
-        frameworkUrl: buildUrl + "/slot.framework.js.gz",
-        codeUrl: buildUrl + "/slot.wasm.gz",
+        dataUrl: buildUrl + "/slot.data",
+        frameworkUrl: buildUrl + "/slot.framework.js",
+        codeUrl: buildUrl + "/slot.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "Unity",
@@ -86,7 +86,7 @@
         canvas.style.width = "960px";
         canvas.style.height = "600px";
       }
-      canvas.style.background = "url('" + buildUrl + "/slot.jpg.gz') center / cover";
+      canvas.style.background = "url('" + buildUrl + "/slot.jpg') center / cover";
       loadingBar.style.display = "block";
 
       var script = document.createElement("script");
