@@ -8,7 +8,8 @@ const Home = () => {
     <VStack w={'full'}>
 
       {/*<div dangerouslySetInnerHTML={template} />*/}
-        <iframe src="./public/slot/index.html" />
+
+        <iframe src="/slot/index.html" width={960} height={642}/>
 
 
     </VStack>

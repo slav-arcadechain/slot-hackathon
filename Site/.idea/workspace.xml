@@ -4,7 +4,6 @@
     <list default="true" id="a785e8ff-e879-4a1b-bbf5-7c4e6e88d6df" name="Changes" comment="adding site boilerplate">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/templates/home/Home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/templates/home/Home.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Unity/Assets/Scripts/GameController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Unity/Assets/Scripts/GameController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,17 +34,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/slavpilus/dev/unity/arcadechain-slot/Site",
-    "nodejs_package_manager_path": "yarn",
-    "ts.external.directory.path": "/Users/slavpilus/dev/unity/arcadechain-slot/Site/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/slavpilus/dev/unity/arcadechain-slot/Site&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/slavpilus/dev/unity/arcadechain-slot/Site/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/migrations" />
@@ -84,6 +83,7 @@
       <workItem from="1661193830170" duration="34921000" />
       <workItem from="1661890753231" duration="3161000" />
       <workItem from="1662010812058" duration="6742000" />
+      <workItem from="1662056047470" duration="403000" />
     </task>
     <task id="LOCAL-00001" summary="added Test USD contract">
       <created>1661197394882</created>

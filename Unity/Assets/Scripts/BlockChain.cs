@@ -83,7 +83,7 @@ public class BlockChain : MonoBehaviour
 
     public static async UniTask ApproveGameTokenSpent(int amount)
     {
-        BigInteger gameTokenInWei = UnitConversion.Convert.ToWei(amount, GameTokenContractDecimals);
+        var gameTokenInWei = UnitConversion.Convert.ToWei(amount, GameTokenContractDecimals).ToString();
         object[] parameters =
         {
             GameContractAddress, gameTokenInWei
