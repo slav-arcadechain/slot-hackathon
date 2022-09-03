@@ -127,7 +127,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void AuthOnStateChangedListener(AuthenticationKitState state)
+    private async void AuthOnStateChangedListener(AuthenticationKitState state)
     {
         switch (state)
         {
@@ -141,6 +141,7 @@ public class GameController : MonoBehaviour
                 approvePanel.SetActive(true);
                 shouldUpdateWallet = true;
                 GameObject.Find("BackgroundImage")?.SetActive(false);
+                await SubscribeToDatabaseEvents();
                 break;
         }
     }

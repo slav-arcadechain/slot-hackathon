@@ -3627,6 +3627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 781e0543624d48f190af23d4e4d33f02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authenticationKit: {fileID: 1706385406}
   SlotTypes:
   - rewardCategory: 1
     rewardValue: 25

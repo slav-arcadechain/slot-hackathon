@@ -37,8 +37,9 @@ namespace SlotMachine
             }
         }
 
-        public void StartRotating()
+        public async void StartRotating()
         {
+            Debug.Log("starting rotating");
             cellCount = 0;
             randomShiftCount = Random.Range(minShiftCount, maxShiftCount);
             StartCoroutine(RotateRoutine());

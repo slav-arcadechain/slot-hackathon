@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using System.Numerics;
@@ -83,15 +84,19 @@ public class BlockChain : MonoBehaviour
 
     public static async UniTask ApproveGameTokenSpent(int amount)
     {
-        var gameTokenInWei = UnitConversion.Convert.ToWei(amount, GameTokenContractDecimals).ToString();
+#if UNITY_WEBGL
+        string gameTokenInWei = amount.ToString() + new String('0', 18);
+#else
+        var gameTokenInWei = UnitConversion.Convert.ToWei(amount, GameTokenContractDecimals);
+#endif
         object[] parameters =
         {
             GameContractAddress, gameTokenInWei
         };
 
         var value = new HexBigInteger(_zeroHex);
-        var gas = new HexBigInteger("14500");
-        var gasPrice = new HexBigInteger("300000000");
+        var gasPrice = getGasPrice();
+        var gas = new HexBigInteger("30000");
 
         // approve token spent
         await Moralis.ExecuteContractFunction(
@@ -106,10 +111,15 @@ public class BlockChain : MonoBehaviour
 
     public static async UniTask EnterGameOnBlockchain(BigInteger gameId)
     {
+#if UNITY_WEBGL
+        string gameIdParam = gameId.ToString();
+#else
+        var gameIdParam =  gameId;
+#endif
         // enter game on block chain
         object[] parameters =
         {
-            gameId
+            gameIdParam
         };
 
         var value = new HexBigInteger(_zeroHex);
@@ -130,7 +140,7 @@ public class BlockChain : MonoBehaviour
         object[] parameters = { };
         var value = new HexBigInteger(_zeroHex);
         var gas = new HexBigInteger("100000");
-        var gasPrice = new HexBigInteger("400000000");
+        var gasPrice = getGasPrice();
         await Moralis.ExecuteContractFunction(
             contractAddress: GameContractAddress,
             abi: GameAbi,
@@ -159,7 +169,7 @@ public class BlockChain : MonoBehaviour
 
     private static HexBigInteger getGasPrice()
     {
-        return new HexBigInteger("2000000000000");
+        return new HexBigInteger("0x2BA7DEF3000");
     }
 
     private static HexBigInteger getGas()

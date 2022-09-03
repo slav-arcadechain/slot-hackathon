@@ -1,9 +1,12 @@
 using System;
+using System.Collections;
 using System.Numerics;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using MoralisUnity;
+using MoralisUnity.Kits.AuthenticationKit;
 using MoralisUnity.Platform.Queries;
+using MoralisUnity.Web3Api.Models;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +17,9 @@ namespace SlotMachine
         private GameObject _approvalPanel;
         private MoralisQuery<SlotGameEntered> _getEventsQuery;
         private MoralisLiveQueryCallbacks<SlotGameEntered> _queryCallbacks;
+
+        [Header("Dependencies")] [SerializeField]
+        private AuthenticationKit authenticationKit = null;
 
         private static SlotController _ins;
 
@@ -57,15 +63,65 @@ namespace SlotMachine
         private bool _hidePanel = true;
         private int _gameResult;
         private Button _spinButton;
+        private MoralisLiveQueryCallbacks<SlotGameEntered> _callbacks;
 
         private void Start()
         {
+            authenticationKit = FindObjectOfType<AuthenticationKit>();
+            authenticationKit.OnStateChanged.AddListener(AuthOnStateChangedListener);
+            _callbacks = new MoralisLiveQueryCallbacks<SlotGameEntered>();
+            _callbacks.OnUpdateEvent += HandleGameEnteredCallback;
             _spinButton = GameObject.Find("SpinButton").GetComponent<Button>();
             _spinButton.onClick.AddListener(SpinButtonListener);
             _slotPanel = GameObject.Find("SlotPanel");
         }
 
-        private async void FixedUpdate()
+        private async void AuthOnStateChangedListener(AuthenticationKitState state)
+        {
+            switch (state)
+            {
+                case AuthenticationKitState.Disconnected:
+                    Debug.Log("disconnected");
+                    break;
+
+                case AuthenticationKitState.MoralisLoggedIn:
+                    Debug.Log("connected");
+                    await SubscribeToDatabaseEvents();
+                    break;
+            }
+        }
+
+        private void HandleGameEnteredCallback(SlotGameEntered item, int requestid)
+        {
+            Debug.Log("current roundId: " + item.roundId);
+            if (item.roundId == _roundId)
+            {
+                _roundPaidFor = true;
+                _gameWon = item.gameWon;
+                _gameResult = item.gameResult + 1;
+                Debug.Log("item.gameResult = " +item.gameResult);
+            }
+        }
+
+        private IEnumerator PlayRound()
+        {
+            Debug.Log("before game won");
+            if (_gameWon)
+            {
+                Debug.Log("inside game won");
+                _nextSlotSelected = true;
+                StartCoroutine(SelectReward());
+            }
+            else
+            {
+                _nextSlotSelected = false;
+                StartCoroutine(SpinSlots());
+                    
+            }
+
+            yield return null;
+        }
+        private void FixedUpdate()
         {
             if (_hidePanel)
             {
@@ -99,27 +155,14 @@ namespace SlotMachine
         public async void CheckResults()
         {
             _spinButton.interactable = false;
-            // rewardSelected = false;
             await PayForGame();
-            SubscribeToDatabaseEvents();
-            await WaitUntil(IsRoundPaidFor);
-
-            if (_gameWon)
-            {
-                _nextSlotSelected = true;
-                SelectReward();
-            }
-            else
-            {
-                _nextSlotSelected = false;
-                SpinSlots();
-            }
         }
 
-        public void SelectReward()
+        public IEnumerator SelectReward()
         {
             _nextSlotIndex = _gameResult;
-            SpinSlots();
+            StartCoroutine(SpinSlots());
+            yield return null;
         }
 
         private async UniTask PayForGame()
@@ -130,65 +173,66 @@ namespace SlotMachine
             _roundId = gameId.ToString();
         }
 
-        private async void SubscribeToDatabaseEvents()
+        private async UniTask SubscribeToDatabaseEvents()
         {
-            MoralisLiveQueryCallbacks<SlotGameEntered> callbacks =
-                new MoralisLiveQueryCallbacks<SlotGameEntered>();
-
-            callbacks.OnUpdateEvent += ((item, requestId) =>
-            {
-                Debug.Log("current roundId: " + item.roundId);
-                if (item.roundId == _roundId)
-                {
-                    _roundPaidFor = true;
-                    _gameWon = item.gameWon;
-                    _gameResult = item.gameResult + 1;
-                }
-
-                Debug.Log(
-                    $"Updated event:  gameId: {item.roundId}, gameWon: {item.gameWon}, gameResult: {item.gameResult}");
-            });
-
             MoralisQuery<SlotGameEntered> q = await Moralis.GetClient().Query<SlotGameEntered>();
-            MoralisLiveQueryController.AddSubscription<SlotGameEntered>("SlotGameEnteredEvent", q, callbacks);
+            // q.WhereEqualTo("user", (await Moralis.GetUserAsync()).accounts[0]);
+            MoralisLiveQueryController.AddSubscription("SlotGameEnteredEvent", q, _callbacks);
+            Debug.Log("subscirbed");
         }
 
-        public async void SpinSlots()
+        public IEnumerator SpinSlots()
         {
             if (_roundPaidFor)
             {
                 if (rows[0].ColumnStopped && rows[1].ColumnStopped && rows[2].ColumnStopped)
                 {
                     _gameStarted = true;
-
-                    rows[0].GetComponent<Column>().StartRotating();
-                    rows[1].GetComponent<Column>().StartRotating();
-                    rows[2].GetComponent<Column>().StartRotating();
+                    StartCoroutine(StartSpinForRow(0));
+                    yield return null;
+                    StartCoroutine(StartSpinForRow(1));
+                    yield return null;
+                    StartCoroutine(StartSpinForRow(2));
+                    yield return null;
                 }
             }
 
             _roundPaidFor = false;
         }
 
-        private bool IsRoundPaidFor()
+        private IEnumerator StartSpinForRow(int index)
         {
-            return _roundPaidFor;
+            rows[index].GetComponent<Column>().StartRotating();
+            yield return null;
         }
 
-        public static async Task WaitUntil(Func<bool> condition, int frequency = 25, int timeout = -1)
+        public static async Task WaitUntil(Func<bool> condition, int frequency = 100, int timeout = -1)
         {
             var waitTask = Task.Run(async () =>
             {
-                while (!condition()) await Task.Delay(frequency);
+                while (!condition())
+                {
+                    await Task.Delay(frequency);
+                }
             });
 
-            if (waitTask != await Task.WhenAny(waitTask,
-                    Task.Delay(timeout)))
+            if (waitTask != await Task.WhenAny(waitTask, Task.Delay(timeout)))
                 throw new TimeoutException();
         }
 
         private void Update()
         {
+            if (_gameWon)
+            {
+                _nextSlotSelected = true;
+                StartCoroutine(SelectReward());
+            }
+            else
+            {
+                _nextSlotSelected = false;
+                StartCoroutine(SpinSlots());
+            }
+            
             if (_gameStarted)
             {
                 if (rows[0].ColumnStopped && rows[1].ColumnStopped && rows[2].ColumnStopped)
