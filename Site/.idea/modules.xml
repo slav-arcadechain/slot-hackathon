@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Moralis/.idea/Moralis.iml" filepath="$PROJECT_DIR$/../Moralis/.idea/Moralis.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Site.iml" filepath="$PROJECT_DIR$/.idea/Site.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../../ArcadeChain/act/app/.idea/app.iml" filepath="$PROJECT_DIR$/../../../ArcadeChain/act/app/.idea/app.iml" />
     </modules>

@@ -26,9 +26,11 @@ Moralis.Cloud.afterSave("SlotGameEntered", async (request) => {
             ]
         }];
 
+        logger.info("boom: " +  request.object.get("roundId") + " reward:" + reward);
         const web3 = Moralis.web3ByChain(chain);
         const contract = new web3.eth.Contract(abi, contractAddress);
         const contractMethod = contract.methods.setRoundResult(request.object.get("roundId"), reward);
+    logger.info("boom 2");
         await signAndSendTransaction(web3, contractMethod)
             .catch((e) => logger.error(`setRoundResult: ${e}${JSON.stringify(e, null, 2)}`))
 
@@ -64,6 +66,7 @@ async function signAndSendTransaction(web3, cM) {
         key
     );
 
+    logger.info("before sending transaction")
     return await web3.eth.sendSignedTransaction(
         signedTransaction.raw || signedTransaction.rawTransaction
     );
