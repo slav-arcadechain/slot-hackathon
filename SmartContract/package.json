@@ -12,6 +12,8 @@
   },
   "devDependencies": {
     "@truffle/hdwallet-provider": "^2.0.8",
-    "bn.js": "^5.2.1"
+    "bn.js": "^5.2.1",
+    "chai": "^4.3.6",
+    "chai-as-promised": "^7.1.1"
   }
 }
