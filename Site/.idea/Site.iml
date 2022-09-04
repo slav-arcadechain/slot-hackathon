@@ -10,5 +10,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="app" />
     <orderEntry type="module" module-name="Moralis" />
+    <orderEntry type="module" module-name="arcadechain-contracts" />
   </component>
 </module>

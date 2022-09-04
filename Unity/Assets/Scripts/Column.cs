@@ -37,7 +37,7 @@ namespace SlotMachine
             }
         }
 
-        public async void StartRotating()
+        public void StartRotating()
         {
             Debug.Log("starting rotating");
             cellCount = 0;

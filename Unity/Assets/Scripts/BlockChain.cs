@@ -13,7 +13,7 @@ using UnityEngine;
 public class BlockChain : MonoBehaviour
 {
     public const string GameTokenContractAddress = "0x912aAEA32355DA6FeB20D98E73B9C81B5afd6A2e"; //cronos testnet
-    public const string GameContractAddress = "0xaF131deE7926CA18d2c68c4B924DA5F3EFadaCAF"; //cronos testnet
+    public const string GameContractAddress = "0xF137Ef1CbBC39548c6564551614Ef0354f4d9aa3"; //cronos testnet
     public const int GameTokenContractDecimals = 18;
     public const ChainList GameChain = ChainList.cronos_testnet;
 
@@ -85,7 +85,7 @@ public class BlockChain : MonoBehaviour
     public static async UniTask ApproveGameTokenSpent(int amount)
     {
 #if UNITY_WEBGL
-        string gameTokenInWei = amount.ToString() + new String('0', 18);
+        string gameTokenInWei = amount.ToString() + new String('0', GameTokenContractDecimals);
 #else
         var gameTokenInWei = UnitConversion.Convert.ToWei(amount, GameTokenContractDecimals);
 #endif

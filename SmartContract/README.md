@@ -36,4 +36,4 @@ the run:
 # contract addresses
 - Test Admin Address - `0x588acF052631756422844856e1dc2Ef6066ce121` explorer: https://cronos.org/explorer/testnet3/address/0x588acF052631756422844856e1dc2Ef6066ce121
 - TUSD - Cronos Test - `0x912aAEA32355DA6FeB20D98E73B9C81B5afd6A2e`
-- Slot - Cronos Test = `0xaF131deE7926CA18d2c68c4B924DA5F3EFadaCAF`
+- Slot - Cronos Test = `0xF137Ef1CbBC39548c6564551614Ef0354f4d9aa3`

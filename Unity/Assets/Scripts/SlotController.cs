@@ -6,7 +6,6 @@ using Cysharp.Threading.Tasks;
 using MoralisUnity;
 using MoralisUnity.Kits.AuthenticationKit;
 using MoralisUnity.Platform.Queries;
-using MoralisUnity.Web3Api.Models;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,8 +14,8 @@ namespace SlotMachine
     public class SlotController : MonoBehaviour
     {
         private GameObject _approvalPanel;
-        private MoralisQuery<SlotGameEntered> _getEventsQuery;
-        private MoralisLiveQueryCallbacks<SlotGameEntered> _queryCallbacks;
+        // private MoralisQuery<SlotGameRoundResult> _getEventsQuery;
+        // private MoralisLiveQueryCallbacks<SlotGameRoundResult> _queryCallbacks;
 
         [Header("Dependencies")] [SerializeField]
         private AuthenticationKit authenticationKit = null;
@@ -63,14 +62,14 @@ namespace SlotMachine
         private bool _hidePanel = true;
         private int _gameResult;
         private Button _spinButton;
-        private MoralisLiveQueryCallbacks<SlotGameEntered> _callbacks;
+        private MoralisLiveQueryCallbacks<SlotGameRoundResult> _callbacks;
 
         private void Start()
         {
             authenticationKit = FindObjectOfType<AuthenticationKit>();
             authenticationKit.OnStateChanged.AddListener(AuthOnStateChangedListener);
-            _callbacks = new MoralisLiveQueryCallbacks<SlotGameEntered>();
-            _callbacks.OnUpdateEvent += HandleGameEnteredCallback;
+            _callbacks = new MoralisLiveQueryCallbacks<SlotGameRoundResult>();
+            _callbacks.OnUpdateEvent += HandleGameRoundResultCallback;
             _spinButton = GameObject.Find("SpinButton").GetComponent<Button>();
             _spinButton.onClick.AddListener(SpinButtonListener);
             _slotPanel = GameObject.Find("SlotPanel");
@@ -91,36 +90,18 @@ namespace SlotMachine
             }
         }
 
-        private void HandleGameEnteredCallback(SlotGameEntered item, int requestid)
+        private void HandleGameRoundResultCallback(SlotGameRoundResult item, int requestid)
         {
             Debug.Log("current roundId: " + item.roundId);
             if (item.roundId == _roundId)
             {
                 _roundPaidFor = true;
-                _gameWon = item.gameWon;
-                _gameResult = item.gameResult + 1;
-                Debug.Log("item.gameResult = " +item.gameResult);
+                _gameWon = item.bracket != 100;
+                _gameResult = item.bracket + 1;
+                Debug.Log("item.gameResult = " +item.bracket);
             }
         }
 
-        private IEnumerator PlayRound()
-        {
-            Debug.Log("before game won");
-            if (_gameWon)
-            {
-                Debug.Log("inside game won");
-                _nextSlotSelected = true;
-                StartCoroutine(SelectReward());
-            }
-            else
-            {
-                _nextSlotSelected = false;
-                StartCoroutine(SpinSlots());
-                    
-            }
-
-            yield return null;
-        }
         private void FixedUpdate()
         {
             if (_hidePanel)
@@ -175,9 +156,8 @@ namespace SlotMachine
 
         private async UniTask SubscribeToDatabaseEvents()
         {
-            MoralisQuery<SlotGameEntered> q = await Moralis.GetClient().Query<SlotGameEntered>();
-            // q.WhereEqualTo("user", (await Moralis.GetUserAsync()).accounts[0]);
-            MoralisLiveQueryController.AddSubscription("SlotGameEnteredEvent", q, _callbacks);
+            MoralisQuery<SlotGameRoundResult> q = await Moralis.GetClient().Query<SlotGameRoundResult>();
+            MoralisLiveQueryController.AddSubscription("SlotGameRoundResult", q, _callbacks);
             Debug.Log("subscirbed");
         }
 

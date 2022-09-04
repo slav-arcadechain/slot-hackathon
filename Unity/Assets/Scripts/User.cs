@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
-using System.Numerics;
 using UnityEngine;
 
-
 public delegate void WalletTokenBalanceUpdatedHandler(decimal walletBalance);
+
 public delegate void TokenApprovalUpdatedHandler(decimal approvedAmount);
+
 public delegate void WinningsUpdatedHandler(decimal winningsAmount);
 
 public class User : MonoBehaviour
@@ -17,9 +17,9 @@ public class User : MonoBehaviour
     public event WinningsUpdatedHandler OnWinningsUpdated;
 
     #endregion
+
     #region Internal Methods
-    
-    
+
     [Serializable]
     public struct UserStats
     {
@@ -27,7 +27,7 @@ public class User : MonoBehaviour
         public decimal approvedTokenBalance;
         public decimal winningsBalance;
     }
-    
+
     public decimal walletTokenBalance;
 
     public decimal WalletTokenBalance
@@ -55,6 +55,7 @@ public class User : MonoBehaviour
     }
 
     public decimal winningsBalance;
+
     public decimal WinningsBalance
     {
         get => winningsBalance;
@@ -72,18 +73,18 @@ public class User : MonoBehaviour
     {
         StartCoroutine(LoadInternal());
     }
- 
+
     private IEnumerator LoadInternal()
     {
         yield break;
     }
- 
- 
+
+
     private void OnApplicationQuit()
     {
         quitting = true;
     }
- 
+
     private void OnDestroy()
     {
         if (!quitting)
@@ -92,12 +93,13 @@ public class User : MonoBehaviour
             Init();
         }
     }
- 
+
     #endregion
- 
+
     #region Instance
- 
+
     private static User instance;
+
     private static User Instance
     {
         get
@@ -106,7 +108,7 @@ public class User : MonoBehaviour
             return instance;
         }
     }
- 
+
     [RuntimeInitializeOnLoadMethod] // this enables eager loading
     private static void Init()
     {
@@ -114,11 +116,11 @@ public class User : MonoBehaviour
         {
             var gameObject = new GameObject("User");
             // gameObject.hideFlags = HideFlags.HideAndDontSave; //hides from Unity editor
- 
+
             instance = gameObject.AddComponent<User>();
             DontDestroyOnLoad(gameObject); //prevents destroy on changing scene 
         }
     }
- 
+
     #endregion
 }
