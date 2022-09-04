@@ -21,13 +21,19 @@ contract('Slot', (accs) => {
     const gasPrice = 500000000;
     let contract;
     let token;
-    let userTusdInitalBalance = 100;
+    let userTusdInitialBalance = 100;
+    let contractTusdInitialBalance = 100;
 
     beforeEach('should setup the contract instance', async () => {
         token = await Tusd.new(1000);
-        await token.transfer(user, userTusdInitalBalance);
-
+        await token.transfer(user, userTusdInitialBalance);
         contract = await Slot.new(admin, operator, token.address, gameFee);
+
+        await token.transfer(contract.address, contractTusdInitialBalance);
+
+        await contract.setBrackets([10, 50, 100], {from: admin, gas: gas, gasPrice: 500000000})
+        await contract.setWinnings(["25", "10", "5"], {from: admin, gas: gas, gasPrice: 500000000})
+        await contract.setThreshold( 100, {from: admin, gas: gas, gasPrice: 500000000})
     });
 
     describe('Admin', function () {
@@ -64,6 +70,7 @@ contract('Slot', (accs) => {
         it('should be able to claim treasury', async () => {
 
             const userStartBalance = await token.balanceOf(user);
+            let initialContractBalance = await token.balanceOf(contract.address);
 
             await token.approve(contract.address, gameFee, {from: user});
             await contract.enterGame(1, {from: user, gas: gas, gasPrice: gasPrice});
@@ -73,9 +80,10 @@ contract('Slot', (accs) => {
 
             //check contract got the funds from the game
             let contractBalance = await token.balanceOf(contract.address);
-            assert.equal(contractBalance, gameFee);
+            assert.equal(contractBalance - initialContractBalance , gameFee);
 
             // check admin account credited when claimed
+
             const adminStartBalance = await token.balanceOf(admin);
             await contract.claimTreasury(gameFee / 2, {from: admin, gas: gas, gasPrice: gasPrice});
             const adminEndBalance = await token.balanceOf(admin);
@@ -83,8 +91,8 @@ contract('Slot', (accs) => {
             assert.equal(adminEndBalance - adminStartBalance, gameFee / 2);
 
             //check contract founds are less after claimed
-            contractBalance = await token.balanceOf(contract.address);
-            assert.equal(contractBalance, gameFee / 2);
+            const FinalContractBalance = await token.balanceOf(contract.address);
+            assert.isBelow(FinalContractBalance.toNumber(), contractBalance.toNumber());
         });
 
     });
@@ -107,7 +115,7 @@ contract('Slot', (accs) => {
             await token.approve(contract.address, gameFee + 1, {from: user});
             await contract.enterGame(1, {from: user, gas: gas, gasPrice: gasPrice});
             let userBalance = await token.balanceOf(user);
-            assert.equal(userBalance, userTusdInitalBalance - gameFee);
+            assert.equal(userBalance, userTusdInitialBalance - gameFee);
         });
 
         it('player should not be able to reuse roundId', async () => {
@@ -127,38 +135,34 @@ contract('Slot', (accs) => {
             await token.approve(contract.address, gameFee, {from: user});
             await contract.enterGame(1, {from: user, gas: gas, gasPrice: gasPrice});
 
-            let userContractBalance = await contract.getUserWinnings(user);
-            assert.equal(userContractBalance, 0);
-
             let userRounds = await contract.getUserRounds(user);
             assert.equal(userRounds.length, 1)
             assert.equal(userRounds[0], 1)
 
             let legerEntry = await contract.getLegerEntryForRoundId(1);
-            assert.isFalse(legerEntry.updated)
-            assert.equal(legerEntry.amount, gameFee)
+            assert.isTrue(legerEntry.updated)
             assert.equal(legerEntry.playerAddress, user)
 
             const contractBalance = await token.balanceOf(contract.address);
-            assert.equal(contractBalance, gameFee)
+            assert.equal(contractBalance - contractTusdInitialBalance, gameFee)
         });
 
         it('player should be able to claim winnings', async () => {
-            await token.approve(contract.address, gameFee * 3, {from: user});
+            await token.approve(contract.address, userTusdInitialBalance, {from: user});
             await contract.enterGame(1, {from: user, gas: gas, gasPrice: gasPrice});
             await contract.enterGame(2, {from: user, gas: gas, gasPrice: gasPrice});
             await contract.enterGame(3, {from: user, gas: gas, gasPrice: gasPrice});
 
-            await contract.setRoundResult(1, gameFee * 1.1, {from: operator, gas: gas, gasPrice: gasPrice});
-            await contract.setRoundResult(3, gameFee / 2, {from: operator, gas: gas, gasPrice: gasPrice});
+            // await contract.setRoundResult(1, gameFee * 1.1, {from: operator, gas: gas, gasPrice: gasPrice});
+            // await contract.setRoundResult(3, gameFee / 2, {from: operator, gas: gas, gasPrice: gasPrice});
 
-            // check admin account credited when claimed
+            // check user account credited when claimed
             const userStartBalance = await token.balanceOf(user);
-            let claim = await contract.claim({from: user, gas: gas, gasPrice: gasPrice})
+            await contract.claim({from: user, gas: gas, gasPrice: gasPrice})
             const userEndBalance = await token.balanceOf(user);
 
             // winnings transferred
-            assert.equal(userEndBalance - userStartBalance, (gameFee * 1.1) + (gameFee / 2));
+            assert.isAbove(userEndBalance.toNumber(), userStartBalance.toNumber());
 
             // balance set to zero
             let userContractBalance = await contract.getUserWinnings(user);
@@ -175,21 +179,18 @@ contract('Slot', (accs) => {
             let legerEntry = await contract.getLegerEntryForRoundId(1);
             assert.isTrue(legerEntry.updated)
             assert.isTrue(legerEntry.claimed)
-            assert.equal(legerEntry.amount, gameFee * 1.1)
             assert.equal(legerEntry.playerAddress, user)
             assert.equal(legerEntry.roundId, 1)
 
             legerEntry = await contract.getLegerEntryForRoundId(2);
-            assert.isFalse(legerEntry.updated)
-            assert.isFalse(legerEntry.claimed)
-            assert.equal(legerEntry.amount, gameFee)
+            assert.isTrue(legerEntry.updated)
+            assert.isTrue(legerEntry.claimed)
             assert.equal(legerEntry.playerAddress, user)
             assert.equal(legerEntry.roundId, 2);
 
             legerEntry = await contract.getLegerEntryForRoundId(3);
             assert.isTrue(legerEntry.updated)
             assert.isTrue(legerEntry.claimed)
-            assert.equal(legerEntry.amount, gameFee / 2)
             assert.equal(legerEntry.playerAddress, user)
             assert.equal(legerEntry.roundId, 3)
         });
@@ -198,22 +199,10 @@ contract('Slot', (accs) => {
     describe('Game operations', async () => {
         it('should set game result for roundId', async () => {
             await token.approve(contract.address, gameFee, {from: user});
-            await contract.enterGame(1, {from: user, gas: gas, gasPrice: gasPrice});
-
-            await contract.setRoundResult(1, gameFee * 2, {from: operator, gas: gas, gasPrice: gasPrice});
-
             let userBalance = new BigNumber(await contract.getUserWinnings(user));
-            assert.equal(userBalance.toNumber(), gameFee * 2);
-        });
-
-        it('should not be able to set result on unknown roundId', async () => {
-            try {
-                await contract.setRoundResult(1, gameFee * 2, {from: operator, gas: gas, gasPrice: gasPrice});
-            } catch (e) {
-                assert.equal(e.reason, "not existing roundId");
-                return;
-            }
-            expect.fail("should not get here");
+            await contract.enterGame(1, {from: user, gas: gas, gasPrice: gasPrice});
+            let userBalance2 = new BigNumber(await contract.getUserWinnings(user));
+            assert.isAbove(userBalance2.toNumber(), userBalance.toNumber());
         });
     })
 });

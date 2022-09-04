@@ -16,6 +16,9 @@ contract Slot is Ownable, Pausable, ReentrancyGuard {
     mapping(uint256 => RoundInfo) public ledger; // key on roundId
     mapping(address => uint256[]) public userRounds; // value is roundId
     mapping(address => uint256) public userWinnings; // value is balance
+    uint8[] public brackets;
+    uint256[] public winnings;
+    uint8 public threshold;
 
     struct RoundInfo {
         address playerAddress;
@@ -24,11 +27,12 @@ contract Slot is Ownable, Pausable, ReentrancyGuard {
         bool updated; // default false
         bool claimed; // default false
     }
+
     event NewOperatorAddress(address operator);
     event NewGameToken(address tokenAddress);
     event GameFeeSet(uint256 gameFee);
-    event GameEntered(uint256 roundId, address user, uint256 gameFee);
-    event ResultUpdated(uint256 roundId, uint256 amount);
+    event GameEntered(uint256 roundId, address user, uint256 gameFee, uint8 bracket, uint256 amount);
+    event ResultUpdated(uint256 roundId, uint256 amount, uint8 bracket);
     event TreasuryClaim(uint256 amount);
     event PlayerClaimed(address player, uint256 amount);
 
@@ -72,6 +76,18 @@ contract Slot is Ownable, Pausable, ReentrancyGuard {
         emit NewOperatorAddress(_operatorAddress);
     }
 
+    function setBrackets(uint8[] calldata _brackets) external onlyAdmin {
+        brackets = _brackets;
+    }
+
+    function setWinnings(uint256[] calldata _winnings) external onlyAdmin {
+        winnings = _winnings;
+    }
+
+    function setThreshold(uint8 _threshold) external onlyAdmin {
+        threshold = _threshold;
+    }
+
     function setGameFee(uint256 _gameFee) external onlyAdmin {
         require(_gameFee != 0, "Game cannot be free");
         gameFee = _gameFee;
@@ -102,7 +118,9 @@ contract Slot is Ownable, Pausable, ReentrancyGuard {
             roundInfo.roundId = _roundId;
             userRounds[msg.sender].push(_roundId);
 
-            emit GameEntered(_roundId, msg.sender, gameFee);
+            uint256[2] memory result = setRoundResult(_roundId);
+
+            emit GameEntered(_roundId, msg.sender, gameFee, uint8(result[0]), result[1]);
         } else {
             revert("round was not paid for");
         }
@@ -129,17 +147,39 @@ contract Slot is Ownable, Pausable, ReentrancyGuard {
 
     }
 
-    function setRoundResult(uint256 _roundId, uint256 _amount) external onlyOperator {
+    function setRoundResult(uint256 _roundId) internal returns (uint256[2] memory) {
         if (ledger[_roundId].playerAddress == address(0x0)) {
             revert("not existing roundId");
         }
+
+        uint256 amount = 0;
+        uint8 bracket = 100;
+        if (getPseudoRandom(_roundId + 1) <= threshold) {
+            bracket = getBracketForRound(_roundId);
+            amount = winnings[bracket];
+        }
         RoundInfo storage roundInfo = ledger[_roundId];
-        roundInfo.amount = _amount;
+        roundInfo.amount = amount;
         roundInfo.updated = true;
+        userWinnings[roundInfo.playerAddress] = userWinnings[roundInfo.playerAddress] + amount;
 
-        userWinnings[roundInfo.playerAddress] = userWinnings[roundInfo.playerAddress] + _amount;
+        uint256[2] memory result = [bracket, amount];
+        return result;
+    }
 
-        emit ResultUpdated(_roundId, _amount);
+    function getBracketForRound(uint256 _roundId) internal view returns (uint8) {
+        uint8 randomNumber = getPseudoRandom(_roundId);
+        for (uint8 i = 0; i < brackets.length; i++) {
+            if (randomNumber <= brackets[i]) {
+                return i;
+            }
+        }
+        return 100;
+    }
+
+    function getPseudoRandom(uint256 _roundId) internal view returns (uint8) {
+        uint8 number = uint8(uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty))) % 100);
+        return uint8(uint256(keccak256(abi.encodePacked(number + 1, _roundId))) % 100);
     }
 
     function claimTreasury(uint256 value) external nonReentrant onlyAdmin {

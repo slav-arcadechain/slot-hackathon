@@ -23,7 +23,7 @@ npm install
 
 - Run the command `truffle migrate --reset --network rinkeby` (to deploy your contract to the rinkeby ethereum network)
 - Run the command `truffle migrate --network cronos_testnet` (to deploy your contract to the Cronos test network)
-- Run command `truffle migrate -f 2 --to 2 --network cronos_testnet` to deploy only migration file 5
+- Run command `truffle migrate -f 2 --to 2 --network cronos_testnet` to deploy only migration file 2
 
 # flattening contract
 ```

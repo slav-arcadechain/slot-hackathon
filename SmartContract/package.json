@@ -8,7 +8,8 @@
     "test": "truffle test"
   },
   "dependencies": {
-    "openzeppelin-solidity": "^4.6.0"
+    "openzeppelin-solidity": "^4.6.0",
+    "witnet-solidity-bridge": "^0.5.7"
   },
   "devDependencies": {
     "@truffle/hdwallet-provider": "^2.0.8",

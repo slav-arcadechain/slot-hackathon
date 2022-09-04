@@ -1,0 +1,1726 @@
+{
+  "contractName": "IWitnetRandomness",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "prevBlock",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "witnetQueryId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "witnetRequestHash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "Randomized",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_gasPrice",
+          "type": "uint256"
+        }
+      ],
+      "name": "estimateRandomizeFee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_block",
+          "type": "uint256"
+        }
+      ],
+      "name": "getRandomizeData",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "_from",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_prevBlock",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_nextBlock",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_block",
+          "type": "uint256"
+        }
+      ],
+      "name": "getRandomnessAfter",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_block",
+          "type": "uint256"
+        }
+      ],
+      "name": "getRandomnessNextBlock",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_block",
+          "type": "uint256"
+        }
+      ],
+      "name": "getRandomnessPrevBlock",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_block",
+          "type": "uint256"
+        }
+      ],
+      "name": "isRandomized",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "latestRandomizeBlock",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint32",
+          "name": "_range",
+          "type": "uint32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_nonce",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_block",
+          "type": "uint256"
+        }
+      ],
+      "name": "random",
+      "outputs": [
+        {
+          "internalType": "uint32",
+          "name": "",
+          "type": "uint32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint32",
+          "name": "_range",
+          "type": "uint32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_nonce",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_seed",
+          "type": "bytes32"
+        }
+      ],
+      "name": "random",
+      "outputs": [
+        {
+          "internalType": "uint32",
+          "name": "",
+          "type": "uint32"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "randomize",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "_usedFunds",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_block",
+          "type": "uint256"
+        }
+      ],
+      "name": "upgradeRandomizeFee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "_usedFunds",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.14+commit.80d49f37\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"prevBlock\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"witnetQueryId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"witnetRequestHash\",\"type\":\"bytes32\"}],\"name\":\"Randomized\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_gasPrice\",\"type\":\"uint256\"}],\"name\":\"estimateRandomizeFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_block\",\"type\":\"uint256\"}],\"name\":\"getRandomizeData\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_prevBlock\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_nextBlock\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_block\",\"type\":\"uint256\"}],\"name\":\"getRandomnessAfter\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_block\",\"type\":\"uint256\"}],\"name\":\"getRandomnessNextBlock\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_block\",\"type\":\"uint256\"}],\"name\":\"getRandomnessPrevBlock\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_block\",\"type\":\"uint256\"}],\"name\":\"isRandomized\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"latestRandomizeBlock\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"_range\",\"type\":\"uint32\"},{\"internalType\":\"uint256\",\"name\":\"_nonce\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_block\",\"type\":\"uint256\"}],\"name\":\"random\",\"outputs\":[{\"internalType\":\"uint32\",\"name\":\"\",\"type\":\"uint32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"_range\",\"type\":\"uint32\"},{\"internalType\":\"uint256\",\"name\":\"_nonce\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"_seed\",\"type\":\"bytes32\"}],\"name\":\"random\",\"outputs\":[{\"internalType\":\"uint32\",\"name\":\"\",\"type\":\"uint32\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"randomize\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"_usedFunds\",\"type\":\"uint256\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_block\",\"type\":\"uint256\"}],\"name\":\"upgradeRandomizeFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"_usedFunds\",\"type\":\"uint256\"}],\"stateMutability\":\"payable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"Witnet Foundation.\",\"events\":{\"Randomized(address,uint256,uint256,bytes32)\":{\"params\":{\"from\":\"Address from which the randomize() function was called. \",\"prevBlock\":\"Block number in which a randomness request got posted just before this one. 0 if none.\",\"witnetQueryId\":\"Unique query id assigned to this request by the WRB.\",\"witnetRequestHash\":\"SHA-256 hash of the WitnetRandomnessRequest actual bytecode just posted to the WRB.\"}}},\"kind\":\"dev\",\"methods\":{\"getRandomizeData(uint256)\":{\"details\":\"Returns zero values if no randomness request was actually posted within a given block.\",\"params\":{\"_block\":\"Block number whose randomness request is being queried for.\"},\"returns\":{\"_from\":\"Address from which the latest randomness request was posted.\",\"_id\":\"Unique request identifier as provided by the WRB.\",\"_nextBlock\":\"Block number in which a randomness request got posted just after this one, 0 if none.\",\"_prevBlock\":\"Block number in which a randomness request got posted just before this one. 0 if none.\"}},\"getRandomnessAfter(uint256)\":{\"details\":\"Fails if:i.   no `randomize()` was not called in either the given block, or afterwards.ii.  a request posted in/after given block does exist, but no result has been provided yet.iii. all requests in/after the given block were solved with errors.\",\"params\":{\"_block\":\"Block number from which the search will start.\"}},\"getRandomnessNextBlock(uint256)\":{\"params\":{\"_block\":\"Block number from which the search will start.\"},\"returns\":{\"_0\":\"Number of the first block found after the given one, or `0` otherwise.\"}},\"getRandomnessPrevBlock(uint256)\":{\"params\":{\"_block\":\"Block number from which the search will start.\"},\"returns\":{\"_0\":\"First block found before the given one, or `0` otherwise.\"}},\"random(uint32,uint256,bytes32)\":{\"params\":{\"_nonce\":\"Nonce value enabling multiple random numbers from the same randomness value.\",\"_range\":\"Range within which the uniformly-distributed random number will be generated.\",\"_seed\":\"Seed value used as entropy source.\"}},\"random(uint32,uint256,uint256)\":{\"details\":\"Fails under same conditions as `getRandomnessAfter(uint256)` may do.\",\"params\":{\"_block\":\"Block number from which the search will start.\",\"_nonce\":\"Nonce value enabling multiple random numbers from the same randomness value.\",\"_range\":\"Range within which the uniformly-distributed random number will be generated.\"}},\"randomize()\":{\"returns\":{\"_usedFunds\":\"Amount of funds actually used from those provided by the tx sender.\"}},\"upgradeRandomizeFee(uint256)\":{\"returns\":{\"_usedFunds\":\"Amount of dunds actually used from those provided by the tx sender.\"}}},\"title\":\"The Witnet Randomness generator interface.\",\"version\":1},\"userdoc\":{\"events\":{\"Randomized(address,uint256,uint256,bytes32)\":{\"notice\":\"Thrown every time a new WitnetRandomnessRequest gets succesfully posted to the WitnetRequestBoard.\"}},\"kind\":\"user\",\"methods\":{\"estimateRandomizeFee(uint256)\":{\"notice\":\"Returns amount of wei required to be paid as a fee when requesting randomization with a  transaction gas price as the one given.\"},\"getRandomizeData(uint256)\":{\"notice\":\"Retrieves data of a randomization request that got successfully posted to the WRB within a given block.\"},\"getRandomnessAfter(uint256)\":{\"notice\":\"Retrieves the randomness generated upon solving a request that was posted within a given block, if any, or to the _first_ request posted after that block, otherwise. Should the intended  request happen to be finalized with errors on the Witnet oracle network side, this function  will recursively try to return randomness from the next non-faulty randomization request found  in storage, if any. \"},\"getRandomnessNextBlock(uint256)\":{\"notice\":\"Tells what is the number of the next block in which a randomization request was posted after the given one. \"},\"getRandomnessPrevBlock(uint256)\":{\"notice\":\"Gets previous block in which a randomness request was posted before the given one.\"},\"isRandomized(uint256)\":{\"notice\":\"Returns `true` only when the randomness request that got posted within given block was already reported back from the Witnet oracle, either successfully or with an error of any kind.\"},\"latestRandomizeBlock()\":{\"notice\":\"Returns latest block in which a randomness request got sucessfully posted to the WRB.\"},\"random(uint32,uint256,bytes32)\":{\"notice\":\"Generates a pseudo-random number uniformly distributed within the range [0 .. _range), by using  the given `_nonce` value and the given `_seed` as a source of entropy.\"},\"random(uint32,uint256,uint256)\":{\"notice\":\"Generates a pseudo-random number uniformly distributed within the range [0 .. _range), by using  the given `_nonce` value and the randomness returned by `getRandomnessAfter(_block)`. \"},\"randomize()\":{\"notice\":\"Requests the Witnet oracle to generate an EVM-agnostic and trustless source of randomness.  Only one randomness request per block will be actually posted to the WRB. Should there  already be a posted request within current block, it will try to upgrade Witnet fee of current's  block randomness request according to current gas price. In both cases, all unused funds shall  be transfered back to the tx sender.\"},\"upgradeRandomizeFee(uint256)\":{\"notice\":\"Increases Witnet fee related to a pending-to-be-solved randomness request, as much as it may be required in proportion to how much bigger the current tx gas price is with respect the  highest gas price that was paid in either previous fee upgrades, or when the given randomness  request was posted. All unused funds shall be transferred back to the tx sender.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"witnet-solidity-bridge/contracts/interfaces/IWitnetRandomness.sol\":\"IWitnetRandomness\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":2000},\"remappings\":[]},\"sources\":{\"witnet-solidity-bridge/contracts/interfaces/IWitnetRandomness.sol\":{\"keccak256\":\"0x67868d08fe2406086cdd9a3860614201911a1ad16e3d34a94151fad721a12934\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b7eaf534bcbe5a5889870ec9b99500d16d784f8ad71a3983468e5c03a1564644\",\"dweb:/ipfs/QmPhZ3RAA13rgQqkPXgTVauqMAHKCB73efsT11PYVbhrEq\"]},\"witnet-solidity-bridge/contracts/interfaces/IWitnetRequest.sol\":{\"keccak256\":\"0xb455f625c6db8ce0525cb6ba8b2df2d85b37cfac6e2c5b64876b6f0e5bd22269\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d977a93f5e3031fa1bfa10f7923c42620e9aa9a32244ef3e9ff29a2dbaa43f84\",\"dweb:/ipfs/QmWbwT4TkpgyhoT3PJ7x91QA8NwYtKtB3aizGMPvbknsM3\"]},\"witnet-solidity-bridge/contracts/libs/Witnet.sol\":{\"keccak256\":\"0x7875cbaff083818824bcec302443788fb5723b161952fdf28a0ddd7c4b3a9b3e\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://56c28646279cac64abb84751962b774c854aa122c27a7d19c68d99d3622ad053\",\"dweb:/ipfs/QmVfffZZJRb2naceyAxr8Z5rEQyBkfKgYqqmssobk9qz2h\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\n\npragma solidity >=0.7.0 <0.9.0;\n\nimport \"../libs/Witnet.sol\";\n\n/// @title The Witnet Randomness generator interface.\n/// @author Witnet Foundation.\ninterface IWitnetRandomness {\n\n    /// Thrown every time a new WitnetRandomnessRequest gets succesfully posted to the WitnetRequestBoard.\n    /// @param from Address from which the randomize() function was called. \n    /// @param prevBlock Block number in which a randomness request got posted just before this one. 0 if none.\n    /// @param witnetQueryId Unique query id assigned to this request by the WRB.\n    /// @param witnetRequestHash SHA-256 hash of the WitnetRandomnessRequest actual bytecode just posted to the WRB.\n    event Randomized(\n        address indexed from,\n        uint256 indexed prevBlock,\n        uint256 witnetQueryId,\n        bytes32 witnetRequestHash\n    );\n\n    /// Returns amount of wei required to be paid as a fee when requesting randomization with a \n    /// transaction gas price as the one given.\n    function estimateRandomizeFee(uint256 _gasPrice) external view returns (uint256);\n\n    /// Retrieves data of a randomization request that got successfully posted to the WRB within a given block.\n    /// @dev Returns zero values if no randomness request was actually posted within a given block.\n    /// @param _block Block number whose randomness request is being queried for.\n    /// @return _from Address from which the latest randomness request was posted.\n    /// @return _id Unique request identifier as provided by the WRB.\n    /// @return _prevBlock Block number in which a randomness request got posted just before this one. 0 if none.\n    /// @return _nextBlock Block number in which a randomness request got posted just after this one, 0 if none.\n    function getRandomizeData(uint256 _block)\n        external view returns (address _from, uint256 _id, uint256 _prevBlock, uint256 _nextBlock);\n\n    /// Retrieves the randomness generated upon solving a request that was posted within a given block,\n    /// if any, or to the _first_ request posted after that block, otherwise. Should the intended \n    /// request happen to be finalized with errors on the Witnet oracle network side, this function \n    /// will recursively try to return randomness from the next non-faulty randomization request found \n    /// in storage, if any. \n    /// @dev Fails if:\n    /// @dev   i.   no `randomize()` was not called in either the given block, or afterwards.\n    /// @dev   ii.  a request posted in/after given block does exist, but no result has been provided yet.\n    /// @dev   iii. all requests in/after the given block were solved with errors.\n    /// @param _block Block number from which the search will start.\n    function getRandomnessAfter(uint256 _block) external view returns (bytes32); \n\n    /// Tells what is the number of the next block in which a randomization request was posted after the given one. \n    /// @param _block Block number from which the search will start.\n    /// @return Number of the first block found after the given one, or `0` otherwise.\n    function getRandomnessNextBlock(uint256 _block) external view returns (uint256); \n\n    /// Gets previous block in which a randomness request was posted before the given one.\n    /// @param _block Block number from which the search will start.\n    /// @return First block found before the given one, or `0` otherwise.\n    function getRandomnessPrevBlock(uint256 _block) external view returns (uint256);\n\n    /// Returns `true` only when the randomness request that got posted within given block was already\n    /// reported back from the Witnet oracle, either successfully or with an error of any kind.\n    function isRandomized(uint256 _block) external view returns (bool);\n\n    /// Returns latest block in which a randomness request got sucessfully posted to the WRB.\n    function latestRandomizeBlock() external view returns (uint256);\n\n    /// Generates a pseudo-random number uniformly distributed within the range [0 .. _range), by using \n    /// the given `_nonce` value and the randomness returned by `getRandomnessAfter(_block)`. \n    /// @dev Fails under same conditions as `getRandomnessAfter(uint256)` may do.\n    /// @param _range Range within which the uniformly-distributed random number will be generated.\n    /// @param _nonce Nonce value enabling multiple random numbers from the same randomness value.\n    /// @param _block Block number from which the search will start.\n    function random(uint32 _range, uint256 _nonce, uint256 _block) external view returns (uint32);\n\n    /// Generates a pseudo-random number uniformly distributed within the range [0 .. _range), by using \n    /// the given `_nonce` value and the given `_seed` as a source of entropy.\n    /// @param _range Range within which the uniformly-distributed random number will be generated.\n    /// @param _nonce Nonce value enabling multiple random numbers from the same randomness value.\n    /// @param _seed Seed value used as entropy source.\n    function random(uint32 _range, uint256 _nonce, bytes32 _seed) external pure returns (uint32);\n\n    /// Requests the Witnet oracle to generate an EVM-agnostic and trustless source of randomness. \n    /// Only one randomness request per block will be actually posted to the WRB. Should there \n    /// already be a posted request within current block, it will try to upgrade Witnet fee of current's \n    /// block randomness request according to current gas price. In both cases, all unused funds shall \n    /// be transfered back to the tx sender.\n    /// @return _usedFunds Amount of funds actually used from those provided by the tx sender.\n    function randomize() external payable returns (uint256 _usedFunds);\n\n    /// Increases Witnet fee related to a pending-to-be-solved randomness request, as much as it\n    /// may be required in proportion to how much bigger the current tx gas price is with respect the \n    /// highest gas price that was paid in either previous fee upgrades, or when the given randomness \n    /// request was posted. All unused funds shall be transferred back to the tx sender.\n    /// @return _usedFunds Amount of dunds actually used from those provided by the tx sender.\n    function upgradeRandomizeFee(uint256 _block) external payable returns (uint256 _usedFunds);\n}\n",
+  "sourcePath": "witnet-solidity-bridge/contracts/interfaces/IWitnetRandomness.sol",
+  "ast": {
+    "absolutePath": "witnet-solidity-bridge/contracts/interfaces/IWitnetRandomness.sol",
+    "exportedSymbols": {
+      "IWitnetRandomness": [
+        2351
+      ],
+      "IWitnetRequest": [
+        2367
+      ],
+      "Witnet": [
+        2702
+      ]
+    },
+    "id": 2352,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2239,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.7",
+          ".0",
+          "<",
+          "0.9",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:31:15"
+      },
+      {
+        "absolutePath": "witnet-solidity-bridge/contracts/libs/Witnet.sol",
+        "file": "../libs/Witnet.sol",
+        "id": 2240,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 2352,
+        "sourceUnit": 2703,
+        "src": "66:28:15",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IWitnetRandomness",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 2241,
+          "nodeType": "StructuredDocumentation",
+          "src": "96:85:15",
+          "text": "@title The Witnet Randomness generator interface.\n @author Witnet Foundation."
+        },
+        "fullyImplemented": false,
+        "id": 2351,
+        "linearizedBaseContracts": [
+          2351
+        ],
+        "name": "IWitnetRandomness",
+        "nameLocation": "191:17:15",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "anonymous": false,
+            "documentation": {
+              "id": 2242,
+              "nodeType": "StructuredDocumentation",
+              "src": "216:490:15",
+              "text": "Thrown every time a new WitnetRandomnessRequest gets succesfully posted to the WitnetRequestBoard.\n @param from Address from which the randomize() function was called. \n @param prevBlock Block number in which a randomness request got posted just before this one. 0 if none.\n @param witnetQueryId Unique query id assigned to this request by the WRB.\n @param witnetRequestHash SHA-256 hash of the WitnetRandomnessRequest actual bytecode just posted to the WRB."
+            },
+            "eventSelector": "af291bb4e1767569c77502edb6ad1009e856f57c09f214886c6becc9836c20c0",
+            "id": 2252,
+            "name": "Randomized",
+            "nameLocation": "717:10:15",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 2251,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2244,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "from",
+                  "nameLocation": "753:4:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2252,
+                  "src": "737:20:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2243,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "737:7:15",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2246,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "prevBlock",
+                  "nameLocation": "783:9:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2252,
+                  "src": "767:25:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2245,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "767:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2248,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "witnetQueryId",
+                  "nameLocation": "810:13:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2252,
+                  "src": "802:21:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2247,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "802:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2250,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "witnetRequestHash",
+                  "nameLocation": "841:17:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2252,
+                  "src": "833:25:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2249,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "833:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "727:137:15"
+            },
+            "src": "711:154:15"
+          },
+          {
+            "documentation": {
+              "id": 2253,
+              "nodeType": "StructuredDocumentation",
+              "src": "871:140:15",
+              "text": "Returns amount of wei required to be paid as a fee when requesting randomization with a \n transaction gas price as the one given."
+            },
+            "functionSelector": "a60ee268",
+            "id": 2260,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "estimateRandomizeFee",
+            "nameLocation": "1025:20:15",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2256,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2255,
+                  "mutability": "mutable",
+                  "name": "_gasPrice",
+                  "nameLocation": "1054:9:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2260,
+                  "src": "1046:17:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2254,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1046:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1045:19:15"
+            },
+            "returnParameters": {
+              "id": 2259,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2258,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2260,
+                  "src": "1088:7:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2257,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1088:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1087:9:15"
+            },
+            "scope": 2351,
+            "src": "1016:81:15",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 2261,
+              "nodeType": "StructuredDocumentation",
+              "src": "1103:669:15",
+              "text": "Retrieves data of a randomization request that got successfully posted to the WRB within a given block.\n @dev Returns zero values if no randomness request was actually posted within a given block.\n @param _block Block number whose randomness request is being queried for.\n @return _from Address from which the latest randomness request was posted.\n @return _id Unique request identifier as provided by the WRB.\n @return _prevBlock Block number in which a randomness request got posted just before this one. 0 if none.\n @return _nextBlock Block number in which a randomness request got posted just after this one, 0 if none."
+            },
+            "functionSelector": "a3252f68",
+            "id": 2274,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getRandomizeData",
+            "nameLocation": "1786:16:15",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2264,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2263,
+                  "mutability": "mutable",
+                  "name": "_block",
+                  "nameLocation": "1811:6:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2274,
+                  "src": "1803:14:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2262,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1803:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1802:16:15"
+            },
+            "returnParameters": {
+              "id": 2273,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2266,
+                  "mutability": "mutable",
+                  "name": "_from",
+                  "nameLocation": "1858:5:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2274,
+                  "src": "1850:13:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2265,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1850:7:15",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2268,
+                  "mutability": "mutable",
+                  "name": "_id",
+                  "nameLocation": "1873:3:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2274,
+                  "src": "1865:11:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2267,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1865:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2270,
+                  "mutability": "mutable",
+                  "name": "_prevBlock",
+                  "nameLocation": "1886:10:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2274,
+                  "src": "1878:18:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2269,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1878:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2272,
+                  "mutability": "mutable",
+                  "name": "_nextBlock",
+                  "nameLocation": "1906:10:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2274,
+                  "src": "1898:18:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2271,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1898:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1849:68:15"
+            },
+            "scope": 2351,
+            "src": "1777:141:15",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 2275,
+              "nodeType": "StructuredDocumentation",
+              "src": "1924:808:15",
+              "text": "Retrieves the randomness generated upon solving a request that was posted within a given block,\n if any, or to the _first_ request posted after that block, otherwise. Should the intended \n request happen to be finalized with errors on the Witnet oracle network side, this function \n will recursively try to return randomness from the next non-faulty randomization request found \n in storage, if any. \n @dev Fails if:\n @dev   i.   no `randomize()` was not called in either the given block, or afterwards.\n @dev   ii.  a request posted in/after given block does exist, but no result has been provided yet.\n @dev   iii. all requests in/after the given block were solved with errors.\n @param _block Block number from which the search will start."
+            },
+            "functionSelector": "fb476cad",
+            "id": 2282,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getRandomnessAfter",
+            "nameLocation": "2746:18:15",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2278,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2277,
+                  "mutability": "mutable",
+                  "name": "_block",
+                  "nameLocation": "2773:6:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2282,
+                  "src": "2765:14:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2276,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2765:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2764:16:15"
+            },
+            "returnParameters": {
+              "id": 2281,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2280,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2282,
+                  "src": "2804:7:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2279,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2804:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2803:9:15"
+            },
+            "scope": 2351,
+            "src": "2737:76:15",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 2283,
+              "nodeType": "StructuredDocumentation",
+              "src": "2820:268:15",
+              "text": "Tells what is the number of the next block in which a randomization request was posted after the given one. \n @param _block Block number from which the search will start.\n @return Number of the first block found after the given one, or `0` otherwise."
+            },
+            "functionSelector": "40b41daa",
+            "id": 2290,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getRandomnessNextBlock",
+            "nameLocation": "3102:22:15",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2286,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2285,
+                  "mutability": "mutable",
+                  "name": "_block",
+                  "nameLocation": "3133:6:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2290,
+                  "src": "3125:14:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2284,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3125:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3124:16:15"
+            },
+            "returnParameters": {
+              "id": 2289,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2288,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2290,
+                  "src": "3164:7:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2287,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3164:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3163:9:15"
+            },
+            "scope": 2351,
+            "src": "3093:80:15",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 2291,
+              "nodeType": "StructuredDocumentation",
+              "src": "3180:229:15",
+              "text": "Gets previous block in which a randomness request was posted before the given one.\n @param _block Block number from which the search will start.\n @return First block found before the given one, or `0` otherwise."
+            },
+            "functionSelector": "36b651bb",
+            "id": 2298,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getRandomnessPrevBlock",
+            "nameLocation": "3423:22:15",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2294,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2293,
+                  "mutability": "mutable",
+                  "name": "_block",
+                  "nameLocation": "3454:6:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2298,
+                  "src": "3446:14:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2292,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3446:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3445:16:15"
+            },
+            "returnParameters": {
+              "id": 2297,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2296,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2298,
+                  "src": "3485:7:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2295,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3485:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3484:9:15"
+            },
+            "scope": 2351,
+            "src": "3414:80:15",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 2299,
+              "nodeType": "StructuredDocumentation",
+              "src": "3500:194:15",
+              "text": "Returns `true` only when the randomness request that got posted within given block was already\n reported back from the Witnet oracle, either successfully or with an error of any kind."
+            },
+            "functionSelector": "9bc86fec",
+            "id": 2306,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "isRandomized",
+            "nameLocation": "3708:12:15",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2302,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2301,
+                  "mutability": "mutable",
+                  "name": "_block",
+                  "nameLocation": "3729:6:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2306,
+                  "src": "3721:14:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2300,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3721:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3720:16:15"
+            },
+            "returnParameters": {
+              "id": 2305,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2304,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2306,
+                  "src": "3760:4:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2303,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3760:4:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3759:6:15"
+            },
+            "scope": 2351,
+            "src": "3699:67:15",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 2307,
+              "nodeType": "StructuredDocumentation",
+              "src": "3772:89:15",
+              "text": "Returns latest block in which a randomness request got sucessfully posted to the WRB."
+            },
+            "functionSelector": "9938fd0c",
+            "id": 2312,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "latestRandomizeBlock",
+            "nameLocation": "3875:20:15",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2308,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "3895:2:15"
+            },
+            "returnParameters": {
+              "id": 2311,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2310,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2312,
+                  "src": "3921:7:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2309,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3921:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3920:9:15"
+            },
+            "scope": 2351,
+            "src": "3866:64:15",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 2313,
+              "nodeType": "StructuredDocumentation",
+              "src": "3936:545:15",
+              "text": "Generates a pseudo-random number uniformly distributed within the range [0 .. _range), by using \n the given `_nonce` value and the randomness returned by `getRandomnessAfter(_block)`. \n @dev Fails under same conditions as `getRandomnessAfter(uint256)` may do.\n @param _range Range within which the uniformly-distributed random number will be generated.\n @param _nonce Nonce value enabling multiple random numbers from the same randomness value.\n @param _block Block number from which the search will start."
+            },
+            "functionSelector": "24cbbfc1",
+            "id": 2324,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "random",
+            "nameLocation": "4495:6:15",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2320,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2315,
+                  "mutability": "mutable",
+                  "name": "_range",
+                  "nameLocation": "4509:6:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2324,
+                  "src": "4502:13:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 2314,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4502:6:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2317,
+                  "mutability": "mutable",
+                  "name": "_nonce",
+                  "nameLocation": "4525:6:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2324,
+                  "src": "4517:14:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2316,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4517:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2319,
+                  "mutability": "mutable",
+                  "name": "_block",
+                  "nameLocation": "4541:6:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2324,
+                  "src": "4533:14:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2318,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4533:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4501:47:15"
+            },
+            "returnParameters": {
+              "id": 2323,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2322,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2324,
+                  "src": "4572:6:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 2321,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4572:6:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4571:8:15"
+            },
+            "scope": 2351,
+            "src": "4486:94:15",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 2325,
+              "nodeType": "StructuredDocumentation",
+              "src": "4586:434:15",
+              "text": "Generates a pseudo-random number uniformly distributed within the range [0 .. _range), by using \n the given `_nonce` value and the given `_seed` as a source of entropy.\n @param _range Range within which the uniformly-distributed random number will be generated.\n @param _nonce Nonce value enabling multiple random numbers from the same randomness value.\n @param _seed Seed value used as entropy source."
+            },
+            "functionSelector": "e7d4a016",
+            "id": 2336,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "random",
+            "nameLocation": "5034:6:15",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2332,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2327,
+                  "mutability": "mutable",
+                  "name": "_range",
+                  "nameLocation": "5048:6:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2336,
+                  "src": "5041:13:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 2326,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5041:6:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2329,
+                  "mutability": "mutable",
+                  "name": "_nonce",
+                  "nameLocation": "5064:6:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2336,
+                  "src": "5056:14:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2328,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5056:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2331,
+                  "mutability": "mutable",
+                  "name": "_seed",
+                  "nameLocation": "5080:5:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2336,
+                  "src": "5072:13:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2330,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5072:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5040:46:15"
+            },
+            "returnParameters": {
+              "id": 2335,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2334,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2336,
+                  "src": "5110:6:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 2333,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5110:6:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5109:8:15"
+            },
+            "scope": 2351,
+            "src": "5025:93:15",
+            "stateMutability": "pure",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 2337,
+              "nodeType": "StructuredDocumentation",
+              "src": "5124:541:15",
+              "text": "Requests the Witnet oracle to generate an EVM-agnostic and trustless source of randomness. \n Only one randomness request per block will be actually posted to the WRB. Should there \n already be a posted request within current block, it will try to upgrade Witnet fee of current's \n block randomness request according to current gas price. In both cases, all unused funds shall \n be transfered back to the tx sender.\n @return _usedFunds Amount of funds actually used from those provided by the tx sender."
+            },
+            "functionSelector": "699b328a",
+            "id": 2342,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "randomize",
+            "nameLocation": "5679:9:15",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2338,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5688:2:15"
+            },
+            "returnParameters": {
+              "id": 2341,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2340,
+                  "mutability": "mutable",
+                  "name": "_usedFunds",
+                  "nameLocation": "5725:10:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2342,
+                  "src": "5717:18:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2339,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5717:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5716:20:15"
+            },
+            "scope": 2351,
+            "src": "5670:67:15",
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 2343,
+              "nodeType": "StructuredDocumentation",
+              "src": "5743:482:15",
+              "text": "Increases Witnet fee related to a pending-to-be-solved randomness request, as much as it\n may be required in proportion to how much bigger the current tx gas price is with respect the \n highest gas price that was paid in either previous fee upgrades, or when the given randomness \n request was posted. All unused funds shall be transferred back to the tx sender.\n @return _usedFunds Amount of dunds actually used from those provided by the tx sender."
+            },
+            "functionSelector": "e35329f8",
+            "id": 2350,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "upgradeRandomizeFee",
+            "nameLocation": "6239:19:15",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2346,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2345,
+                  "mutability": "mutable",
+                  "name": "_block",
+                  "nameLocation": "6267:6:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2350,
+                  "src": "6259:14:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2344,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6259:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "6258:16:15"
+            },
+            "returnParameters": {
+              "id": 2349,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2348,
+                  "mutability": "mutable",
+                  "name": "_usedFunds",
+                  "nameLocation": "6309:10:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2350,
+                  "src": "6301:18:15",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2347,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6301:7:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "6300:20:15"
+            },
+            "scope": 2351,
+            "src": "6230:91:15",
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2352,
+        "src": "181:6142:15",
+        "usedErrors": []
+      }
+    ],
+    "src": "33:6291:15"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.14+commit.80d49f37.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.7",
+  "updatedAt": "2022-09-04T07:00:09.984Z",
+  "devdoc": {
+    "author": "Witnet Foundation.",
+    "events": {
+      "Randomized(address,uint256,uint256,bytes32)": {
+        "params": {
+          "from": "Address from which the randomize() function was called. ",
+          "prevBlock": "Block number in which a randomness request got posted just before this one. 0 if none.",
+          "witnetQueryId": "Unique query id assigned to this request by the WRB.",
+          "witnetRequestHash": "SHA-256 hash of the WitnetRandomnessRequest actual bytecode just posted to the WRB."
+        }
+      }
+    },
+    "kind": "dev",
+    "methods": {
+      "getRandomizeData(uint256)": {
+        "details": "Returns zero values if no randomness request was actually posted within a given block.",
+        "params": {
+          "_block": "Block number whose randomness request is being queried for."
+        },
+        "returns": {
+          "_from": "Address from which the latest randomness request was posted.",
+          "_id": "Unique request identifier as provided by the WRB.",
+          "_nextBlock": "Block number in which a randomness request got posted just after this one, 0 if none.",
+          "_prevBlock": "Block number in which a randomness request got posted just before this one. 0 if none."
+        }
+      },
+      "getRandomnessAfter(uint256)": {
+        "details": "Fails if:i.   no `randomize()` was not called in either the given block, or afterwards.ii.  a request posted in/after given block does exist, but no result has been provided yet.iii. all requests in/after the given block were solved with errors.",
+        "params": {
+          "_block": "Block number from which the search will start."
+        }
+      },
+      "getRandomnessNextBlock(uint256)": {
+        "params": {
+          "_block": "Block number from which the search will start."
+        },
+        "returns": {
+          "_0": "Number of the first block found after the given one, or `0` otherwise."
+        }
+      },
+      "getRandomnessPrevBlock(uint256)": {
+        "params": {
+          "_block": "Block number from which the search will start."
+        },
+        "returns": {
+          "_0": "First block found before the given one, or `0` otherwise."
+        }
+      },
+      "random(uint32,uint256,bytes32)": {
+        "params": {
+          "_nonce": "Nonce value enabling multiple random numbers from the same randomness value.",
+          "_range": "Range within which the uniformly-distributed random number will be generated.",
+          "_seed": "Seed value used as entropy source."
+        }
+      },
+      "random(uint32,uint256,uint256)": {
+        "details": "Fails under same conditions as `getRandomnessAfter(uint256)` may do.",
+        "params": {
+          "_block": "Block number from which the search will start.",
+          "_nonce": "Nonce value enabling multiple random numbers from the same randomness value.",
+          "_range": "Range within which the uniformly-distributed random number will be generated."
+        }
+      },
+      "randomize()": {
+        "returns": {
+          "_usedFunds": "Amount of funds actually used from those provided by the tx sender."
+        }
+      },
+      "upgradeRandomizeFee(uint256)": {
+        "returns": {
+          "_usedFunds": "Amount of dunds actually used from those provided by the tx sender."
+        }
+      }
+    },
+    "title": "The Witnet Randomness generator interface.",
+    "version": 1
+  },
+  "userdoc": {
+    "events": {
+      "Randomized(address,uint256,uint256,bytes32)": {
+        "notice": "Thrown every time a new WitnetRandomnessRequest gets succesfully posted to the WitnetRequestBoard."
+      }
+    },
+    "kind": "user",
+    "methods": {
+      "estimateRandomizeFee(uint256)": {
+        "notice": "Returns amount of wei required to be paid as a fee when requesting randomization with a  transaction gas price as the one given."
+      },
+      "getRandomizeData(uint256)": {
+        "notice": "Retrieves data of a randomization request that got successfully posted to the WRB within a given block."
+      },
+      "getRandomnessAfter(uint256)": {
+        "notice": "Retrieves the randomness generated upon solving a request that was posted within a given block, if any, or to the _first_ request posted after that block, otherwise. Should the intended  request happen to be finalized with errors on the Witnet oracle network side, this function  will recursively try to return randomness from the next non-faulty randomization request found  in storage, if any. "
+      },
+      "getRandomnessNextBlock(uint256)": {
+        "notice": "Tells what is the number of the next block in which a randomization request was posted after the given one. "
+      },
+      "getRandomnessPrevBlock(uint256)": {
+        "notice": "Gets previous block in which a randomness request was posted before the given one."
+      },
+      "isRandomized(uint256)": {
+        "notice": "Returns `true` only when the randomness request that got posted within given block was already reported back from the Witnet oracle, either successfully or with an error of any kind."
+      },
+      "latestRandomizeBlock()": {
+        "notice": "Returns latest block in which a randomness request got sucessfully posted to the WRB."
+      },
+      "random(uint32,uint256,bytes32)": {
+        "notice": "Generates a pseudo-random number uniformly distributed within the range [0 .. _range), by using  the given `_nonce` value and the given `_seed` as a source of entropy."
+      },
+      "random(uint32,uint256,uint256)": {
+        "notice": "Generates a pseudo-random number uniformly distributed within the range [0 .. _range), by using  the given `_nonce` value and the randomness returned by `getRandomnessAfter(_block)`. "
+      },
+      "randomize()": {
+        "notice": "Requests the Witnet oracle to generate an EVM-agnostic and trustless source of randomness.  Only one randomness request per block will be actually posted to the WRB. Should there  already be a posted request within current block, it will try to upgrade Witnet fee of current's  block randomness request according to current gas price. In both cases, all unused funds shall  be transfered back to the tx sender."
+      },
+      "upgradeRandomizeFee(uint256)": {
+        "notice": "Increases Witnet fee related to a pending-to-be-solved randomness request, as much as it may be required in proportion to how much bigger the current tx gas price is with respect the  highest gas price that was paid in either previous fee upgrades, or when the given randomness  request was posted. All unused funds shall be transferred back to the tx sender."
+      }
+    },
+    "version": 1
+  }
+}

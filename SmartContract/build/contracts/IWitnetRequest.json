@@ -1,0 +1,243 @@
+{
+  "contractName": "IWitnetRequest",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "bytecode",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "hash",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.14+commit.80d49f37\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"bytecode\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"\",\"type\":\"bytes\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"hash\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"The Witnet Foundation.\",\"kind\":\"dev\",\"methods\":{},\"title\":\"The Witnet Data Request basic interface.\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"bytecode()\":{\"notice\":\"A `IWitnetRequest` is constructed around a `bytes` value containing  a well-formed Witnet Data Request using Protocol Buffers.\"},\"hash()\":{\"notice\":\"Returns SHA256 hash of Witnet Data Request as CBOR-encoded bytes.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"witnet-solidity-bridge/contracts/interfaces/IWitnetRequest.sol\":\"IWitnetRequest\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":2000},\"remappings\":[]},\"sources\":{\"witnet-solidity-bridge/contracts/interfaces/IWitnetRequest.sol\":{\"keccak256\":\"0xb455f625c6db8ce0525cb6ba8b2df2d85b37cfac6e2c5b64876b6f0e5bd22269\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://d977a93f5e3031fa1bfa10f7923c42620e9aa9a32244ef3e9ff29a2dbaa43f84\",\"dweb:/ipfs/QmWbwT4TkpgyhoT3PJ7x91QA8NwYtKtB3aizGMPvbknsM3\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\n\npragma solidity >=0.7.0 <0.9.0;\n\n/// @title The Witnet Data Request basic interface.\n/// @author The Witnet Foundation.\ninterface IWitnetRequest {\n    /// A `IWitnetRequest` is constructed around a `bytes` value containing \n    /// a well-formed Witnet Data Request using Protocol Buffers.\n    function bytecode() external view returns (bytes memory);\n\n    /// Returns SHA256 hash of Witnet Data Request as CBOR-encoded bytes.\n    function hash() external view returns (bytes32);\n}\n",
+  "sourcePath": "witnet-solidity-bridge/contracts/interfaces/IWitnetRequest.sol",
+  "ast": {
+    "absolutePath": "witnet-solidity-bridge/contracts/interfaces/IWitnetRequest.sol",
+    "exportedSymbols": {
+      "IWitnetRequest": [
+        2367
+      ]
+    },
+    "id": 2368,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2353,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.7",
+          ".0",
+          "<",
+          "0.9",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:31:16"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IWitnetRequest",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 2354,
+          "nodeType": "StructuredDocumentation",
+          "src": "66:87:16",
+          "text": "@title The Witnet Data Request basic interface.\n @author The Witnet Foundation."
+        },
+        "fullyImplemented": false,
+        "id": 2367,
+        "linearizedBaseContracts": [
+          2367
+        ],
+        "name": "IWitnetRequest",
+        "nameLocation": "163:14:16",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "documentation": {
+              "id": 2355,
+              "nodeType": "StructuredDocumentation",
+              "src": "184:138:16",
+              "text": "A `IWitnetRequest` is constructed around a `bytes` value containing \n a well-formed Witnet Data Request using Protocol Buffers."
+            },
+            "functionSelector": "f0940002",
+            "id": 2360,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "bytecode",
+            "nameLocation": "336:8:16",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2356,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "344:2:16"
+            },
+            "returnParameters": {
+              "id": 2359,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2358,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2360,
+                  "src": "370:12:16",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 2357,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "370:5:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "369:14:16"
+            },
+            "scope": 2367,
+            "src": "327:57:16",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "documentation": {
+              "id": 2361,
+              "nodeType": "StructuredDocumentation",
+              "src": "390:69:16",
+              "text": "Returns SHA256 hash of Witnet Data Request as CBOR-encoded bytes."
+            },
+            "functionSelector": "09bd5a60",
+            "id": 2366,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "hash",
+            "nameLocation": "473:4:16",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2362,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "477:2:16"
+            },
+            "returnParameters": {
+              "id": 2365,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2364,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2366,
+                  "src": "503:7:16",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2363,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "503:7:16",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "502:9:16"
+            },
+            "scope": 2367,
+            "src": "464:48:16",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2368,
+        "src": "153:361:16",
+        "usedErrors": []
+      }
+    ],
+    "src": "33:482:16"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.14+commit.80d49f37.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.7",
+  "updatedAt": "2022-09-04T07:00:09.985Z",
+  "devdoc": {
+    "author": "The Witnet Foundation.",
+    "kind": "dev",
+    "methods": {},
+    "title": "The Witnet Data Request basic interface.",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "bytecode()": {
+        "notice": "A `IWitnetRequest` is constructed around a `bytes` value containing  a well-formed Witnet Data Request using Protocol Buffers."
+      },
+      "hash()": {
+        "notice": "Returns SHA256 hash of Witnet Data Request as CBOR-encoded bytes."
+      }
+    },
+    "version": 1
+  }
+}
