@@ -9,7 +9,7 @@
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600></canvas>
+      <canvas id="unity-canvas" width=960 height=540></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -59,9 +59,9 @@
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/slot.loader.js";
       var config = {
-        dataUrl: buildUrl + "/db9c93e3837741934a445a0a07077557.data.unityweb",
-        frameworkUrl: buildUrl + "/40ff073d23101475dd61f0d27aa818ba.js.unityweb",
-        codeUrl: buildUrl + "/81bfad4214dd84eb4c7574b083d88c39.wasm.unityweb",
+        dataUrl: buildUrl + "/0211f73d0a5b894588fd943243d0d8fc.data.unityweb",
+        frameworkUrl: buildUrl + "/b273f563f3aa8dddba5a8dec634d9aa4.js.unityweb",
+        codeUrl: buildUrl + "/5f84201c82aa3847a5f64361febadf56.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "ArcadeChain",
         productName: "Slot",
@@ -84,7 +84,7 @@
         unityShowBanner('WebGL builds are not supported on mobile devices.');
       } else {
         canvas.style.width = "960px";
-        canvas.style.height = "600px";
+        canvas.style.height = "540px";
       }
       canvas.style.background = "url('" + buildUrl + "/b43b52b3013e940480465094ffffab1c.jpg.unityweb') center / cover";
       loadingBar.style.display = "block";
