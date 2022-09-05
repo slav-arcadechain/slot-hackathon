@@ -12,8 +12,10 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private BlockChain blockChain = null;
     [SerializeField] private User user = null;
+    [SerializeField] private Slot slot = null;
 
     private bool shouldUpdateWallet = false;
+    private bool _shouldTransitionView = false;
     private bool hidePanel = true;
     private GameObject approvePanel;
     private GameObject mainBackground;
@@ -43,6 +45,7 @@ public class GameController : MonoBehaviour
         user.OnWalletTokenBalanceUpdated += UpdateWalletTokens;
         user.OnTokenApprovalUpdated += UpdateTokenApproval;
         user.OnWinningsUpdated += UpdateWinnings;
+        slot = FindObjectOfType<Slot>();
     }
 
     private void ClaimButtonHandler()
@@ -100,11 +103,23 @@ public class GameController : MonoBehaviour
         {
             GameObject.Find("ApprovedAmount").GetComponent<Text>().text = $"{approvedAmount}";
         }
+        if (_shouldTransitionView && approvedAmount >= Slot.GameFee)
+        {
+            Debug.Log("closing");
+            _shouldTransitionView = false;
+            CloseApproveButtonHandler();
+        } else if (_shouldTransitionView && approvedAmount < Slot.GameFee)
+        {
+
+
+            Debug.Log("not closing");
+            _shouldTransitionView = false;
+            approvePanel.SetActive(true);
+        }
     }
 
     private void UpdateWalletTokens(decimal balance)
     {
-        Debug.Log("UpdateWalletTokens: " + balance);
         if (GameObject.Find("WalletBalance"))
         {
             GameObject.Find("WalletBalance").GetComponent<Text>().text = balance.ToString();
@@ -121,7 +136,6 @@ public class GameController : MonoBehaviour
 
         if (shouldUpdateWallet)
         {
-            Debug.Log("udating wallet");
             shouldUpdateWallet = false;
             await blockChain.HandleWallet();
         }
@@ -138,9 +152,9 @@ public class GameController : MonoBehaviour
 
             case AuthenticationKitState.MoralisLoggedIn:
                 Debug.Log("connected");
-                approvePanel.SetActive(true);
-                shouldUpdateWallet = true;
                 GameObject.Find("BackgroundImage")?.SetActive(false);
+                shouldUpdateWallet = true;
+                _shouldTransitionView = true;
                 await SubscribeToDatabaseEvents();
                 break;
         }
