@@ -10,6 +10,20 @@ using Vector3 = System.Numerics.Vector3;
 
 public class GameController : MonoBehaviour
 {
+    
+    private static GameController _ins;
+
+    public static GameController ins
+    {
+        get { return _ins; }
+    }
+    
+    private void Awake()
+    {
+        if (_ins == null)
+            _ins = this;
+    }
+    
     [Header("Dependencies")] [SerializeField]
     private AuthenticationKit authenticationKit = null;
 
@@ -36,18 +50,31 @@ public class GameController : MonoBehaviour
         _slotPanel = GameObject.Find("SlotPanel");
         _mainBackground = GameObject.Find("MainBackground");
         _gameBackground = GameObject.Find("slotBackground");
-        hideApproval();
-        hideGame();
+        HideApproval();
+        HideGame();
     }
 
-    private void hideGame()
+    public static void HideGame()
     {
-        _slotPanel.transform.position = UnityEngine.Vector3.back;
+        GameObject.Find("SlotPanel").transform.position = UnityEngine.Vector3.back;
+    }
+    
+    public static void ShowGame()
+    {
+        GameObject.Find("slotBackground").transform.position = UnityEngine.Vector3.forward;
+        GameObject.Find("SlotPanel").transform.position = UnityEngine.Vector3.forward;
+        GameObject.Find("MainBackground").transform.position = UnityEngine.Vector3.back;
+    }
+    public static void ShowApprovalPopup()
+    {
+        HideGame();
+        GameObject.Find("ApprovalPopup").transform.position = UnityEngine.Vector3.forward;
+ 
     }
 
-    private void hideApproval()
+    public static void HideApproval()
     {
-        _approvalPopup.transform.position = UnityEngine.Vector3.back;
+        GameObject.Find("ApprovalPopup").transform.position = UnityEngine.Vector3.back;
     }
 
     private void hideMainBackground()
@@ -58,13 +85,7 @@ public class GameController : MonoBehaviour
     {
         _mainBackground.transform.position = UnityEngine.Vector3.forward;
     }
-    private void showGame()
-    {
-        _gameBackground.transform.position = UnityEngine.Vector3.forward;
-        _slotPanel.transform.position = UnityEngine.Vector3.forward;
-        hideMainBackground();
 
-    }
 
     private void UpdateTokenApproval(decimal approvedAmount)
     {
@@ -72,7 +93,7 @@ public class GameController : MonoBehaviour
         if (_shouldTransitionView && approvedAmount >= Slot.GameFee)
         {
             _shouldTransitionView = false;
-            showGame();
+            ShowGame();
         }
         else if (_shouldTransitionView && approvedAmount < Slot.GameFee)
         {
@@ -83,12 +104,7 @@ public class GameController : MonoBehaviour
 
 
 
-    private void ShowApprovalPopup()
-    {
-        hideGame();
-        _approvalPopup.transform.position = UnityEngine.Vector3.forward;
- 
-    }
+
 
     private void Update()
     {
@@ -120,21 +136,11 @@ public class GameController : MonoBehaviour
         callbacks.OnUpdateEvent += ((item, requestId) =>
         {
             Debug.Log($"db update event received: {item}, id: {requestId}");
-            StartCoroutine(WaitForSecond());
+            _shouldUpdateWallet = true;
         });
 
         var q = await Moralis.GetClient().Query<TUSDCoinApprovalCronos>();
         q.WhereEqualTo("spender", (await Moralis.GetUserAsync()).accounts[0]);
         MoralisLiveQueryController.AddSubscription<TUSDCoinApprovalCronos>("TUSDCoinApprovalCronos", q, callbacks);
-    }
-
-    private IEnumerator WaitForSecond()
-    {
-        for (int a = 0; a < 20; a++)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-
-        _shouldUpdateWallet = true;
     }
 }

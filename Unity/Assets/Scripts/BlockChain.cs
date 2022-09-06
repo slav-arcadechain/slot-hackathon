@@ -62,6 +62,7 @@ public class BlockChain : MonoBehaviour
 
     public IEnumerator HandleWallet()
     {
+        Debug.Log("in handle wallet");
         var addressTask = Moralis.GetUserAsync();
         yield return new WaitUntil(() => addressTask.Status.IsCompleted());
         var moralisUser = addressTask.GetAwaiter().GetResult();

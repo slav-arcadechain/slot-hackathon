@@ -6,12 +6,14 @@ using Cysharp.Threading.Tasks;
 using MoralisUnity;
 using MoralisUnity.Platform.Queries;
 using SlotMachine;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SlotController : MonoBehaviour
 {
     [SerializeField] private BlockChain blockChain = null;
+    [SerializeField] private User user = null;
     private static SlotController _ins;
 
     public static SlotController ins
@@ -40,21 +42,19 @@ public class SlotController : MonoBehaviour
 
     [Header("Game Inputs")] [Space] public Column[] rows;
 
-    [Header("UI Elements")] [Space] private GameObject _slotPanel;
-
     private string _roundId;
-
     private int _nextSlotIndex;
-
     private bool _nextSlotSelected;
     private bool _gameStarted;
     private bool _roundPaidFor;
     private bool _gameWon;
     private int _gameResult;
     private Button _spinButton;
+    private Button _musicButton;
     private MoralisLiveQueryCallbacks<SlotGameRoundResult> _callbacks;
     private bool init = true;
     private bool _shouldSpin = false;
+    private decimal _approvedAmount = 0;
 
 
     private void Start()
@@ -63,8 +63,43 @@ public class SlotController : MonoBehaviour
         _callbacks.OnUpdateEvent += HandleGameRoundResultCallback;
         _spinButton = GameObject.Find("SpinButton").GetComponent<Button>();
         _spinButton.onClick.AddListener(SpinButtonListener);
-        _slotPanel = GameObject.Find("SlotPanel");
+        _musicButton = GameObject.Find("MusicToggle").GetComponent<Button>();
+        _musicButton.onClick.AddListener(ToggleMusic);
+        
+        user = FindObjectOfType<User>();
+        user.OnTokenApprovalUpdated += UpdateTokenApproval;
+        user.OnWinningsUpdated += UpdateWinnings;
     }
+
+    private  void ToggleMusic()
+    {
+        var isMuted = GameObject.Find("BackgroundMusic").GetComponent<AudioSource>().mute;
+        GameObject.Find("BackgroundMusic").GetComponent<AudioSource>().mute = !isMuted;
+        var colors = _musicButton.colors;
+        if (!isMuted)
+        {
+
+            colors.normalColor = new Color(255, 255, 255, 255);
+        }
+        else
+        {
+            colors.normalColor = new Color(255, 255, 255, 130);
+ 
+        }
+    }
+
+    private void UpdateWinnings(decimal winningsAmount)
+    {
+        GameObject.Find("WonText").GetComponent<TextMeshProUGUI>().text = $"{winningsAmount}";
+    }
+
+    private void UpdateTokenApproval(decimal approvedAmount)
+    {
+        GameObject.Find("SpinsText").GetComponent<TextMeshProUGUI>().text = $"{approvedAmount}";
+   
+        _approvedAmount = approvedAmount;
+    }
+
 
     private void Awake()
     {
@@ -88,6 +123,11 @@ public class SlotController : MonoBehaviour
 
     private async void SpinButtonListener()
     {
+        if (_approvedAmount < 10)
+        {
+            GameController.HideGame();
+            GameController.ShowApprovalPopup();
+        }
         _spinButton.interactable = false;
         await PayForGame();
     }
@@ -101,12 +141,6 @@ public class SlotController : MonoBehaviour
     {
         get { return _nextSlotSelected; }
     }
-
-
-    // public async void CheckResults()
-    // {
-    //     await PayForGame();
-    // }
 
     public IEnumerator SelectReward()
     {
