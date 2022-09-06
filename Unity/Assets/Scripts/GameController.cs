@@ -1,9 +1,12 @@
+using System.Collections;
+using System.Numerics;
 using Cysharp.Threading.Tasks;
 using DefaultNamespace;
 using MoralisUnity;
 using MoralisUnity.Kits.AuthenticationKit;
 using UnityEngine;
-using UnityEngine.UI;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = System.Numerics.Vector3;
 
 public class GameController : MonoBehaviour
 {
@@ -14,130 +17,85 @@ public class GameController : MonoBehaviour
     [SerializeField] private User user = null;
     [SerializeField] private Slot slot = null;
 
-    private bool shouldUpdateWallet = false;
+    private bool _shouldUpdateWallet = false;
     private bool _shouldTransitionView = false;
-    private bool hidePanel = true;
-    private GameObject approvePanel;
-    private GameObject mainBackground;
-    private Slider slider;
-    private Button approveButton;
-    private Button closeApporveButton;
-    private Button claimButton;
+    private GameObject _approvalPopup;
+    private GameObject _slotPanel;
+    private GameObject _mainBackground;
+    private GameObject _gameBackground;
 
     void Start()
     {
-        approvePanel = GameObject.Find("ApprovePanel");
-        slider = GameObject.Find("ApproveSlider").GetComponent<Slider>();
-        Debug.Log("slider = " + slider);
-        slider.onValueChanged.AddListener(delegate { HandleSlider(); });
-        approveButton = GameObject.Find("ApproveButton").GetComponent<Button>();
-        closeApporveButton = GameObject.Find("CloseApproveButton").GetComponent<Button>();
-        claimButton = GameObject.Find("ClaimButton").GetComponent<Button>();
-        mainBackground = GameObject.Find("MainBackground");
-
-        authenticationKit = FindObjectOfType<AuthenticationKit>(); 
+        authenticationKit = FindObjectOfType<AuthenticationKit>();
         authenticationKit.OnStateChanged.AddListener(AuthOnStateChangedListener);
         blockChain = FindObjectOfType<BlockChain>();
-        approveButton.onClick.AddListener(ApproveButtonHandler);
-        closeApporveButton.onClick.AddListener(CloseApproveButtonHandler);
-        claimButton.onClick.AddListener(ClaimButtonHandler);
         user = FindObjectOfType<User>();
-        user.OnWalletTokenBalanceUpdated += UpdateWalletTokens;
         user.OnTokenApprovalUpdated += UpdateTokenApproval;
-        user.OnWinningsUpdated += UpdateWinnings;
         slot = FindObjectOfType<Slot>();
+        _approvalPopup = GameObject.Find("ApprovalPopup");
+        _slotPanel = GameObject.Find("SlotPanel");
+        _mainBackground = GameObject.Find("MainBackground");
+        _gameBackground = GameObject.Find("slotBackground");
+        hideApproval();
+        hideGame();
     }
 
-    private void ClaimButtonHandler()
+    private void hideGame()
     {
-        UniTask.Create(async () =>
-        {
-            await BlockChain.Claim();
-            shouldUpdateWallet = true;
-        });    
+        _slotPanel.transform.position = UnityEngine.Vector3.back;
     }
 
-    private void UpdateWinnings(decimal winnings)
+    private void hideApproval()
     {
-        Debug.Log("Winnings: " + winnings);
-        if (GameObject.Find("WonAmount"))
-        {
-            GameObject.Find("WonAmount").GetComponent<Text>().text = winnings.ToString();
-        }    
+        _approvalPopup.transform.position = UnityEngine.Vector3.back;
     }
 
-    private void CloseApproveButtonHandler()
+    private void hideMainBackground()
     {
-        Debug.Log("in close");
-        approvePanel.SetActive(false);
-        mainBackground.SetActive(false);
-        foreach (GameObject go in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
-        {
-            if (go.name == "SlotPanel")
-            {
-                go.SetActive(true);
-            }
-        }
+        _mainBackground.transform.position = UnityEngine.Vector3.back;
     }
-
-    private void ApproveButtonHandler()
+    private void showMainBackground()
     {
-        UniTask.Create(async () =>
-        {
-            await SubscribeToDatabaseEvents();
-            await BlockChain.ApproveGameTokenSpent((int)slider.value * 10);
-        });
+        _mainBackground.transform.position = UnityEngine.Vector3.forward;
     }
-
-    private void HandleSlider()
+    private void showGame()
     {
-        Debug.Log("in slider handle");
-        var value = slider.value;
-        GameObject.Find("ApproveButtonText").GetComponent<Text>().text = $"Approve {value * 10}";
+        _gameBackground.transform.position = UnityEngine.Vector3.forward;
+        _slotPanel.transform.position = UnityEngine.Vector3.forward;
+        hideMainBackground();
+
     }
 
     private void UpdateTokenApproval(decimal approvedAmount)
     {
-        Debug.Log("UpdateTokenApproval: " + approvedAmount);
-        if (GameObject.Find("ApprovedAmount") != null)
-        {
-            GameObject.Find("ApprovedAmount").GetComponent<Text>().text = $"{approvedAmount}";
-        }
+        Debug.Log("in approval = " + approvedAmount);
         if (_shouldTransitionView && approvedAmount >= Slot.GameFee)
         {
-            Debug.Log("closing");
             _shouldTransitionView = false;
-            CloseApproveButtonHandler();
-        } else if (_shouldTransitionView && approvedAmount < Slot.GameFee)
+            showGame();
+        }
+        else if (_shouldTransitionView && approvedAmount < Slot.GameFee)
         {
-
-
-            Debug.Log("not closing");
             _shouldTransitionView = false;
-            approvePanel.SetActive(true);
+            ShowApprovalPopup();
         }
     }
 
-    private void UpdateWalletTokens(decimal balance)
+
+
+    private void ShowApprovalPopup()
     {
-        if (GameObject.Find("WalletBalance"))
-        {
-            GameObject.Find("WalletBalance").GetComponent<Text>().text = balance.ToString();
-        }
+        hideGame();
+        _approvalPopup.transform.position = UnityEngine.Vector3.forward;
+ 
     }
 
-    private async void Update()
+    private void Update()
     {
-        if (hidePanel)
+        if (_shouldUpdateWallet)
         {
-            hidePanel = false;
-            approvePanel.SetActive(false);
-        }
-
-        if (shouldUpdateWallet)
-        {
-            shouldUpdateWallet = false;
-            await blockChain.HandleWallet();
+            _shouldUpdateWallet = false;
+            StartCoroutine(blockChain.HandleWallet());
         }
     }
 
@@ -145,15 +103,11 @@ public class GameController : MonoBehaviour
     {
         switch (state)
         {
-            case AuthenticationKitState.Disconnected:
-                Debug.Log("disconnected");
-                approvePanel.SetActive(false);
-                break;
-
             case AuthenticationKitState.MoralisLoggedIn:
                 Debug.Log("connected");
                 GameObject.Find("BackgroundImage")?.SetActive(false);
-                shouldUpdateWallet = true;
+                GameObject.Find("DisconnectButton")?.SetActive(false);
+                _shouldUpdateWallet = true;
                 _shouldTransitionView = true;
                 await SubscribeToDatabaseEvents();
                 break;
@@ -166,11 +120,21 @@ public class GameController : MonoBehaviour
         callbacks.OnUpdateEvent += ((item, requestId) =>
         {
             Debug.Log($"db update event received: {item}, id: {requestId}");
-            shouldUpdateWallet = true;
+            StartCoroutine(WaitForSecond());
         });
 
         var q = await Moralis.GetClient().Query<TUSDCoinApprovalCronos>();
         q.WhereEqualTo("spender", (await Moralis.GetUserAsync()).accounts[0]);
         MoralisLiveQueryController.AddSubscription<TUSDCoinApprovalCronos>("TUSDCoinApprovalCronos", q, callbacks);
+    }
+
+    private IEnumerator WaitForSecond()
+    {
+        for (int a = 0; a < 20; a++)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        _shouldUpdateWallet = true;
     }
 }

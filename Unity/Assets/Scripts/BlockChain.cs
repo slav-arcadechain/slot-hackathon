@@ -35,17 +35,55 @@ public class BlockChain : MonoBehaviour
         yield break;
     }
 
-    public async UniTask HandleWallet()
+    // public async UniTask HandleWallet()
+    // {
+    //     if (await Moralis.GetUserAsync() != null)
+    //     {
+    //         Debug.Log("in handle wallet");
+    //         var address = (await Moralis.GetUserAsync()).accounts[0];
+    //         var balance = await Moralis.Client.Web3Api.Account.GetTokenBalances(address.ToLower(), GameChain);
+    //         var allowance = await Moralis.Client.Web3Api.Token.GetTokenAllowance(
+    //             GameTokenContractAddress,
+    //             address.ToLower(),
+    //             GameContractAddress.ToLower(),
+    //             GameChain);
+    //         var winnings = await GetWinnings(address); 
+    //         var user = FindObjectOfType<User>();
+    //         foreach (var token in balance.Where(token =>
+    //                      token.TokenAddress.ToLower().Equals(GameTokenContractAddress.ToLower())))
+    //         {
+    //             user.WalletTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(token.Balance));
+    //             user.ApprovedTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(allowance.Allowance));
+    //             user.WinningsBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(winnings));
+    //         } 
+    //     }
+    //
+    // }
+
+    public IEnumerator HandleWallet()
     {
-        Debug.Log("in handle wallet");
-        var address = (await Moralis.GetUserAsync()).accounts[0];
-        var balance = await Moralis.Client.Web3Api.Account.GetTokenBalances(address.ToLower(), GameChain);
-        var allowance = await Moralis.Client.Web3Api.Token.GetTokenAllowance(
+        var addressTask = Moralis.GetUserAsync();
+        yield return new WaitUntil(() => addressTask.Status.IsCompleted());
+        var moralisUser = addressTask.GetAwaiter().GetResult();
+        if (moralisUser == null)
+        {
+            yield break;
+        }
+        var address = moralisUser.accounts[0];
+        var balanceTask = Moralis.Client.Web3Api.Account.GetTokenBalances(address.ToLower(), GameChain);
+        yield return new WaitUntil(() => balanceTask.Status.IsCompleted());
+        var balance = balanceTask.GetAwaiter().GetResult();
+
+        var allowanceTask = Moralis.Client.Web3Api.Token.GetTokenAllowance(
             GameTokenContractAddress,
             address.ToLower(),
             GameContractAddress.ToLower(),
             GameChain);
-        var winnings = await GetWinnings(address); 
+        yield return new WaitUntil(() => allowanceTask.Status.IsCompleted());
+        var allowance = allowanceTask.GetAwaiter().GetResult();
+        var winningsTask = GetWinnings(address);
+        yield return new WaitUntil(() => winningsTask.IsCompleted);
+        var winnings = winningsTask.Result;
         var user = FindObjectOfType<User>();
         foreach (var token in balance.Where(token =>
                      token.TokenAddress.ToLower().Equals(GameTokenContractAddress.ToLower())))
@@ -53,7 +91,7 @@ public class BlockChain : MonoBehaviour
             user.WalletTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(token.Balance));
             user.ApprovedTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(allowance.Allowance));
             user.WinningsBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(winnings));
-        }
+        }  
     }
 
     private async Task<string> GetWinnings(string address)
@@ -111,6 +149,7 @@ public class BlockChain : MonoBehaviour
 
     public static async UniTask EnterGameOnBlockchain(BigInteger gameId)
     {
+        Debug.Log("entering game");
 #if UNITY_WEBGL
         string gameIdParam = gameId.ToString();
 #else

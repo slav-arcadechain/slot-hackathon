@@ -35,7 +35,6 @@ public class User : MonoBehaviour
         get => walletTokenBalance;
         set
         {
-            Debug.Log("setting wallet balance");
             walletTokenBalance = value;
             OnWalletTokenBalanceUpdated?.Invoke(value);
         }
