@@ -77,13 +77,13 @@ public class GameController : MonoBehaviour
         GameObject.Find("ApprovalPopup").transform.position = UnityEngine.Vector3.back;
     }
 
-    private void hideMainBackground()
+    public static void HideMainBackground()
     {
-        _mainBackground.transform.position = UnityEngine.Vector3.back;
+        GameObject.Find("MainBackground").transform.position = UnityEngine.Vector3.back;
     }
-    private void showMainBackground()
+    public static void ShowMainBackground()
     {
-        _mainBackground.transform.position = UnityEngine.Vector3.forward;
+        GameObject.Find("MainBackground").transform.position = UnityEngine.Vector3.forward;
     }
 
 

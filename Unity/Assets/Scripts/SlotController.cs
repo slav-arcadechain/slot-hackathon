@@ -51,11 +51,13 @@ public class SlotController : MonoBehaviour
     private int _gameResult;
     private Button _spinButton;
     private Button _musicButton;
+    private Button _claimButton;
     private MoralisLiveQueryCallbacks<SlotGameRoundResult> _callbacks;
     private bool init = true;
     private bool _shouldSpin = false;
     private decimal _approvedAmount = 0;
-
+    private bool _updateWallet;
+    private bool _shouldUpdateWinnings = true;
 
     private void Start()
     {
@@ -65,39 +67,53 @@ public class SlotController : MonoBehaviour
         _spinButton.onClick.AddListener(SpinButtonListener);
         _musicButton = GameObject.Find("MusicToggle").GetComponent<Button>();
         _musicButton.onClick.AddListener(ToggleMusic);
-        
+        _claimButton = GameObject.Find("ClaimButton").GetComponent<Button>();
+        _claimButton.onClick.AddListener(ClaimListener);
+
         user = FindObjectOfType<User>();
         user.OnTokenApprovalUpdated += UpdateTokenApproval;
         user.OnWinningsUpdated += UpdateWinnings;
     }
 
-    private  void ToggleMusic()
+    private async void ClaimListener()
+    {
+
+        await BlockChain.Claim();
+    }
+
+    private void ToggleMusic()
     {
         var isMuted = GameObject.Find("BackgroundMusic").GetComponent<AudioSource>().mute;
         GameObject.Find("BackgroundMusic").GetComponent<AudioSource>().mute = !isMuted;
         var colors = _musicButton.colors;
-        if (!isMuted)
-        {
-
-            colors.normalColor = new Color(255, 255, 255, 255);
-        }
-        else
-        {
-            colors.normalColor = new Color(255, 255, 255, 130);
- 
-        }
     }
 
     private void UpdateWinnings(decimal winningsAmount)
     {
-        GameObject.Find("WonText").GetComponent<TextMeshProUGUI>().text = $"{winningsAmount}";
+        if (_shouldUpdateWinnings)
+        {
+            _shouldUpdateWinnings = false;
+            GameObject.Find("WonText").GetComponent<TextMeshProUGUI>().text = $"{winningsAmount}";
+            
+            _claimButton.interactable = winningsAmount > 1;
+        }
     }
 
     private void UpdateTokenApproval(decimal approvedAmount)
     {
-        GameObject.Find("SpinsText").GetComponent<TextMeshProUGUI>().text = $"{approvedAmount}";
-   
+        GameObject.Find("SpinsText").GetComponent<TextMeshProUGUI>().text = $"{approvedAmount / 10}";
+
         _approvedAmount = approvedAmount;
+
+        if (approvedAmount < 10)
+        {
+            _spinButton.interactable = false;
+            StartCoroutine(WaitForSecondsAndClose(10));
+        }
+        else
+        {
+            _spinButton.interactable = true;
+        }
     }
 
 
@@ -109,10 +125,8 @@ public class SlotController : MonoBehaviour
 
     private void HandleGameRoundResultCallback(SlotGameRoundResult item, int requestid)
     {
-        Debug.Log("current roundId: " + item.roundId);
         if (item.roundId == _roundId)
         {
-            Debug.Log("in loop: " + item.bracket);
             _roundPaidFor = true;
             _shouldSpin = true;
             _gameWon = item.bracket != 100;
@@ -128,6 +142,7 @@ public class SlotController : MonoBehaviour
             GameController.HideGame();
             GameController.ShowApprovalPopup();
         }
+
         _spinButton.interactable = false;
         await PayForGame();
     }
@@ -183,6 +198,8 @@ public class SlotController : MonoBehaviour
                 StartCoroutine(StartSpinForRow(2));
                 yield return null;
             }
+
+
         }
 
         _roundPaidFor = false;
@@ -210,19 +227,12 @@ public class SlotController : MonoBehaviour
 
     private void Update()
     {
-        if (init)
-        {
-            init = false;
-            // _spinButton = GameObject.Find("SpinButton")?.GetComponent<Button>();
-            // _spinButton?.onClick.AddListener(SpinButtonListener);
-        }
-
         if (_shouldSpin)
         {
             _shouldSpin = false;
             if (_gameWon)
             {
-                StartCoroutine(blockChain.HandleWallet());
+                // StartCoroutine(blockChain.HandleWallet());
                 _nextSlotSelected = true;
                 StartCoroutine(SelectReward());
             }
@@ -231,6 +241,8 @@ public class SlotController : MonoBehaviour
                 _nextSlotSelected = false;
                 StartCoroutine(SpinSlots());
             }
+            StartCoroutine(blockChain.HandleWallet());
+            _shouldUpdateWinnings = true; 
         }
 
 
@@ -243,7 +255,7 @@ public class SlotController : MonoBehaviour
                 if (rows[0].currentSlot == rows[1].currentSlot &&
                     rows[0].currentSlot == rows[2].currentSlot)
                 {
-                    _spinButton.interactable = true;
+                    ActivateSpinButton();
                 }
                 else
                 {
@@ -256,5 +268,27 @@ public class SlotController : MonoBehaviour
     private void ActivateSpinButton()
     {
         _spinButton.interactable = true;
+        // StartCoroutine(WaitForSecondsAndFetchWallet(8));
     }
+
+    private IEnumerator WaitForSecondsAndClose(int seconds)
+    {
+        for (int a = 0; a < seconds * 10; a++)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        GameController.ShowMainBackground();
+        GameController.HideGame();
+        GameController.ShowApprovalPopup();
+    }
+
+    // private IEnumerator WaitForSecondsAndFetchWallet(int seconds)
+    // {
+    //     for (int a = 0; a < seconds * 10; a++)
+    //     {
+    //         yield return new WaitForSeconds(0.1f);
+    //     }
+    //     _updateWallet = true;
+    // }
 }

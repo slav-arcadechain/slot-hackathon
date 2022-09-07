@@ -179,7 +179,7 @@ public class BlockChain : MonoBehaviour
     {
         object[] parameters = { };
         var value = new HexBigInteger(_zeroHex);
-        var gas = new HexBigInteger("100000");
+        var gas = new HexBigInteger("200000");
         var gasPrice = getGasPrice();
         await Moralis.ExecuteContractFunction(
             contractAddress: GameContractAddress,
