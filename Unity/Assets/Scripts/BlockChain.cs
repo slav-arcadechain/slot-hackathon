@@ -162,9 +162,9 @@ public class BlockChain : MonoBehaviour
             gameIdParam
         };
 
-        var value = new HexBigInteger(_zeroHex);
-        var gas = getGas();
-        var gasPrice = getGasPrice();
+        var value = new HexBigInteger(0);
+        var gas = new HexBigInteger(0);
+        var gasPrice = new HexBigInteger(0);
         await Moralis.ExecuteContractFunction(
             contractAddress: GameContractAddress,
             abi: GameAbi,
@@ -178,9 +178,9 @@ public class BlockChain : MonoBehaviour
     public static async Task Claim()
     {
         object[] parameters = { };
-        var value = new HexBigInteger(_zeroHex);
-        var gas = new HexBigInteger("200000");
-        var gasPrice = getGasPrice();
+        var value = new HexBigInteger(0);
+        var gas = new HexBigInteger(0);
+        var gasPrice = new HexBigInteger(0);
         await Moralis.ExecuteContractFunction(
             contractAddress: GameContractAddress,
             abi: GameAbi,
