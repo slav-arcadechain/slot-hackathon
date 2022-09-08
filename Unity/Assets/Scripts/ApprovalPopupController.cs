@@ -55,7 +55,7 @@ public class ApprovalPopupController : MonoBehaviour
     {
         approveButton.interactable = false;
         UniTask.Create(async () => { await BlockChain.ApproveGameTokenSpent((int)slider.value * 10); });
-        StartCoroutine(WaitForSecondsAndFetchWallet(7));
+        StartCoroutine(WaitForSecondsAndFetchWallet(12));
     }
 
     private void HandleSlider()

@@ -57,7 +57,8 @@ public class SlotController : MonoBehaviour
     private bool _shouldSpin = false;
     private decimal _approvedAmount = 0;
     private bool _updateWallet;
-    private bool _shouldUpdateWinnings = true;
+    private bool _shouldUpdateWinnings = false;
+    private bool _subscribed;
 
     private void Start()
     {
@@ -77,7 +78,6 @@ public class SlotController : MonoBehaviour
 
     private async void ClaimListener()
     {
-
         await BlockChain.Claim();
     }
 
@@ -90,13 +90,21 @@ public class SlotController : MonoBehaviour
 
     private void UpdateWinnings(decimal winningsAmount)
     {
-        if (_shouldUpdateWinnings)
+        StartCoroutine(UpdateWithDelay(winningsAmount));
+    }
+
+    private IEnumerator UpdateWithDelay(decimal winningsAmount)
+    {
+        yield return WaitUntil(() => _shouldUpdateWinnings);
+        _shouldUpdateWinnings = false;
+        for (int a = 0; a < 80; a++)
         {
-            _shouldUpdateWinnings = false;
-            GameObject.Find("WonText").GetComponent<TextMeshProUGUI>().text = $"{winningsAmount}";
-            
-            _claimButton.interactable = winningsAmount > 1;
+            yield return new WaitForSeconds(0.1f);
         }
+
+        GameObject.Find("WonText").GetComponent<TextMeshProUGUI>().text = $"{winningsAmount}";
+
+        _claimButton.interactable = winningsAmount > 1;
     }
 
     private void UpdateTokenApproval(decimal approvedAmount)
@@ -125,6 +133,7 @@ public class SlotController : MonoBehaviour
 
     private void HandleGameRoundResultCallback(SlotGameRoundResult item, int requestid)
     {
+        Debug.Log("item.roundId = " + item.roundId + " _roundId: " + _roundId);
         if (item.roundId == _roundId)
         {
             _roundPaidFor = true;
@@ -141,6 +150,7 @@ public class SlotController : MonoBehaviour
         {
             GameController.HideGame();
             GameController.ShowApprovalPopup();
+            return;
         }
 
         _spinButton.interactable = false;
@@ -176,12 +186,16 @@ public class SlotController : MonoBehaviour
 
     private async UniTask SubscribeToDatabaseEvents()
     {
-        MoralisQuery<SlotGameRoundResult> q = await Moralis.GetClient().Query<SlotGameRoundResult>();
-        q.WhereEqualTo("user", (await Moralis.GetUserAsync()).accounts[0])
-            .WhereEqualTo("roundId", _roundId)
-            .WhereEqualTo("confirmed", false);
-        MoralisLiveQueryController.AddSubscription("SlotGameRoundResult", q, _callbacks);
-        Debug.Log("subscirbed");
+        if (!_subscribed)
+        {
+            _subscribed = true;
+            MoralisQuery<SlotGameRoundResult> q = await Moralis.GetClient().Query<SlotGameRoundResult>();
+            q.WhereEqualTo("user", (await Moralis.GetUserAsync()).accounts[0])
+                // .WhereEqualTo("roundId", _roundId)
+                .WhereEqualTo("confirmed", false);
+            MoralisLiveQueryController.AddSubscription("SlotGameRoundResult", q, _callbacks);
+            Debug.Log("subscirbed");
+        }
     }
 
     public IEnumerator SpinSlots()
@@ -197,9 +211,9 @@ public class SlotController : MonoBehaviour
                 yield return null;
                 StartCoroutine(StartSpinForRow(2));
                 yield return null;
+                Debug.Log("should update winnings");
+                _shouldUpdateWinnings = true;
             }
-
-
         }
 
         _roundPaidFor = false;
@@ -241,8 +255,9 @@ public class SlotController : MonoBehaviour
                 _nextSlotSelected = false;
                 StartCoroutine(SpinSlots());
             }
+
             StartCoroutine(blockChain.HandleWallet());
-            _shouldUpdateWinnings = true; 
+            // _shouldUpdateWinnings = true;
         }
 
 
@@ -268,7 +283,6 @@ public class SlotController : MonoBehaviour
     private void ActivateSpinButton()
     {
         _spinButton.interactable = true;
-        // StartCoroutine(WaitForSecondsAndFetchWallet(8));
     }
 
     private IEnumerator WaitForSecondsAndClose(int seconds)
@@ -282,13 +296,4 @@ public class SlotController : MonoBehaviour
         GameController.HideGame();
         GameController.ShowApprovalPopup();
     }
-
-    // private IEnumerator WaitForSecondsAndFetchWallet(int seconds)
-    // {
-    //     for (int a = 0; a < seconds * 10; a++)
-    //     {
-    //         yield return new WaitForSeconds(0.1f);
-    //     }
-    //     _updateWallet = true;
-    // }
 }

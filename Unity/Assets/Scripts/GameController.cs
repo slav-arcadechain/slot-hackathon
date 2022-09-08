@@ -31,8 +31,9 @@ public class GameController : MonoBehaviour
     [SerializeField] private User user = null;
     [SerializeField] private Slot slot = null;
 
-    private bool _shouldUpdateWallet = false;
-    private bool _shouldTransitionView = false;
+    private bool _shouldUpdateWallet;
+    private bool _shouldTransitionView;
+    private bool _subscribedToApproval;
     private GameObject _approvalPopup;
     private GameObject _slotPanel;
     private GameObject _mainBackground;
@@ -69,7 +70,6 @@ public class GameController : MonoBehaviour
     {
         HideGame();
         GameObject.Find("ApprovalPopup").transform.position = UnityEngine.Vector3.forward;
- 
     }
 
     public static void HideApproval()
@@ -85,7 +85,17 @@ public class GameController : MonoBehaviour
     {
         GameObject.Find("MainBackground").transform.position = UnityEngine.Vector3.forward;
     }
-
+    
+    public static GameObject FindObject(GameObject parent, string name)
+    {
+        Transform[] trs= parent.GetComponentsInChildren<Transform>(true);
+        foreach(Transform t in trs){
+            if(t.name == name){
+                return t.gameObject;
+            }
+        }
+        return null;
+    }
 
     private void UpdateTokenApproval(decimal approvedAmount)
     {
@@ -101,10 +111,6 @@ public class GameController : MonoBehaviour
             ShowApprovalPopup();
         }
     }
-
-
-
-
 
     private void Update()
     {
@@ -132,15 +138,32 @@ public class GameController : MonoBehaviour
 
     private async UniTask SubscribeToDatabaseEvents()
     {
-        var callbacks = new MoralisLiveQueryCallbacks<TUSDCoinApprovalCronos>();
-        callbacks.OnUpdateEvent += ((item, requestId) =>
+        if (!_subscribedToApproval)
         {
-            Debug.Log($"db update event received: {item}, id: {requestId}");
-            _shouldUpdateWallet = true;
-        });
+            _subscribedToApproval = true;
+            var callbacks = new MoralisLiveQueryCallbacks<TUSDCoinApprovalCronos>();
+            callbacks.OnUpdateEvent += ((item, requestId) =>
+            {
+                Debug.Log($"db update event received: {item}, id: {requestId}");
+                // _shouldUpdateWallet = true;
+                StartCoroutine(WaitForSecondsAndUpdateWallet(20));
+            });
 
-        var q = await Moralis.GetClient().Query<TUSDCoinApprovalCronos>();
-        q.WhereEqualTo("spender", (await Moralis.GetUserAsync()).accounts[0]);
-        MoralisLiveQueryController.AddSubscription<TUSDCoinApprovalCronos>("TUSDCoinApprovalCronos", q, callbacks);
+            var q = await Moralis.GetClient().Query<TUSDCoinApprovalCronos>();
+            q.WhereEqualTo("spender", (await Moralis.GetUserAsync()).accounts[0]);
+            MoralisLiveQueryController.AddSubscription<TUSDCoinApprovalCronos>("TUSDCoinApprovalCronos", q, callbacks); 
+        }
+
+    }
+    
+    private IEnumerator WaitForSecondsAndUpdateWallet(int seconds)
+    {
+        Debug.Log("before");
+        for (int a = 0; a < seconds * 10; a++)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        Debug.Log("after");
+        _shouldUpdateWallet = true;
     }
 }
