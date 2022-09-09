@@ -35,38 +35,13 @@ public class BlockChain : MonoBehaviour
         yield break;
     }
 
-    // public async UniTask HandleWallet()
-    // {
-    //     if (await Moralis.GetUserAsync() != null)
-    //     {
-    //         Debug.Log("in handle wallet");
-    //         var address = (await Moralis.GetUserAsync()).accounts[0];
-    //         var balance = await Moralis.Client.Web3Api.Account.GetTokenBalances(address.ToLower(), GameChain);
-    //         var allowance = await Moralis.Client.Web3Api.Token.GetTokenAllowance(
-    //             GameTokenContractAddress,
-    //             address.ToLower(),
-    //             GameContractAddress.ToLower(),
-    //             GameChain);
-    //         var winnings = await GetWinnings(address); 
-    //         var user = FindObjectOfType<User>();
-    //         foreach (var token in balance.Where(token =>
-    //                      token.TokenAddress.ToLower().Equals(GameTokenContractAddress.ToLower())))
-    //         {
-    //             user.WalletTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(token.Balance));
-    //             user.ApprovedTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(allowance.Allowance));
-    //             user.WinningsBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(winnings));
-    //         } 
-    //     }
-    //
-    // }
-
-    public IEnumerator HandleWallet(int delaySeconds )
+    public IEnumerator HandleWallet(int delaySeconds)
     {
         for (int a = 0; a < delaySeconds * 10; a++)
         {
             yield return new WaitForSeconds(0.1f);
         }
-        
+
         var addressTask = Moralis.GetUserAsync();
         yield return new WaitUntil(() => addressTask.Status.IsCompleted());
         var moralisUser = addressTask.GetAwaiter().GetResult();
@@ -74,6 +49,7 @@ public class BlockChain : MonoBehaviour
         {
             yield break;
         }
+
         var address = moralisUser.accounts[0];
         var balanceTask = Moralis.Client.Web3Api.Account.GetTokenBalances(address.ToLower(), GameChain);
         yield return new WaitUntil(() => balanceTask.Status.IsCompleted());
@@ -96,7 +72,7 @@ public class BlockChain : MonoBehaviour
             user.WalletTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(token.Balance));
             user.ApprovedTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(allowance.Allowance));
             user.WinningsBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(winnings));
-        }  
+        }
     }
 
     private async Task<string> GetWinnings(string address)
@@ -109,17 +85,21 @@ public class BlockChain : MonoBehaviour
         outputParams[0] = new { internalType = "uint256", name = "", type = "uint256" };
         // // Function ABI
         object[] abi = new object[1];
-        abi[0] = new { inputs = inputParams, name = "getUserWinnings", outputs = outputParams, stateMutability = "view", type = "function" };
+        abi[0] = new
+        {
+            inputs = inputParams, name = "getUserWinnings", outputs = outputParams, stateMutability = "view",
+            type = "function"
+        };
         // // Define request object
         RunContractDto rcd = new RunContractDto()
         {
             Abi = abi,
-            Params = new { _address = address}
+            Params = new { _address = address }
         };
         string resp = await Moralis.Web3Api.Native.RunContractFunction<string>(
-            address: GameContractAddress, 
-            functionName: "getUserWinnings", 
-            abi: rcd, 
+            address: GameContractAddress,
+            functionName: "getUserWinnings",
+            abi: rcd,
             chain: GameChain);
         Debug.Log(resp);
         return resp;
@@ -158,7 +138,7 @@ public class BlockChain : MonoBehaviour
 #if UNITY_WEBGL
         string gameIdParam = gameId.ToString();
 #else
-        var gameIdParam =  gameId;
+        var gameIdParam = gameId;
 #endif
         // enter game on block chain
         object[] parameters =
@@ -178,7 +158,7 @@ public class BlockChain : MonoBehaviour
             gas: gas,
             gasPrice: gasPrice);
     }
-    
+
     public static async Task Claim()
     {
         object[] parameters = { };
@@ -192,7 +172,7 @@ public class BlockChain : MonoBehaviour
             args: parameters,
             value: value,
             gas: gas,
-            gasPrice: gasPrice);   
+            gasPrice: gasPrice);
     }
 
     bool quitting = false;
@@ -251,6 +231,4 @@ public class BlockChain : MonoBehaviour
     }
 
     #endregion
-
-
 }

@@ -3,14 +3,14 @@ using UnityEngine;
 public class Slot : MonoBehaviour
 {
     public const int GameFee = 10;
-        
+
     bool _quitting = false;
- 
+
     private void OnApplicationQuit()
     {
         _quitting = true;
     }
- 
+
     private void OnDestroy()
     {
         if (!_quitting)
@@ -19,9 +19,11 @@ public class Slot : MonoBehaviour
             Init();
         }
     }
+
     #region Instance
- 
+
     private static Slot _instance;
+
     private static Slot Instance
     {
         get
@@ -30,7 +32,7 @@ public class Slot : MonoBehaviour
             return _instance;
         }
     }
- 
+
     [RuntimeInitializeOnLoadMethod] // this enables eager loading
     private static void Init()
     {
@@ -38,11 +40,11 @@ public class Slot : MonoBehaviour
         {
             var gameObject = new GameObject("Download");
             gameObject.hideFlags = HideFlags.HideAndDontSave; //hides from Unity editor
- 
+
             _instance = gameObject.AddComponent<Slot>();
             DontDestroyOnLoad(gameObject); //prevents destroy on changing scene 
         }
     }
- 
+
     #endregion
 }

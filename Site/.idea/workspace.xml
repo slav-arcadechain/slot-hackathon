@@ -17,27 +17,14 @@
       <change afterPath="$USER_HOME$/WebstormProjects/arcadechain-contracts/app/src/contracts/SafeERC20.json" afterDir="false" />
       <change afterPath="$USER_HOME$/WebstormProjects/arcadechain-contracts/app/src/contracts/Slot.json" afterDir="false" />
       <change afterPath="$USER_HOME$/WebstormProjects/arcadechain-contracts/app/src/contracts/TUSD.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SmartContract/contracts/ACNFT.sol" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SmartContract/migrations/5_ACNFT.js" afterDir="false" />
       <change beforePath="$USER_HOME$/WebstormProjects/arcadechain-contracts/README.md" beforeDir="false" afterPath="$USER_HOME$/WebstormProjects/arcadechain-contracts/README.md" afterDir="false" />
       <change beforePath="$USER_HOME$/WebstormProjects/arcadechain-contracts/contracts/Slot.sol" beforeDir="false" afterPath="$USER_HOME$/WebstormProjects/arcadechain-contracts/contracts/Slot.sol" afterDir="false" />
       <change beforePath="$USER_HOME$/WebstormProjects/arcadechain-contracts/migrations/4_Slot.js" beforeDir="false" afterPath="$USER_HOME$/WebstormProjects/arcadechain-contracts/migrations/4_Slot.js" afterDir="false" />
       <change beforePath="$USER_HOME$/WebstormProjects/arcadechain-contracts/test/SlotTest.spec.js" beforeDir="false" afterPath="$USER_HOME$/WebstormProjects/arcadechain-contracts/test/SlotTest.spec.js" afterDir="false" />
       <change beforePath="$USER_HOME$/WebstormProjects/arcadechain-contracts/truffle-config.js" beforeDir="false" afterPath="$USER_HOME$/WebstormProjects/arcadechain-contracts/truffle-config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Moralis/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Moralis/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Moralis/cloudfunctions/slotResult.js" beforeDir="false" afterPath="$PROJECT_DIR$/../Moralis/cloudfunctions/slotResult.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Site.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Site.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/slot/Build/60065067075348d86254ca64b87bd99f.data.unityweb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/slot/Build/90fef4b161927aaa0283cc5c21c47bd2.js.unityweb" beforeDir="false" afterPath="$PROJECT_DIR$/public/slot/Build/90fef4b161927aaa0283cc5c21c47bd2.js.unityweb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/slot/Build/c11cf9da009e1fc0cc20e26befceb5dd.wasm.unityweb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/slot/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/slot/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SmartContract/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../SmartContract/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SmartContract/build/contracts/Slot.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SmartContract/build/contracts/Slot.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Unity/Assets/Scripts/BlockChain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Unity/Assets/Scripts/BlockChain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Unity/Assets/Scripts/SlotController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Unity/Assets/Scripts/SlotController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Unity/Assets/Scripts/SlotGameEntered.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Unity/Assets/Scripts/SlotGameRoundResult.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Unity/Assets/Scripts/SlotGameEntered.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../Unity/Assets/Scripts/SlotGameRoundResult.cs.meta" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

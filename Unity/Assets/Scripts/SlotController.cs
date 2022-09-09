@@ -252,6 +252,7 @@ public class SlotController : MonoBehaviour
                 _nextSlotSelected = false;
                 StartCoroutine(SpinSlots());
             }
+
             StartCoroutine(blockChain.HandleWallet(10));
         }
 

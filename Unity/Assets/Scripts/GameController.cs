@@ -1,29 +1,27 @@
 using System.Collections;
-using System.Numerics;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using DefaultNamespace;
 using MoralisUnity;
 using MoralisUnity.Kits.AuthenticationKit;
 using UnityEngine;
-using Vector2 = UnityEngine.Vector2;
-using Vector3 = System.Numerics.Vector3;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    
     private static GameController _ins;
 
     public static GameController ins
     {
         get { return _ins; }
     }
-    
+
     private void Awake()
     {
         if (_ins == null)
             _ins = this;
     }
-    
+
     [Header("Dependencies")] [SerializeField]
     private AuthenticationKit authenticationKit = null;
 
@@ -38,6 +36,7 @@ public class GameController : MonoBehaviour
     private GameObject _slotPanel;
     private GameObject _mainBackground;
     private GameObject _gameBackground;
+    private readonly int[] _allowedChainIds = { 338 };
 
     void Start()
     {
@@ -57,44 +56,35 @@ public class GameController : MonoBehaviour
 
     public static void HideGame()
     {
-        GameObject.Find("SlotPanel").transform.position = UnityEngine.Vector3.back;
+        GameObject.Find("SlotPanel").transform.position = Vector3.back;
     }
-    
+
     public static void ShowGame()
     {
-        GameObject.Find("slotBackground").transform.position = UnityEngine.Vector3.forward;
-        GameObject.Find("SlotPanel").transform.position = UnityEngine.Vector3.forward;
-        GameObject.Find("MainBackground").transform.position = UnityEngine.Vector3.back;
+        GameObject.Find("slotBackground").transform.position = Vector3.forward;
+        GameObject.Find("SlotPanel").transform.position = Vector3.forward;
+        GameObject.Find("MainBackground").transform.position = Vector3.back;
     }
+
     public static void ShowApprovalPopup()
     {
         HideGame();
-        GameObject.Find("ApprovalPopup").transform.position = UnityEngine.Vector3.forward;
+        GameObject.Find("ApprovalPopup").transform.position = Vector3.forward;
     }
 
     public static void HideApproval()
     {
-        GameObject.Find("ApprovalPopup").transform.position = UnityEngine.Vector3.back;
+        GameObject.Find("ApprovalPopup").transform.position = Vector3.back;
     }
 
     public static void HideMainBackground()
     {
-        GameObject.Find("MainBackground").transform.position = UnityEngine.Vector3.back;
+        GameObject.Find("MainBackground").transform.position = Vector3.back;
     }
+
     public static void ShowMainBackground()
     {
-        GameObject.Find("MainBackground").transform.position = UnityEngine.Vector3.forward;
-    }
-    
-    public static GameObject FindObject(GameObject parent, string name)
-    {
-        Transform[] trs= parent.GetComponentsInChildren<Transform>(true);
-        foreach(Transform t in trs){
-            if(t.name == name){
-                return t.gameObject;
-            }
-        }
-        return null;
+        GameObject.Find("MainBackground").transform.position = Vector3.forward;
     }
 
     private void UpdateTokenApproval(decimal approvedAmount)
@@ -129,10 +119,38 @@ public class GameController : MonoBehaviour
                 Debug.Log("connected");
                 GameObject.Find("BackgroundImage")?.SetActive(false);
                 GameObject.Find("DisconnectButton")?.SetActive(false);
+                await checkBlockChain();
                 _shouldUpdateWallet = true;
                 _shouldTransitionView = true;
                 await SubscribeToDatabaseEvents();
                 break;
+        }
+    }
+
+    private async UniTask checkBlockChain()
+    {
+        Debug.Log(Moralis.CurrentChain.ChainId);
+        Debug.Log(_allowedChainIds[0]);
+        if (_allowedChainIds.Contains(Moralis.CurrentChain.ChainId))
+        {
+            Debug.Log("yeah");
+            return;
+        }
+
+        authenticationKit.Disconnect();
+
+        var message = GameObject.Find("ConnectButton")?.AddComponent<Text>();
+        if (message != null)
+        {
+            message.text = "Please make sure you are using Cronos Test network in your wallet";
+
+            Font font = (Font)Resources.GetBuiltinResource(typeof(Font), "neuropol.ttf");
+            message.font = font;
+            message.material = font.material;
+        }
+        else
+        {
+            Debug.Log("message is null");
         }
     }
 
@@ -151,11 +169,10 @@ public class GameController : MonoBehaviour
 
             var q = await Moralis.GetClient().Query<TUSDCoinApprovalCronos>();
             q.WhereEqualTo("spender", (await Moralis.GetUserAsync()).accounts[0]);
-            MoralisLiveQueryController.AddSubscription<TUSDCoinApprovalCronos>("TUSDCoinApprovalCronos", q, callbacks); 
+            MoralisLiveQueryController.AddSubscription<TUSDCoinApprovalCronos>("TUSDCoinApprovalCronos", q, callbacks);
         }
-
     }
-    
+
     private IEnumerator WaitForSecondsAndUpdateWallet(int seconds)
     {
         Debug.Log("before");
@@ -163,6 +180,7 @@ public class GameController : MonoBehaviour
         {
             yield return new WaitForSeconds(0.1f);
         }
+
         Debug.Log("after");
         _shouldUpdateWallet = true;
     }

@@ -72,7 +72,7 @@ public class ApprovalPopupController : MonoBehaviour
             if (approvedAmount >= Slot.GameFee)
             {
                 approveButton.interactable = true;
-                closeApporveButton.interactable = true; 
+                closeApporveButton.interactable = true;
                 GameObject.Find("ApprovedAmount").GetComponent<Text>().text =
                     $"{Math.Round(approvedAmount / Slot.GameFee, 0)}";
                 StartCoroutine(WaitForSecond());
@@ -108,10 +108,10 @@ public class ApprovalPopupController : MonoBehaviour
             StartCoroutine(blockChain.HandleWallet(20));
         }
     }
-    
+
     private IEnumerator WaitForSecond()
     {
-        for (int a = 0; a <50; a++)
+        for (int a = 0; a < 50; a++)
         {
             yield return new WaitForSeconds(0.1f);
         }

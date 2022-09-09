@@ -11,9 +11,9 @@ namespace SlotMachine
         public int currentSlot;
         public int minShiftCount, maxShiftCount;
 
-        private int cellCount;           //Difference next slot and current slot
-        private int randomValue;         //How many times rows will be shifted untill result value.
-        private int randomShiftCount;    //How many row to shift
+        private int cellCount; //Difference next slot and current slot
+        private int randomValue; //How many times rows will be shifted untill result value.
+        private int randomShiftCount; //How many row to shift
         private int nextSlotIndex;
 
         private float timeInternal;
@@ -31,10 +31,7 @@ namespace SlotMachine
 
         public bool ColumnStopped
         {
-            get
-            {
-                return columnStopped;
-            }
+            get { return columnStopped; }
         }
 
         public void StartRotating()
@@ -66,12 +63,15 @@ namespace SlotMachine
                 if (slotIndex == 7) //rowCount-1
                 {
                     float yPosition = 0 - (slotIndex * yValuePerRow); //-960 for our case
-                    transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - yPosition - 150f); //Back to starting position
+                    transform.localPosition = new Vector2(transform.localPosition.x,
+                        transform.localPosition.y - yPosition - 150f); //Back to starting position
                 }
                 else
                 {
-                    transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - yValuePerRow);
+                    transform.localPosition =
+                        new Vector2(transform.localPosition.x, transform.localPosition.y - yValuePerRow);
                 }
+
                 yield return new WaitForSeconds(timeInternal);
             }
 
