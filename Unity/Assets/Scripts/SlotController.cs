@@ -149,7 +149,8 @@ public class SlotController : MonoBehaviour
             GameController.ShowApprovalPopup();
             return;
         }
-
+        
+        GameController.ins.ShowLoader();
         _spinButton.interactable = false;
         await PayForGame();
     }
@@ -199,6 +200,7 @@ public class SlotController : MonoBehaviour
     {
         if (_roundPaidFor)
         {
+            GameController.ins.HideLoader();
             if (rows[0].ColumnStopped && rows[1].ColumnStopped && rows[2].ColumnStopped)
             {
                 _gameStarted = true;

@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private BlockChain blockChain = null;
     [SerializeField] private User user = null;
     [SerializeField] private Slot slot = null;
+    [SerializeField] private Image _backgroundImage = null;
 
     private bool _shouldUpdateWallet;
     private bool _shouldTransitionView;
@@ -85,6 +86,20 @@ public class GameController : MonoBehaviour
     public static void ShowMainBackground()
     {
         GameObject.Find("MainBackground").transform.position = Vector3.forward;
+    }
+    
+    public void ShowLoader()
+    {
+        _backgroundImage.gameObject.SetActive(true);
+        var position = GameObject.Find("Loader").transform.position;
+        GameObject.Find("Loader").transform.position = new Vector3(1000.0f, position.y, position.z);
+    }
+
+    public void HideLoader()
+    {
+        _backgroundImage.gameObject.SetActive(false);
+        var position = GameObject.Find("Loader").transform.position;
+        GameObject.Find("Loader").transform.position = new Vector3(10000.0f, position.y, position.z);
     }
 
     private void UpdateTokenApproval(decimal approvedAmount)

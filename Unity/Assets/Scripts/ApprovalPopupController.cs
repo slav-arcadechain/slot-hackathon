@@ -53,6 +53,7 @@ public class ApprovalPopupController : MonoBehaviour
 
     private void ApproveButtonHandler()
     {
+        GameController.ins.ShowLoader();
         approveButton.interactable = false;
         UniTask.Create(async () => { await BlockChain.ApproveGameTokenSpent((int)slider.value * 10); });
         shouldUpdateWallet = true;
@@ -71,6 +72,7 @@ public class ApprovalPopupController : MonoBehaviour
         {
             if (approvedAmount >= Slot.GameFee)
             {
+                GameController.ins.HideLoader();
                 approveButton.interactable = true;
                 closeApporveButton.interactable = true;
                 GameObject.Find("ApprovedAmount").GetComponent<Text>().text =
