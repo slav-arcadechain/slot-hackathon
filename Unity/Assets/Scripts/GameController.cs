@@ -119,7 +119,7 @@ public class GameController : MonoBehaviour
                 Debug.Log("connected");
                 GameObject.Find("BackgroundImage")?.SetActive(false);
                 GameObject.Find("DisconnectButton")?.SetActive(false);
-                await checkBlockChain();
+                CheckBlockChain();
                 _shouldUpdateWallet = true;
                 _shouldTransitionView = true;
                 await SubscribeToDatabaseEvents();
@@ -127,30 +127,11 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private async UniTask checkBlockChain()
+    private void CheckBlockChain()
     {
-        Debug.Log(Moralis.CurrentChain.ChainId);
-        Debug.Log(_allowedChainIds[0]);
-        if (_allowedChainIds.Contains(Moralis.CurrentChain.ChainId))
+        if (Moralis.CurrentChain == null || !_allowedChainIds.Contains(Moralis.CurrentChain.ChainId))
         {
-            Debug.Log("yeah");
-            return;
-        }
-
-        authenticationKit.Disconnect();
-
-        var message = GameObject.Find("ConnectButton")?.AddComponent<Text>();
-        if (message != null)
-        {
-            message.text = "Please make sure you are using Cronos Test network in your wallet";
-
-            Font font = (Font)Resources.GetBuiltinResource(typeof(Font), "neuropol.ttf");
-            message.font = font;
-            message.material = font.material;
-        }
-        else
-        {
-            Debug.Log("message is null");
+            authenticationKit.Disconnect();
         }
     }
 
