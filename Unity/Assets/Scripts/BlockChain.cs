@@ -60,9 +60,13 @@ public class BlockChain : MonoBehaviour
     //
     // }
 
-    public IEnumerator HandleWallet()
+    public IEnumerator HandleWallet(int delaySeconds )
     {
-        Debug.Log("in handle wallet");
+        for (int a = 0; a < delaySeconds * 10; a++)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        
         var addressTask = Moralis.GetUserAsync();
         yield return new WaitUntil(() => addressTask.Status.IsCompleted());
         var moralisUser = addressTask.GetAwaiter().GetResult();
@@ -162,9 +166,9 @@ public class BlockChain : MonoBehaviour
             gameIdParam
         };
 
-        var value = new HexBigInteger(0);
-        var gas = new HexBigInteger(0);
-        var gasPrice = new HexBigInteger(0);
+        var value = new HexBigInteger(_zeroHex);
+        var gas = getGas();
+        var gasPrice = getGasPrice();
         await Moralis.ExecuteContractFunction(
             contractAddress: GameContractAddress,
             abi: GameAbi,
@@ -178,9 +182,9 @@ public class BlockChain : MonoBehaviour
     public static async Task Claim()
     {
         object[] parameters = { };
-        var value = new HexBigInteger(0);
-        var gas = new HexBigInteger(0);
-        var gasPrice = new HexBigInteger(0);
+        var value = new HexBigInteger(_zeroHex);
+        var gas = new HexBigInteger("200000");
+        var gasPrice = getGasPrice();
         await Moralis.ExecuteContractFunction(
             contractAddress: GameContractAddress,
             abi: GameAbi,

@@ -55,7 +55,7 @@ public class ApprovalPopupController : MonoBehaviour
     {
         approveButton.interactable = false;
         UniTask.Create(async () => { await BlockChain.ApproveGameTokenSpent((int)slider.value * 10); });
-        StartCoroutine(WaitForSecondsAndFetchWallet(12));
+        shouldUpdateWallet = true;
     }
 
     private void HandleSlider()
@@ -104,7 +104,8 @@ public class ApprovalPopupController : MonoBehaviour
         if (shouldUpdateWallet)
         {
             shouldUpdateWallet = false;
-            StartCoroutine(blockChain.HandleWallet());
+            StartCoroutine(blockChain.HandleWallet(12));
+            StartCoroutine(blockChain.HandleWallet(20));
         }
     }
     
@@ -116,17 +117,5 @@ public class ApprovalPopupController : MonoBehaviour
         }
 
         CloseApproveButtonHandler();
-    }
-    
-    private IEnumerator WaitForSecondsAndFetchWallet(int seconds)
-    {
-        Debug.Log("in the wait before");
-        for (int a = 0; a < seconds * 10; a++)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-
-        Debug.Log("in the wait after");
-        shouldUpdateWallet = true;
     }
 }

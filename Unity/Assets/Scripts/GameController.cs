@@ -117,7 +117,7 @@ public class GameController : MonoBehaviour
         if (_shouldUpdateWallet)
         {
             _shouldUpdateWallet = false;
-            StartCoroutine(blockChain.HandleWallet());
+            StartCoroutine(blockChain.HandleWallet(0));
         }
     }
 

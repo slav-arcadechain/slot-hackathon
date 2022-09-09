@@ -53,10 +53,8 @@ public class SlotController : MonoBehaviour
     private Button _musicButton;
     private Button _claimButton;
     private MoralisLiveQueryCallbacks<SlotGameRoundResult> _callbacks;
-    private bool init = true;
     private bool _shouldSpin = false;
     private decimal _approvedAmount = 0;
-    private bool _updateWallet;
     private bool _shouldUpdateWinnings = false;
     private bool _subscribed;
 
@@ -85,7 +83,7 @@ public class SlotController : MonoBehaviour
     {
         var isMuted = GameObject.Find("BackgroundMusic").GetComponent<AudioSource>().mute;
         GameObject.Find("BackgroundMusic").GetComponent<AudioSource>().mute = !isMuted;
-        var colors = _musicButton.colors;
+        var colors = GameObject.Find("MusicToggle").GetComponent<Image>().color = isMuted ? Color.white : Color.grey;
     }
 
     private void UpdateWinnings(decimal winningsAmount)
@@ -123,7 +121,6 @@ public class SlotController : MonoBehaviour
             _spinButton.interactable = true;
         }
     }
-
 
     private void Awake()
     {
@@ -244,9 +241,9 @@ public class SlotController : MonoBehaviour
         if (_shouldSpin)
         {
             _shouldSpin = false;
+            StartCoroutine(blockChain.HandleWallet(2));
             if (_gameWon)
             {
-                // StartCoroutine(blockChain.HandleWallet());
                 _nextSlotSelected = true;
                 StartCoroutine(SelectReward());
             }
@@ -255,11 +252,8 @@ public class SlotController : MonoBehaviour
                 _nextSlotSelected = false;
                 StartCoroutine(SpinSlots());
             }
-
-            StartCoroutine(blockChain.HandleWallet());
-            // _shouldUpdateWinnings = true;
+            StartCoroutine(blockChain.HandleWallet(10));
         }
-
 
         if (_gameStarted)
         {
@@ -270,19 +264,14 @@ public class SlotController : MonoBehaviour
                 if (rows[0].currentSlot == rows[1].currentSlot &&
                     rows[0].currentSlot == rows[2].currentSlot)
                 {
-                    ActivateSpinButton();
+                    _spinButton.interactable = true;
                 }
                 else
                 {
-                    ActivateSpinButton();
+                    _spinButton.interactable = true;
                 }
             }
         }
-    }
-
-    private void ActivateSpinButton()
-    {
-        _spinButton.interactable = true;
     }
 
     private IEnumerator WaitForSecondsAndClose(int seconds)
