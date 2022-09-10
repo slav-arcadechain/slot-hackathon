@@ -39,7 +39,8 @@ public class ApprovalPopupController : MonoBehaviour
         if (viewName == "approval")
         {
             _isViewActive = true;
-            StartCoroutine(blockChain.HandleWallet(0));
+            StartCoroutine(blockChain.HandleAllowance());
+            StartCoroutine(blockChain.HandleGameTokens());
         }
         else
         {

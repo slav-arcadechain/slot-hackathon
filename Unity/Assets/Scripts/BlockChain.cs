@@ -46,7 +46,7 @@ public class BlockChain : MonoBehaviour
         yield return new WaitUntil(() => _userAddress != "");
         
         StartCoroutine(HandleAllowance());
-        StartCoroutine(HandleWinnings());
+        StartCoroutine(HandleWinnings(0));
         StartCoroutine(HandleGameTokens());
     }
 
@@ -80,8 +80,12 @@ public class BlockChain : MonoBehaviour
         }
     }
 
-    public IEnumerator HandleWinnings()
+    public IEnumerator HandleWinnings(int delaySeconds)
     {
+        for (int a = 0; a < delaySeconds * 10; a++)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
         yield return new WaitUntil(() => _userAddress != "");
         var winningsTask = GetWinnings();
         yield return new WaitUntil(() => winningsTask.IsCompleted);

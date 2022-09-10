@@ -53,30 +53,50 @@ public class SlotController : MonoBehaviour
     private Button _musicButton;
     private Button _claimButton;
     private MoralisLiveQueryCallbacks<SlotGameRoundResult> _callbacks;
+    private MoralisLiveQueryCallbacks<SlotClaimed> _slotClaimedCallbacks;
     private bool _shouldSpin = false;
     private decimal _approvedAmount = 0;
     private bool _shouldUpdateWinnings = false;
     private bool _subscribed;
     private GameController _gameController;
+    private GameObject _confetti;
+    private bool _subscribedToClaim;
+    private bool _shouldHandleClaim;
 
     private void Start()
     {
         _callbacks = new MoralisLiveQueryCallbacks<SlotGameRoundResult>();
         _callbacks.OnUpdateEvent += HandleGameRoundResultCallback;
+        _slotClaimedCallbacks = new MoralisLiveQueryCallbacks<SlotClaimed>();
+        _slotClaimedCallbacks.OnUpdateEvent += HandleClaim;
         _spinButton = GameObject.Find("SpinButton").GetComponent<Button>();
         _spinButton.onClick.AddListener(SpinButtonListener);
         _musicButton = GameObject.Find("MusicToggle").GetComponent<Button>();
         _musicButton.onClick.AddListener(ToggleMusic);
         _claimButton = GameObject.Find("ClaimButton").GetComponent<Button>();
-        _claimButton.onClick.AddListener(ClaimListener);
+        _claimButton.onClick.AddListener(ClaimButtonListener);
         _gameController = FindObjectOfType<GameController>();
+        _confetti = GameObject.Find("Confetti01");
         user = FindObjectOfType<User>();
         user.OnTokenApprovalUpdated += UpdateTokenApproval;
         user.OnWinningsUpdated += UpdateWinnings;
     }
 
-    private async void ClaimListener()
+    private async void HandleClaim(SlotClaimed item, int requestId)
     {
+        _shouldHandleClaim = true;
+    }
+
+    private async void ClaimButtonListener()
+    {
+        if (!_subscribedToClaim)
+        {
+            _subscribedToClaim = true;
+            await SubscribeToClaimEvents();
+        }
+
+        GameController.ins.ShowLoader();
+        _spinButton.interactable = false;
         await BlockChain.Claim();
     }
 
@@ -117,7 +137,7 @@ public class SlotController : MonoBehaviour
             _spinButton.interactable = false;
             StartCoroutine(WaitForSecondsAndClose(10));
         }
-        else if(approvedAmount >= 10 && ColumnsStopped())
+        else if (approvedAmount >= 10 && ColumnsStopped())
         {
             _spinButton.interactable = true;
         }
@@ -144,12 +164,14 @@ public class SlotController : MonoBehaviour
 
     private async void SpinButtonListener()
     {
+        _confetti.SetActive(false);
+
         if (_approvedAmount < 10)
         {
             _gameController.ShowApprovalPopup();
             return;
         }
-        
+
         GameController.ins.ShowLoader();
         _spinButton.interactable = false;
         await PayForGame();
@@ -187,13 +209,22 @@ public class SlotController : MonoBehaviour
         if (!_subscribed)
         {
             _subscribed = true;
+            Debug.Log("SubscribeToGameResultEvents");
             MoralisQuery<SlotGameRoundResult> q = await Moralis.GetClient().Query<SlotGameRoundResult>();
             q.WhereEqualTo("user", (await Moralis.GetUserAsync()).accounts[0])
                 // .WhereEqualTo("roundId", _roundId)
                 .WhereEqualTo("confirmed", false);
             MoralisLiveQueryController.AddSubscription("SlotGameRoundResult", q, _callbacks);
-            Debug.Log("subscirbed");
         }
+    }
+
+    private async UniTask SubscribeToClaimEvents()
+    {
+        MoralisQuery<SlotClaimed> q = await Moralis.GetClient().Query<SlotClaimed>();
+        q.WhereEqualTo("user", (await Moralis.GetUserAsync()).accounts[0])
+            .WhereEqualTo("confirmed", false);
+        MoralisLiveQueryController.AddSubscription("SlotClaimed", q, _slotClaimedCallbacks);
+        Debug.Log("subscirbed");
     }
 
     public IEnumerator SpinSlots()
@@ -202,7 +233,7 @@ public class SlotController : MonoBehaviour
         {
             GameController.ins.HideLoader();
             StartCoroutine(blockChain.HandleAllowance());
-            
+
             if (rows[0].ColumnStopped && rows[1].ColumnStopped && rows[2].ColumnStopped)
             {
                 _gameStarted = true;
@@ -214,7 +245,6 @@ public class SlotController : MonoBehaviour
                 yield return null;
                 Debug.Log("should update winnings");
                 _shouldUpdateWinnings = true;
-                
             }
         }
 
@@ -267,8 +297,40 @@ public class SlotController : MonoBehaviour
             {
                 _gameStarted = false;
                 _spinButton.interactable = true;
+                if (_gameWon)
+                {
+                    _confetti.SetActive(true);
+                }
             }
         }
+
+        if (_shouldHandleClaim)
+        {
+            _shouldHandleClaim = false;
+            StartCoroutine(blockChain.HandleWinnings(0));
+            _spinButton.interactable = true;
+            StartCoroutine(WaitForWinningsCleared());
+        }
+    }
+
+    private IEnumerator WaitForWinningsCleared()
+    {
+        yield return new WaitUntil(() => user.winningsBalance == 0);
+        GameController.ins.HideLoader();
+    }
+
+    public static GameObject FindConfetti(GameObject parent, string name)
+    {
+        GameObject[] trs = parent.GetComponentsInChildren<GameObject>(true);
+        foreach (GameObject t in trs)
+        {
+            if (t.name == name)
+            {
+                return t.gameObject;
+            }
+        }
+
+        return null;
     }
 
     private bool ColumnsStopped()
