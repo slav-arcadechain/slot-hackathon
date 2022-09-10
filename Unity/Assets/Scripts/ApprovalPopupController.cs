@@ -10,71 +10,70 @@ public class ApprovalPopupController : MonoBehaviour
 {
     [SerializeField] private BlockChain blockChain = null;
     [SerializeField] private User user = null;
-    [SerializeField] private Slot slot = null;
 
-    private bool shouldUpdateWallet = true;
-    private bool hidePanel = true;
-    private Slider slider;
-    private Button approveButton;
-    private Button closeApporveButton;
+    private Slider _slider;
+    private Button _approveButton;
+    private Button _closeApproveButton;
+    private GameController _gameController;
+    private bool _isViewActive;
 
     void Start()
     {
-        slider = GameObject.Find("ApproveSlider")?.GetComponent<Slider>();
-        Debug.Log("slider = " + slider);
-        slider.onValueChanged.AddListener(delegate { HandleSlider(); });
-        approveButton = GameObject.Find("ApproveButton").GetComponent<Button>();
-        closeApporveButton = GameObject.Find("CloseApproveButton").GetComponent<Button>();
+        _slider = GameObject.Find("ApproveSlider").GetComponent<Slider>();
+        _slider.onValueChanged.AddListener(delegate { HandleSlider(); });
+        _approveButton = GameObject.Find("ApproveButton").GetComponent<Button>();
+        _closeApproveButton = GameObject.Find("CloseApproveButton").GetComponent<Button>();
 
         blockChain = FindObjectOfType<BlockChain>();
-        approveButton.onClick.AddListener(ApproveButtonHandler);
-        closeApporveButton.onClick.AddListener(CloseApproveButtonHandler);
+        _approveButton.onClick.AddListener(ApproveButtonHandler);
+        _closeApproveButton.onClick.AddListener(CloseApproveButtonHandler);
+        _gameController = FindObjectOfType<GameController>();
+        _gameController.OnViewTransitioned += HandleViewTransitioned;
         user = FindObjectOfType<User>();
         user.OnWalletTokenBalanceUpdated += UpdateWalletTokens;
         user.OnTokenApprovalUpdated += UpdateTokenApproval;
-        user.OnWinningsUpdated += UpdateWinnings;
-        slot = FindObjectOfType<Slot>();
     }
 
-    private void UpdateWinnings(decimal winnings)
+    private void HandleViewTransitioned(string viewName)
     {
-        Debug.Log("Winnings: " + winnings);
-        if (GameObject.Find("WonAmount"))
+        if (viewName == "approval")
         {
-            GameObject.Find("WonAmount").GetComponent<Text>().text = winnings.ToString();
+            _isViewActive = true;
+            StartCoroutine(blockChain.HandleWallet(0));
+        }
+        else
+        {
+            _isViewActive = false;
         }
     }
 
     private void CloseApproveButtonHandler()
     {
-        GameController.ShowGame();
-        GameController.HideApproval();
+        _gameController.ShowGame();
+        // GameController.HideApproval();
     }
 
     private void ApproveButtonHandler()
     {
         GameController.ins.ShowLoader();
-        approveButton.interactable = false;
-        UniTask.Create(async () => { await BlockChain.ApproveGameTokenSpent((int)slider.value * 10); });
-        shouldUpdateWallet = true;
+        _approveButton.interactable = false;
+        UniTask.Create(async () => { await BlockChain.ApproveGameTokenSpent((int)_slider.value * 10); });
     }
 
     private void HandleSlider()
     {
-        Debug.Log("in slider handle");
-        var value = slider.value;
-        GameObject.Find("ApproveButtonText").GetComponent<TextMeshProUGUI>().text = $"Approve {value}";
+        GameObject.Find("ApproveButtonText").GetComponent<TextMeshProUGUI>().text = $"Approve {_slider.value}";
     }
 
     private void UpdateTokenApproval(decimal approvedAmount)
     {
-        if (GameObject.Find("ApprovedAmount") != null)
+        if (GameObject.Find("ApprovedAmount") != null && _isViewActive)
         {
             if (approvedAmount >= Slot.GameFee)
             {
                 GameController.ins.HideLoader();
-                approveButton.interactable = true;
-                closeApporveButton.interactable = true;
+                _approveButton.interactable = true;
+                _closeApproveButton.interactable = true;
                 GameObject.Find("ApprovedAmount").GetComponent<Text>().text =
                     $"{Math.Round(approvedAmount / Slot.GameFee, 0)}";
                 StartCoroutine(WaitForSecond());
@@ -88,7 +87,7 @@ public class ApprovalPopupController : MonoBehaviour
 
     private void UpdateWalletTokens(decimal balance)
     {
-        if (GameObject.Find("WalletBalance") != null)
+        if (GameObject.Find("WalletBalance") != null && _isViewActive)
         {
             if (balance > 9999)
             {
@@ -98,16 +97,6 @@ public class ApprovalPopupController : MonoBehaviour
             {
                 GameObject.Find("WalletBalance").GetComponent<Text>().text = $"{Math.Round(balance, 0)}";
             }
-        }
-    }
-
-    private async void Update()
-    {
-        if (shouldUpdateWallet)
-        {
-            shouldUpdateWallet = false;
-            StartCoroutine(blockChain.HandleWallet(12));
-            StartCoroutine(blockChain.HandleWallet(20));
         }
     }
 

@@ -42,6 +42,18 @@ public class BlockChain : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
+        StartCoroutine(FetchUserAddress());
+        yield return new WaitUntil(() => _userAddress != "");
+        
+        StartCoroutine(HandleAllowance());
+        StartCoroutine(HandleWinnings());
+        StartCoroutine(HandleGameTokens());
+    }
+
+    public IEnumerator FetchUserAddress()
+    {
+        Debug.Log("FetchUserAddress"); 
+        if (_userAddress != "") yield break;
         var addressTask = Moralis.GetUserAsync();
         yield return new WaitUntil(() => addressTask.Status.IsCompleted());
         var moralisUser = addressTask.GetAwaiter().GetResult();
@@ -50,32 +62,47 @@ public class BlockChain : MonoBehaviour
             yield break;
         }
 
-        var address = moralisUser.accounts[0];
-        var balanceTask = Moralis.Client.Web3Api.Account.GetTokenBalances(address.ToLower(), GameChain);
+        _userAddress = moralisUser.accounts[0];
+        Debug.Log("set: " + _userAddress);
+    }
+
+    public IEnumerator HandleGameTokens()
+    {
+        yield return new WaitUntil(() => _userAddress != "");
+        var balanceTask = Moralis.Client.Web3Api.Account.GetTokenBalances(_userAddress.ToLower(), GameChain);
         yield return new WaitUntil(() => balanceTask.Status.IsCompleted());
         var balance = balanceTask.GetAwaiter().GetResult();
+        foreach (var token in balance.Where(token =>
+                     token.TokenAddress.ToLower().Equals(GameTokenContractAddress.ToLower())))
+        {
+            FindObjectOfType<User>().WalletTokenBalance =
+                UnitConversion.Convert.FromWei(BigInteger.Parse(token.Balance));
+        }
+    }
 
+    public IEnumerator HandleWinnings()
+    {
+        yield return new WaitUntil(() => _userAddress != "");
+        var winningsTask = GetWinnings();
+        yield return new WaitUntil(() => winningsTask.IsCompleted);
+        var winnings = winningsTask.Result;
+        FindObjectOfType<User>().WinningsBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(winnings));
+    }
+
+    public IEnumerator HandleAllowance()
+    {
+        yield return new WaitUntil(() => _userAddress != "");
         var allowanceTask = Moralis.Client.Web3Api.Token.GetTokenAllowance(
             GameTokenContractAddress,
-            address.ToLower(),
+            _userAddress.ToLower(),
             GameContractAddress.ToLower(),
             GameChain);
         yield return new WaitUntil(() => allowanceTask.Status.IsCompleted());
         var allowance = allowanceTask.GetAwaiter().GetResult();
-        var winningsTask = GetWinnings(address);
-        yield return new WaitUntil(() => winningsTask.IsCompleted);
-        var winnings = winningsTask.Result;
-        var user = FindObjectOfType<User>();
-        foreach (var token in balance.Where(token =>
-                     token.TokenAddress.ToLower().Equals(GameTokenContractAddress.ToLower())))
-        {
-            user.WalletTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(token.Balance));
-            user.ApprovedTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(allowance.Allowance));
-            user.WinningsBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(winnings));
-        }
+        FindObjectOfType<User>().ApprovedTokenBalance = UnitConversion.Convert.FromWei(BigInteger.Parse(allowance.Allowance));
     }
 
-    private async Task<string> GetWinnings(string address)
+    private async Task<string> GetWinnings()
     {
         // Function ABI input parameters
         object[] inputParams = new object[1];
@@ -94,7 +121,7 @@ public class BlockChain : MonoBehaviour
         RunContractDto rcd = new RunContractDto()
         {
             Abi = abi,
-            Params = new { _address = address }
+            Params = new { _address =  _userAddress}
         };
         string resp = await Moralis.Web3Api.Native.RunContractFunction<string>(
             address: GameContractAddress,
@@ -207,6 +234,7 @@ public class BlockChain : MonoBehaviour
 
     private static BlockChain instance;
     private static string _zeroHex = "0x0";
+    private string _userAddress = "";
 
     private static BlockChain Instance
     {

@@ -7,8 +7,10 @@ using MoralisUnity.Kits.AuthenticationKit;
 using UnityEngine;
 using UnityEngine.UI;
 
+public delegate void ViewTransitionedHandler(string viewName);
 public class GameController : MonoBehaviour
 {
+    public event ViewTransitionedHandler OnViewTransitioned;
     private static GameController _ins;
 
     public static GameController ins
@@ -33,10 +35,6 @@ public class GameController : MonoBehaviour
     private bool _shouldUpdateWallet;
     private bool _shouldTransitionView;
     private bool _subscribedToApproval;
-    private GameObject _approvalPopup;
-    private GameObject _slotPanel;
-    private GameObject _mainBackground;
-    private GameObject _gameBackground;
     private readonly int[] _allowedChainIds = { 338 };
 
     void Start()
@@ -47,10 +45,6 @@ public class GameController : MonoBehaviour
         user = FindObjectOfType<User>();
         user.OnTokenApprovalUpdated += UpdateTokenApproval;
         slot = FindObjectOfType<Slot>();
-        _approvalPopup = GameObject.Find("ApprovalPopup");
-        _slotPanel = GameObject.Find("SlotPanel");
-        _mainBackground = GameObject.Find("MainBackground");
-        _gameBackground = GameObject.Find("slotBackground");
         HideApproval();
         HideGame();
     }
@@ -60,17 +54,26 @@ public class GameController : MonoBehaviour
         GameObject.Find("SlotPanel").transform.position = Vector3.back;
     }
 
-    public static void ShowGame()
+    public void ShowGame()
     {
+        HideApproval();
         GameObject.Find("slotBackground").transform.position = Vector3.forward;
         GameObject.Find("SlotPanel").transform.position = Vector3.forward;
+        HideMainBackground();
+        OnViewTransitioned?.Invoke("slot");
+    }
+
+    private static void HideMainBackground()
+    {
         GameObject.Find("MainBackground").transform.position = Vector3.back;
     }
 
-    public static void ShowApprovalPopup()
+    public void ShowApprovalPopup()
     {
+        ShowMainBackground();
         HideGame();
         GameObject.Find("ApprovalPopup").transform.position = Vector3.forward;
+        OnViewTransitioned?.Invoke("approval");
     }
 
     public static void HideApproval()
@@ -78,12 +81,7 @@ public class GameController : MonoBehaviour
         GameObject.Find("ApprovalPopup").transform.position = Vector3.back;
     }
 
-    public static void HideMainBackground()
-    {
-        GameObject.Find("MainBackground").transform.position = Vector3.back;
-    }
-
-    public static void ShowMainBackground()
+    private void ShowMainBackground()
     {
         GameObject.Find("MainBackground").transform.position = Vector3.forward;
     }

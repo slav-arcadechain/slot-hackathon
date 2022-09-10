@@ -57,6 +57,7 @@ public class SlotController : MonoBehaviour
     private decimal _approvedAmount = 0;
     private bool _shouldUpdateWinnings = false;
     private bool _subscribed;
+    private GameController _gameController;
 
     private void Start()
     {
@@ -68,7 +69,7 @@ public class SlotController : MonoBehaviour
         _musicButton.onClick.AddListener(ToggleMusic);
         _claimButton = GameObject.Find("ClaimButton").GetComponent<Button>();
         _claimButton.onClick.AddListener(ClaimListener);
-
+        _gameController = FindObjectOfType<GameController>();
         user = FindObjectOfType<User>();
         user.OnTokenApprovalUpdated += UpdateTokenApproval;
         user.OnWinningsUpdated += UpdateWinnings;
@@ -116,7 +117,7 @@ public class SlotController : MonoBehaviour
             _spinButton.interactable = false;
             StartCoroutine(WaitForSecondsAndClose(10));
         }
-        else
+        else if(approvedAmount >= 10 && ColumnsStopped())
         {
             _spinButton.interactable = true;
         }
@@ -145,8 +146,7 @@ public class SlotController : MonoBehaviour
     {
         if (_approvedAmount < 10)
         {
-            GameController.HideGame();
-            GameController.ShowApprovalPopup();
+            _gameController.ShowApprovalPopup();
             return;
         }
         
@@ -201,6 +201,8 @@ public class SlotController : MonoBehaviour
         if (_roundPaidFor)
         {
             GameController.ins.HideLoader();
+            StartCoroutine(blockChain.HandleAllowance());
+            
             if (rows[0].ColumnStopped && rows[1].ColumnStopped && rows[2].ColumnStopped)
             {
                 _gameStarted = true;
@@ -212,6 +214,7 @@ public class SlotController : MonoBehaviour
                 yield return null;
                 Debug.Log("should update winnings");
                 _shouldUpdateWinnings = true;
+                
             }
         }
 
@@ -260,21 +263,17 @@ public class SlotController : MonoBehaviour
 
         if (_gameStarted)
         {
-            if (rows[0].ColumnStopped && rows[1].ColumnStopped && rows[2].ColumnStopped)
+            if (ColumnsStopped())
             {
                 _gameStarted = false;
-
-                if (rows[0].currentSlot == rows[1].currentSlot &&
-                    rows[0].currentSlot == rows[2].currentSlot)
-                {
-                    _spinButton.interactable = true;
-                }
-                else
-                {
-                    _spinButton.interactable = true;
-                }
+                _spinButton.interactable = true;
             }
         }
+    }
+
+    private bool ColumnsStopped()
+    {
+        return rows[0].ColumnStopped && rows[1].ColumnStopped && rows[2].ColumnStopped;
     }
 
     private IEnumerator WaitForSecondsAndClose(int seconds)
@@ -284,8 +283,6 @@ public class SlotController : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
-        GameController.ShowMainBackground();
-        GameController.HideGame();
-        GameController.ShowApprovalPopup();
+        _gameController.ShowApprovalPopup();
     }
 }
