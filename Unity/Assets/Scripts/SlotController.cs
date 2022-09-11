@@ -62,6 +62,16 @@ public class SlotController : MonoBehaviour
     private GameObject _confetti;
     private bool _subscribedToClaim;
     private bool _shouldHandleClaim;
+    private bool _slot0MusicPlayed = true;
+    private bool _slot1MusicPlayed = true;
+    private bool _slot2MusicPlayed = true;
+    private AudioSource _slotSpinEffect;
+    private AudioSource _cheerAudioSource;
+    private AudioSource _booEffect;
+    private AudioSource _slotMoneyOutEffect;
+    private AudioSource _slot0Stopped;
+    private AudioSource _slot1Stopped;
+    private AudioSource _slot2Stopped;
 
     private void Start()
     {
@@ -80,6 +90,13 @@ public class SlotController : MonoBehaviour
         user = FindObjectOfType<User>();
         user.OnTokenApprovalUpdated += UpdateTokenApproval;
         user.OnWinningsUpdated += UpdateWinnings;
+        _slotSpinEffect = GameObject.Find("SlotSpinEffect").GetComponent<AudioSource>();
+        _cheerAudioSource = GameObject.Find("CheerEffect").GetComponent<AudioSource>();
+        _booEffect= GameObject.Find("BooEffect").GetComponent<AudioSource>();
+        _slotMoneyOutEffect = GameObject.Find("SlotMoneyOutEffect").GetComponent<AudioSource>();
+        _slot0Stopped = GameObject.Find("Slot0StoppedEffect").GetComponent<AudioSource>();
+        _slot1Stopped = GameObject.Find("Slot0StoppedEffect").GetComponent<AudioSource>();
+        _slot2Stopped = GameObject.Find("Slot0StoppedEffect").GetComponent<AudioSource>();
     }
 
     private async void HandleClaim(SlotClaimed item, int requestId)
@@ -232,16 +249,21 @@ public class SlotController : MonoBehaviour
         if (_roundPaidFor)
         {
             GameController.ins.HideLoader();
+            _slotSpinEffect.Play();
+
             StartCoroutine(blockChain.HandleAllowance());
 
             if (rows[0].ColumnStopped && rows[1].ColumnStopped && rows[2].ColumnStopped)
             {
                 _gameStarted = true;
                 StartCoroutine(StartSpinForRow(0));
+                _slot0MusicPlayed = false;
                 yield return null;
                 StartCoroutine(StartSpinForRow(1));
+                _slot1MusicPlayed = false;
                 yield return null;
                 StartCoroutine(StartSpinForRow(2));
+                _slot2MusicPlayed = false;
                 yield return null;
                 Debug.Log("should update winnings");
                 _shouldUpdateWinnings = true;
@@ -293,13 +315,35 @@ public class SlotController : MonoBehaviour
 
         if (_gameStarted)
         {
+            if (!_slot0MusicPlayed && rows[0].ColumnStopped)
+            {
+                _slot0MusicPlayed = true;
+                _slot0Stopped.Play();
+            }
+            if (!_slot1MusicPlayed && rows[1].ColumnStopped)
+            {
+                _slot1MusicPlayed = true;
+                _slot1Stopped.Play();
+            }
+            if (!_slot2MusicPlayed && rows[2].ColumnStopped)
+            {
+                _slot2MusicPlayed = true;
+                _slot2Stopped.Play();
+            }
             if (ColumnsStopped())
             {
                 _gameStarted = false;
                 _spinButton.interactable = true;
+                _slotSpinEffect.Stop();
                 if (_gameWon)
                 {
+                    _slotMoneyOutEffect.Play();
+                    StartCoroutine(PlayCheer());
                     _confetti.SetActive(true);
+                }
+                else
+                {
+                    _booEffect.Play();        
                 }
             }
         }
@@ -311,6 +355,12 @@ public class SlotController : MonoBehaviour
             _spinButton.interactable = true;
             StartCoroutine(WaitForWinningsCleared());
         }
+    }
+
+    private IEnumerator PlayCheer()
+    {
+        yield return new WaitUntil(() => !_slotMoneyOutEffect.isPlaying);
+        _cheerAudioSource.Play();
     }
 
     private IEnumerator WaitForWinningsCleared()
