@@ -59,9 +59,9 @@
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/slot.loader.js";
       var config = {
-        dataUrl: buildUrl + "/ae5796c8028688d1cd27f9193bcd0cbb.data.unityweb",
-        frameworkUrl: buildUrl + "/2f785bcc21c7d797dea96c0b5cd6417a.js.unityweb",
-        codeUrl: buildUrl + "/a4da0c44e95a08341e6ccb35e40567b0.wasm.unityweb",
+        dataUrl: buildUrl + "/slot.data.unityweb",
+        frameworkUrl: buildUrl + "/slot.framework.js.unityweb",
+        codeUrl: buildUrl + "/slot.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "ArcadeChain",
         productName: "Slot",
@@ -86,7 +86,7 @@
         canvas.style.width = "960px";
         canvas.style.height = "540px";
       }
-      canvas.style.background = "url('" + buildUrl + "/b43b52b3013e940480465094ffffab1c.jpg.unityweb') center / cover";
+      canvas.style.background = "url('" + buildUrl + "/slot.jpg.unityweb') center / cover";
       loadingBar.style.display = "block";
 
       var script = document.createElement("script");

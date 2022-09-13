@@ -17,22 +17,11 @@
       <change afterPath="$USER_HOME$/WebstormProjects/arcadechain-contracts/app/src/contracts/SafeERC20.json" afterDir="false" />
       <change afterPath="$USER_HOME$/WebstormProjects/arcadechain-contracts/app/src/contracts/Slot.json" afterDir="false" />
       <change afterPath="$USER_HOME$/WebstormProjects/arcadechain-contracts/app/src/contracts/TUSD.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../SmartContract/contracts/SlotNFT.sol" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Unity/Assets/Scripts/Inventory.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Unity/Assets/Scripts/Inventory.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Unity/Assets/Scripts/InventoryItem.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Unity/Assets/Scripts/InventoryItem.cs.meta" afterDir="false" />
       <change beforePath="$USER_HOME$/WebstormProjects/arcadechain-contracts/README.md" beforeDir="false" afterPath="$USER_HOME$/WebstormProjects/arcadechain-contracts/README.md" afterDir="false" />
       <change beforePath="$USER_HOME$/WebstormProjects/arcadechain-contracts/contracts/Slot.sol" beforeDir="false" afterPath="$USER_HOME$/WebstormProjects/arcadechain-contracts/contracts/Slot.sol" afterDir="false" />
       <change beforePath="$USER_HOME$/WebstormProjects/arcadechain-contracts/migrations/4_Slot.js" beforeDir="false" afterPath="$USER_HOME$/WebstormProjects/arcadechain-contracts/migrations/4_Slot.js" afterDir="false" />
       <change beforePath="$USER_HOME$/WebstormProjects/arcadechain-contracts/test/SlotTest.spec.js" beforeDir="false" afterPath="$USER_HOME$/WebstormProjects/arcadechain-contracts/test/SlotTest.spec.js" afterDir="false" />
       <change beforePath="$USER_HOME$/WebstormProjects/arcadechain-contracts/truffle-config.js" beforeDir="false" afterPath="$USER_HOME$/WebstormProjects/arcadechain-contracts/truffle-config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../SmartContract/build/contracts/Slot.json" beforeDir="false" afterPath="$PROJECT_DIR$/../SmartContract/build/contracts/Slot.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Unity/Assets/Fonts/neuropol SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Unity/Assets/Fonts/neuropol SDF.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Unity/Assets/Scenes/GameScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../Unity/Assets/Scenes/GameScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Unity/Assets/Scripts/GameController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Unity/Assets/Scripts/GameController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Unity/Assets/Scripts/SlotController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Unity/Assets/Scripts/SlotController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +102,7 @@
       <workItem from="1661890753231" duration="3161000" />
       <workItem from="1662010812058" duration="6742000" />
       <workItem from="1662056047470" duration="2200000" />
-      <workItem from="1662196365929" duration="15984000" />
+      <workItem from="1662196365929" duration="15991000" />
     </task>
     <task id="LOCAL-00001" summary="added Test USD contract">
       <created>1661197394882</created>

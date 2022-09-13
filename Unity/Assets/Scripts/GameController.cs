@@ -30,7 +30,6 @@ public class GameController : MonoBehaviour
     [SerializeField] private BlockChain blockChain = null;
     [SerializeField] private User user = null;
     [SerializeField] private Slot slot = null;
-    [SerializeField] private Inventory inventory = null;
     [SerializeField] private Image _backgroundImage = null;
 
     private bool _shouldUpdateWallet;

@@ -66,7 +66,6 @@ public class SlotController : MonoBehaviour
     private bool _slot1MusicPlayed = true;
     private bool _slot2MusicPlayed = true;
     private AudioSource _slotSpinEffect;
-    private AudioSource _cheerAudioSource;
     private AudioSource _booEffect;
     private AudioSource _slotMoneyOutEffect;
     private AudioSource _slot0Stopped;
@@ -91,7 +90,6 @@ public class SlotController : MonoBehaviour
         user.OnTokenApprovalUpdated += UpdateTokenApproval;
         user.OnWinningsUpdated += UpdateWinnings;
         _slotSpinEffect = GameObject.Find("SlotSpinEffect").GetComponent<AudioSource>();
-        _cheerAudioSource = GameObject.Find("CheerEffect").GetComponent<AudioSource>();
         _booEffect= GameObject.Find("BooEffect").GetComponent<AudioSource>();
         _slotMoneyOutEffect = GameObject.Find("SlotMoneyOutEffect").GetComponent<AudioSource>();
         _slot0Stopped = GameObject.Find("Slot0StoppedEffect").GetComponent<AudioSource>();
@@ -99,7 +97,7 @@ public class SlotController : MonoBehaviour
         _slot2Stopped = GameObject.Find("Slot0StoppedEffect").GetComponent<AudioSource>();
     }
 
-    private async void HandleClaim(SlotClaimed item, int requestId)
+    private void HandleClaim(SlotClaimed item, int requestId)
     {
         _shouldHandleClaim = true;
     }
@@ -338,7 +336,6 @@ public class SlotController : MonoBehaviour
                 if (_gameWon)
                 {
                     _slotMoneyOutEffect.Play();
-                    StartCoroutine(PlayCheer());
                     _confetti.SetActive(true);
                 }
                 else
@@ -355,12 +352,6 @@ public class SlotController : MonoBehaviour
             _spinButton.interactable = true;
             StartCoroutine(WaitForWinningsCleared());
         }
-    }
-
-    private IEnumerator PlayCheer()
-    {
-        yield return new WaitUntil(() => !_slotMoneyOutEffect.isPlaying);
-        _cheerAudioSource.Play();
     }
 
     private IEnumerator WaitForWinningsCleared()
